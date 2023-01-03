@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -30,7 +31,7 @@ class HomeController extends Controller
 
     public function adminView()
     {
-        Log::debug('DED');
+        Log::debug(auth()->user()->role->role_id);
         return view('admin-view');
     }
 }

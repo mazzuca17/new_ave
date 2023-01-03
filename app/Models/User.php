@@ -43,4 +43,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getProfileImageUrlAttribute()
+    {
+        if (is_null($this->image)) {
+            return asset('avatar.png');
+        }
+    }
+
+    public function role()
+    {
+        return $this->hasOne(RoleUser::class, 'user_id');
+    }
 }

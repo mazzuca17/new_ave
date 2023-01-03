@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -10,9 +9,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('home', [HomeController::class, 'index'])->name('home');
+// Rutas con autenticación
+Route::group(['middleware' => ['auth']], function () {
 
-
-Route::group(['middleware' => ['auth', 'admin']], function () {
-    Route::get('admin-view', 'HomeController@adminView')->name('admin.view');
+    // School or Admin
+    Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
+        Route::get('admin-view', 'HomeController@adminView')->name('admin.view');
+    });
 });

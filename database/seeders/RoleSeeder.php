@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use App\Models\User;
+use App\Models\RoleUser;
 
 class RoleSeeder extends Seeder
 {
@@ -14,12 +16,34 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        $superadmin = Role::create(['name' => 'Superadmin']);
-        $admin      = Role::create(['name' => 'Colegio']);
-        $alumno     = Role::create(['name' => 'Alumno']);
-        $docente    = Role::create(['name' => 'Docente']);
+        $role               = new Role();
+        $role->name         = "Superadmin";
+        $role->display_name = ucwords('Superadmin');
+        $role->save();
 
-        // Permisos de usuarios
-        
+        $role               = new Role();
+        $role->name         = "Colegio";
+        $role->display_name = ucwords('Colegio');
+        $role->save();
+
+        $role               = new Role();
+        $role->name         = "Docente";
+        $role->display_name = ucwords('Docente');
+        $role->save();
+
+        $role               = new Role();
+        $role->name         = "Alumno";
+        $role->display_name = ucwords('Alumno');
+        $role->save();
+
+
+        $users = User::all();
+
+        foreach ($users as $user) {
+            $roleUser = new RoleUser();
+            $roleUser->user_id = $user->id;
+            $roleUser->role_id = $user->id;
+            $roleUser->save();
+        }
     }
 }

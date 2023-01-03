@@ -29,7 +29,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark-theme bg-theme-dark shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ route('home') }}">
+                <a class="navbar-brand" href="#">
                     {{ 'AVE' }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -64,7 +64,6 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('home') }}"> {{ __('Admin Panel') }} </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
