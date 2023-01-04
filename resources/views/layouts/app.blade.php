@@ -21,7 +21,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/entradas.css') }}" rel="stylesheet">
     <link href="{{ asset('css/register.css') }}" rel="stylesheet">
-    <link rel="icon" href="{{ asset('images/imagotipo_diagonal1.ico') }}">
+    <link rel="icon" href="{{ asset('img/logo-1.png') }}">
 
 </head>
 
