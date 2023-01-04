@@ -151,7 +151,8 @@
                         <li class="nav-item dropdown hidden-caret">
                             <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"
                                 aria-expanded="false">
-
+                                <div class='avatar-sm float-left mr-2'><img src='{{ asset('img/profile.jpg') }}'
+                                        class='avatar-img'></div>
                             </a>
                             <ul class="dropdown-menu dropdown-user animated fadeIn">
                                 <div class="dropdown-user-scroll scrollbar-outer">
@@ -179,8 +180,8 @@
                 <div class="sidebar-content">
                     <!-- Usuario-->
                     <div class="user">
-
-
+                        <div class='avatar-sm float-left mr-2'><img src='{{ asset('img/profile.jpg') }}'
+                                class='avatar-img rounded-circle'></div>
                         <div class="info">
                             <div class="clearfix"></div>
 
