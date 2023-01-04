@@ -87,6 +87,9 @@ class LoginController extends Controller
     {
         switch ($user->role->role_id) {
             case $this->type_rol_admin:
+                return redirect()->route('admin.dashboard');
+                break;
+
             case $this->type_rol_school:
                 return redirect()->route('admin.dashboard');
                 break;
