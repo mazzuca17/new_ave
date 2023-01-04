@@ -14,6 +14,6 @@ Route::group(['middleware' => ['auth']], function () {
 
     // School or Admin
     Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
-        Route::get('admin-view', 'HomeController@adminView')->name('admin.view');
+        Route::get('dashboard', 'HomeController@adminView')->name('dashboard');
     });
 });
