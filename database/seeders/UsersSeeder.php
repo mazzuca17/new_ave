@@ -15,7 +15,7 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
-        User::truncate();
+        //User::truncate();
         $users = [
             [
                 'name'     => 'Superadmin',
