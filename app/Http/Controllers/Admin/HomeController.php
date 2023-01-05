@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Schools;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -45,8 +47,8 @@ class HomeController extends Controller
         if (auth()->user()->role->role_id != self::ADMIN_ROL) {
             $this->showErrorPermission();
         }
-
-        return view('superadmin.dashboard');
+        $schools = Schools::with('user')->get();
+        return view('superadmin.dashboard', compact('schools'));
     }
 
     /**

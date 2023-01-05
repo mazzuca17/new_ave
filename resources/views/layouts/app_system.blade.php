@@ -146,7 +146,7 @@
                     </div>
                 </div>
                 <div class="page-inner mt--5">
-
+                    @yield('content')
                 </div>
             </div>
 
