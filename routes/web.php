@@ -15,5 +15,10 @@ Route::group(['middleware' => ['auth']], function () {
     // School or Admin
     Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('dashboard', 'HomeController@adminView')->name('dashboard');
+        Route::get('schools/create', 'SchoolsController@create')->name('schools_create');
+        Route::post('schools/store', 'SchoolsController@store')->name('schools_store');
+        Route::post('schools/destroy', 'SchoolsController@destroy')->name('schools_destroy');
+        Route::get('schools/edit', 'SchoolsController@eidt')->name('schools_edit');
+        Route::post('schools/update', 'SchoolsController@update')->name('schools_update');
     });
 });
