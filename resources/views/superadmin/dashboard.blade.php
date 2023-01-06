@@ -48,7 +48,8 @@
                                                                     cuenta</a>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <a href="" class="btn btn-success">Editar cuenta</a>
+                                                                <a href="{{ route('admin.schools_edit', ['id' => $item->user_id]) }}"
+                                                                    class="btn btn-success">Editar cuenta</a>
                                                             </div>
                                                         </div>
                                                     </td>

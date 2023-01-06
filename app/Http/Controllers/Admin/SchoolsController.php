@@ -9,6 +9,7 @@ use App\Models\Schools;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class SchoolsController extends Controller
 {
@@ -52,14 +53,67 @@ class SchoolsController extends Controller
         return redirect(route('admin.schools_create'))->with('error', 'Error al intentar generar el establecimiento. Intente más tarde.');
     }
 
-    public function edit()
+    /**
+     * edit
+     *
+     * @param integer $id
+     * @author Matías
+     */
+    public function edit(int $id)
     {
+        $data_school = Schools::with('user')->where('user_id', $id)->first();
+
+        return view('superadmin.edit')->with('school', $data_school);
     }
 
-    public function update(Request $request, int $id)
+    /**
+     * update
+     *
+     * @param Request $request
+     * @author Matías
+     */
+    public function update(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name_school' => 'required|max:255',
+            'school_id'  => 'required',
+            'email'       => 'required',
+            'description' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect(route('admin.schools_edit', ['id' => $request->school_id]))->with('error', 'Error al intentar editar el establecimiento. Intente más tarde.');
+        }
+
+        Log::debug($request->all());
+
+        $user = Schools::with('user')->where('user_id', $request->school_id)->first();
+
+        if ($user) {
+            $update_user = User::where('id', $user->user->id)->update([
+                'name'       => $request->name_school,
+                'email'      => $request->email,
+                'updated_at' => Carbon::now(),
+            ]);
+
+            if ($update_user) {
+                Schools::where('user_id', $user->user_id)->update([
+                    'name'        => $request->name_school,
+                    'description' => $request->description,
+                    'updated_at'  => Carbon::now(),
+                ]);
+                return redirect(route('admin.schools_edit', ['id' => $request->school_id]))->with('status', 'Establecimiento editado con éxito!');
+            }
+            return redirect(route('admin.schools_edit', ['id' => $request->school_id]))->with('error', 'Error al actualizar el establecimiento ' . $user->name);
+        }
     }
 
+    /**
+     * destroy
+     *
+     * @param integer $id
+     * @author Matías
+     */
     public function destroy(int $id)
     {
     }
