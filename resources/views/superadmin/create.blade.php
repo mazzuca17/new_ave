@@ -6,11 +6,19 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 ml-auto mr-auto">
+                        @if (session('status'))
+                            <div class="alert alert-success">
+                                {{ session('status') }}
+                            </div>
+                        @endif
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">Crear establecimiento.</div>
                             </div>
-                            <form action="" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.schools_store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-3 col-lg-4">
@@ -25,11 +33,19 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label id="name_school" class="mb-3"><b>Email del
+                                                <label id="email" class="mb-3"><b>Email del
                                                         establecimiento</b></label>
-                                                <input class="form-control" name="name_school" type="text"
-                                                    placeholder="Nombre del establecimiento" required>
+                                                <input class="form-control" name="email" type="email"
+                                                    placeholder="Email del establecimiento" required>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label id="description" class="mb-3"><b>Descripción del
+                                                        establecimiento</b></label>
+                                                <input class="form-control" name="description" type="text"
+                                                    placeholder="Descripción del establecimiento" required>
+                                            </div>
+
                                         </div>
 
                                     </div>

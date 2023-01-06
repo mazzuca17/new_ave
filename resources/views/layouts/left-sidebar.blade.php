@@ -34,8 +34,11 @@
                             </li>
 
                             <li>
-                                <a href="../codigosphp/cerrarsesion-alumno.php">
-                                    <span class="link-collapse">Salir</span>
+                                <a href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    <span class="link-collapse">{{ __('Cerrar sesión') }}
+                                    </span>
                                 </a>
                             </li>
                         </ul>
@@ -43,51 +46,21 @@
                 </div>
             </div>
             <ul class="nav nav-primary">
+                @if (Auth::user()->role->role_id == 1)
+                    @include('layouts.sidebar.sidebar_admin')
+                @endif
 
-                <li class="nav-section">
-                    <span class="sidebar-mini-icon">
-                        <i class="fa fa-ellipsis-h"></i>
-                    </span>
-                    <h4 class="text-section">Materias</h4>
-                </li>
+                @if (Auth::user()->role->role_id == 2)
+                @endif
 
+                @if (Auth::user()->role->role_id == 3)
+                @endif
 
-
-                <li class="nav-section">
-                    <span class="sidebar-mini-icon">
-                        <i class="fa fa-ellipsis-h"></i>
-                    </span>
-                    <h4 class="text-section">Mi desempeño</h4>
-                </li>
-                <li class="nav-item">
-                <li class="nav-item">
-                    <a href="misnotas.php">Ver mis notas</a>
-                </li>
-                <li class="nav-item">
-                    <a href="entregas.php">Ver mis entregas</a>
-                </li>
-                <li class="nav-item">
-                    <a href="subirentrega.php">Hacer una nueva entrega</a>
+                @if (Auth::user()->role->role_id == 4)
+                @endif
 
 
-                </li>
-                <li class="nav-section">
-                    <span class="sidebar-mini-icon">
-                        <i class="fa fa-ellipsis-h"></i>
-                    </span>
-                    <h4 class="text-section">Comunicación</h4>
-                </li>
-                <li class="nav-item">
-                <li class="nav-item">
-                    <a href="eventos.php">Ver eventos</a>
-                </li>
-                </li>
-                <li class="nav-item">
-                    <a href="micurso.php">Mí curso</a>
-                </li>
 
-
-                </li>
             </ul>
         </div>
     </div>
