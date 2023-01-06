@@ -111,10 +111,17 @@ class SchoolsController extends Controller
     /**
      * destroy
      *
-     * @param integer $id
+     * @param Request $request
      * @author Matías
      */
-    public function destroy(int $id)
+    public function destroy(Request $request)
     {
+        $input       = $request->all();
+        $data_school = Schools::where('user_id', $input['school_id'])->first();
+        //Log::debug($data_school);
+        $data_school->is_active  = $data_school->is_active ? false : true;
+        $data_school->updated_at = Carbon::now();
+        $data_school->save();
+        return redirect(route('admin.dashboard', ['id' => $request->school_id]))->with('status', 'Establecimiento actualizado con éxito!');
     }
 }

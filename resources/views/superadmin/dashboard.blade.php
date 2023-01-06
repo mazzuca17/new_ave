@@ -18,6 +18,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
+                        @if (session('status'))
+                            <div class="alert alert-success">
+                                {{ session('status') }}
+                            </div>
+                        @endif
                         <div class="card card-entradas-borrador">
                             <div class="card-body">
                                 <a href="{{ route('admin.schools_create') }}" class="btn btn-primary btn-create_account"
@@ -44,8 +49,12 @@
                                                     <td>
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <a href="" class="btn btn-danger">Suspender
-                                                                    cuenta</a>
+                                                                <button type="button" class="btn btn-danger"
+                                                                    data-toggle="modal" data-target="#exampleModal">
+                                                                    {{ $item->is_active ? 'Desactivar' : 'Activar' }} cuenta
+                                                                </button>
+                                                                @include('superadmin.confirm_inactive')
+
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <a href="{{ route('admin.schools_edit', ['id' => $item->user_id]) }}"

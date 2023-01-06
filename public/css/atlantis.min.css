@@ -7417,7 +7417,11 @@ label.error {
     background: #48abf7;
 }
 .alert-success {
-    border-left: 4px solid #31ce36;
+    border-left: 4px solid #31ce36 !important;
+    background-color: #31ce36 !important;
+    color: white !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
 }
 .alert-success [data-notify="icon"]:before {
     background: #31ce36;

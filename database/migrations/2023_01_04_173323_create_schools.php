@@ -18,6 +18,7 @@ class CreateSchools extends Migration
             $table->string('name');
             $table->text('description');
             $table->string('image_profile')->nullable();
+            $table->boolean('is_active')->default(1);
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
                 ->references('id') // permission id
