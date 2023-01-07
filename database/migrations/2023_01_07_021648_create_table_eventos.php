@@ -20,7 +20,7 @@ class CreateTableEventos extends Migration
             $table->string('title');
             $table->text('description');
             $table->date('fecha');
-            $table->unsignedBigInteger('materia_id');
+            $table->unsignedBigInteger('materia_id')->nullable();
 
             $table->foreign('school_id')
                 ->references('id') // permission id
