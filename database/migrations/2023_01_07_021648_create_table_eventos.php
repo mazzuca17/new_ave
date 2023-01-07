@@ -21,6 +21,7 @@ class CreateTableEventos extends Migration
             $table->text('description');
             $table->date('fecha');
             $table->unsignedBigInteger('materia_id')->nullable();
+            $table->unsignedBigInteger('curso_id')->nullable();
 
             $table->foreign('school_id')
                 ->references('id') // permission id
@@ -35,6 +36,11 @@ class CreateTableEventos extends Migration
             $table->foreign('materia_id')
                 ->references('id') // permission id
                 ->on('materias')
+                ->onDelete('cascade');
+
+            $table->foreign('curso_id')
+                ->references('id') // permission id
+                ->on('cursos')
                 ->onDelete('cascade');
 
             $table->timestamps();
