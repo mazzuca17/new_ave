@@ -21,4 +21,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('schools/edit/{id}', 'SchoolsController@edit')->name('schools_edit');
         Route::post('schools/update', 'SchoolsController@update')->name('schools_update');
     });
+
+    Route::group(['namespace' => 'Schools', 'prefix' => 'school', 'as' => 'school.'], function () {
+        Route::get('dashboard', 'HomeController@index')->name('dashboard');
+    });
 });

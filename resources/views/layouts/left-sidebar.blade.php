@@ -51,6 +51,7 @@
                 @endif
 
                 @if (Auth::user()->role->role_id == 2)
+                    @include('layouts.sidebar.sidebar_school')
                 @endif
 
                 @if (Auth::user()->role->role_id == 3)

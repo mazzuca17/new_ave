@@ -91,7 +91,7 @@ class LoginController extends Controller
                 break;
 
             case $this->type_rol_school:
-                return redirect()->route('admin.dashboard');
+                return redirect()->route('school.dashboard');
                 break;
 
             case $this->type_rol_school:
