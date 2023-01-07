@@ -1,53 +1,52 @@
-@if ($cursos)
     <li class="nav-section">
         <span class="sidebar-mini-icon">
             <i class="fa fa-ellipsis-h"></i>
         </span>
         <h4 class="text-section">Cursos</h4>
     </li>
-    @foreach ($cursos as $item)
-        <li class="nav-item">
-            <a href="#">{{ $item['name'] }}</a>
-        </li>
-    @endforeach
-@endif
+    <li class="nav-item">
+        <a href="#">Ver cursos</a>
+    </li>
+    <li class="nav-item">
+        <a href="#">Agregar cursos</a>
+    </li>
 
 
-<li class="nav-section">
-    <span class="sidebar-mini-icon">
-        <i class="fa fa-ellipsis-h"></i>
-    </span>
-    <h4 class="text-section">Acciones</h4>
-</li>
-<li class="nav-item">
-<li class="nav-item">
-    <a href="nuevo_alumno.php">Agregar alumno</a>
-</li>
-<li class="nav-item">
-    <a href="nuevo_profe.php">Agregar profesores</a>
-</li>
-<li class="nav-item">
-    <a href="nueva_materia.php">Agregar materias</a>
-</li>
-<li class="nav-item">
-    <a href="crearcurso.php">Crear curso</a>
-</li>
+    <li class="nav-section">
+        <span class="sidebar-mini-icon">
+            <i class="fa fa-ellipsis-h"></i>
+        </span>
+        <h4 class="text-section">Acciones</h4>
+    </li>
+    <li class="nav-item">
+    <li class="nav-item">
+        <a href="nuevo_alumno.php">Agregar alumno</a>
+    </li>
+    <li class="nav-item">
+        <a href="nuevo_profe.php">Agregar profesores</a>
+    </li>
+    <li class="nav-item">
+        <a href="nueva_materia.php">Agregar materias</a>
+    </li>
+    <li class="nav-item">
+        <a href="crearcurso.php">Crear curso</a>
+    </li>
 
-</li>
+    </li>
 
-<li class="nav-section">
-    <span class="sidebar-mini-icon">
-        <i class="fa fa-ellipsis-h"></i>
-    </span>
-    <h4 class="text-section">Datos</h4>
-</li>
-<li class="nav-item">
+    <li class="nav-section">
+        <span class="sidebar-mini-icon">
+            <i class="fa fa-ellipsis-h"></i>
+        </span>
+        <h4 class="text-section">Datos</h4>
+    </li>
+    <li class="nav-item">
 
 
-<li class="nav-item">
-    <a href="verprofesores.php">Profesores</a>
-</li>
-<li class="nav-item">
-    <a href="eventos.php">Eventos</a>
-</li>
-</li>
+    <li class="nav-item">
+        <a href="verprofesores.php">Profesores</a>
+    </li>
+    <li class="nav-item">
+        <a href="eventos.php">Eventos</a>
+    </li>
+    </li>

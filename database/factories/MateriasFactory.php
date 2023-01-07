@@ -35,11 +35,6 @@ class MateriasFactory extends Factory
      */
     public function createNameMateria($curso)
     {
-        Log::debug($curso);
-        if ($curso <= 3) {
-            return ['Matemática', 'Geografía', 'Ciencas Naturales', 'Física', 'Lengua'];
-        } else {
-            return ['Programación', 'Análisis Matemático', 'Química', 'Historia', 'Redes'];
-        }
+        return ['Matemática', 'Geografía', 'Ciencas Naturales', 'Física', 'Lengua'];
     }
 }
