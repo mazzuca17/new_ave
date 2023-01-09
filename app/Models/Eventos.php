@@ -29,7 +29,7 @@ class Eventos extends Model
      */
     public function materia()
     {
-        return $this->hasOne(Materias::class, 'materia_id');
+        return $this->hasOne(Materias::class, 'id', 'materia_id');
     }
 
     /**
@@ -39,7 +39,7 @@ class Eventos extends Model
      */
     public function schools()
     {
-        return $this->hasOne(Schools::class, 'school_id');
+        return $this->hasOne(Schools::class, 'id', 'school_id');
     }
 
     /**
@@ -49,7 +49,7 @@ class Eventos extends Model
      */
     public function author()
     {
-        return $this->hasOne(User::class, 'user_id');
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     /**
@@ -59,6 +59,6 @@ class Eventos extends Model
      */
     public function curso()
     {
-        return $this->hasOne(Cursos::class, 'curso_id');
+        return $this->hasOne(Cursos::class, 'id', 'curso_id');
     }
 }
