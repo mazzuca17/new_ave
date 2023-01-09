@@ -24,7 +24,7 @@
                         </div>
                         <div class="card-body">
                             @if (isset($eventos[0]))
-                                @include('school.eventos')
+                                @include('school.eventos.index')
                             @else
                                 <div class="row">
                                     <div class="col-md-4">
@@ -36,8 +36,8 @@
                             @endif
                         </div>
                         <div class="card-footer">
-                            <a href="" class="btn btn-success">Cargar evento</a>
-                            <a href='eventos.php' class='btn btn-success ml-auto'>Ver todos</a>
+                            <a href="{{ route('school.events.create') }}" class="btn btn-success">Cargar evento</a>
+                            <a href="{{ route('school.events.view') }}" class='btn btn-success ml-auto'>Ver todos</a>
 
                         </div>
                     </div>
@@ -50,57 +50,8 @@
             <!-- FIN informar eventos-->
 
             <!-- Sección de cursos-->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
+            @include('school.courses.index')
 
-
-                        <div class='card-header'>
-                            <div class='card-title'>Cursos</div>
-                        </div>
-                        <?php
-                        //$sentencia = "SELECT * FROM apuntes";
-                        
-                        // $sentencia = "SELECT * FROM cursos WHERE id_colegio = '$id_colegio' GROUP BY curso";
-                        
-                        // ($resultado = $link->query($sentencia)) or die(mysqli_error($link));
-                        // $num = 1;
-                        
-                        // while ($fila = $resultado->fetch_assoc()) {
-                        //     echo "<div class='card-body pb-0'>";
-                        
-                        //     echo "<div class='d-flex'>";
-                        //     echo "<div class='flex-1 pt-1 ml-2'>";
-                        //     echo "<h4 class='fw-bold mb-1'>";
-                        //     echo $fila['curso'];
-                        //     echo '</h4>';
-                        //     echo "<small class='text-muted'>";
-                        //     echo 'Modalidad: ';
-                        //     echo $fila['modalidad'];
-                        //     echo '</small>';
-                        //     echo '<br>';
-                        
-                        //     echo '</div>';
-                        //     echo "<div class='d-flex ml-auto align-items-center'>";
-                        //     echo "<a class='btn btn-primary  ml-auto'  href='cursos.php?c=";
-                        //     echo $fila['curso'];
-                        //     echo "'>";
-                        //     echo 'Más info.';
-                        //     echo '</a></td>';
-                        
-                        //     echo '</div>';
-                        //     echo '</div>';
-                        //     echo "<div class='separator-dashed'></div>";
-                        
-                        //     echo '</div>';
-                        // }
-                        
-                        //
-                        ?>
-                    </div>
-                </div>
-
-            </div>
             <!-- FIN Sección de cursos-->
 
         </div>

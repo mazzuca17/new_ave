@@ -23,6 +23,15 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::group(['namespace' => 'Schools', 'prefix' => 'school', 'as' => 'school.'], function () {
+
         Route::get('dashboard', 'HomeController@index')->name('dashboard');
+
+        // * Eventos
+        Route::group(['prefix' => 'eventos', 'as' => 'events.'], function () {
+            Route::get('create', 'EventsController@create')->name('create');
+            Route::post('store', 'EventsController@store')->name('store');
+            Route::get('edit/{event_id}', 'EventsController@edit')->name('edit');
+            Route::get('list', 'EventsController@viewAll')->name('view');
+        });
     });
 });

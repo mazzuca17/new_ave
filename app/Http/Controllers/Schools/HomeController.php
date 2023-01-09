@@ -68,4 +68,9 @@ class HomeController extends Controller
         }
         return null;
     }
+
+    public function getCourses(int $id_school)
+    {
+        return Cursos::where('schoold_id', $id_school)->get();
+    }
 }
