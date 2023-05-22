@@ -30,6 +30,12 @@ class EventsController extends Controller
         return view('school.eventos.create');
     }
 
+    /**
+     * store
+     *
+     * @param Request $request
+     * @author Matías
+     */
     public function store(Request $request)
     {
         $this->validateData($request);
@@ -51,6 +57,12 @@ class EventsController extends Controller
         }
     }
 
+    /**
+     * validateData
+     *
+     * @param  mixed $request
+     * @author Matías
+     */
     public function validateData($request)
     {
         $validator = Validator::make($request->all(), [
@@ -83,6 +95,12 @@ class EventsController extends Controller
         return view('school.eventos.edit')->with('data_event', $data);
     }
 
+    /**
+     * updte
+     *
+     * @param Request $request
+     * @author Matías
+     */
     public function update(Request $request)
     {
         $this->validateData($request);
@@ -95,6 +113,14 @@ class EventsController extends Controller
         return redirect(route('school.events.edit', ['event_id' => $request->event_id]))->with('status', self::MESSAGE_UPDATED_EVENT_SUCCESS);
     }
 
+    /**
+     * viewAll
+     * 
+     * Se muestran todos los eventos del establecimiento
+     * que están registrados en la plataforma.
+     * 
+     * @author Matías
+     */
     public function viewAll()
     {
         $data_school = Schools::with('user')->where('user_id', Auth::user()->id)->first();

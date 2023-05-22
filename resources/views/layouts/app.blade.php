@@ -29,9 +29,19 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark-theme bg-theme-dark shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="#">
-                    {{ 'AVE' }}
-                </a>
+                @if (Auth::user()->role->role_id == 1)
+                    <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
+                        {{ 'AVE' }}
+                    </a>
+                @endif
+
+                @if (Auth::user()->role->role_id == 2)
+                    <a class="navbar-brand" href="{{ route('school.dashboard') }}">
+                        {{ 'AVE' }}
+                    </a>
+                @endif
+
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="{{ __('Toggle navigation') }}">

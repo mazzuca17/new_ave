@@ -40,8 +40,14 @@
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark2">
 
-                <img src="{{ asset('img/logo-1.png') }}" alt="navbar brand" class="navbar-brand" width="50%"
-                    heigth="500px">
+                @php
+                    $route = Auth::user()->role->role_id == 1 ? 'admin' : (Auth::user()->role->role_id == 2 ? 'school' : '');
+                @endphp
+                <a href="{{ route($route . '.dashboard') }}">
+                    <img src="{{ asset('img/logo-1.png') }}" alt="navbar brand" class="navbar-brand" width="50%"
+                        heigth="500px">
+                </a>
+
                 <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
                     data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon">
