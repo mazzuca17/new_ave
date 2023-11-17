@@ -51,11 +51,11 @@ class User extends Authenticatable
         }
     }
 
-    public function role()
-    {
-        return $this->hasOne(RoleUser::class, 'user_id');
-    }
-
+    /**
+     * school
+     *
+     * @author Matías
+     */
     public function school()
     {
         return $this->hasOne(Schools::class, 'user_id');

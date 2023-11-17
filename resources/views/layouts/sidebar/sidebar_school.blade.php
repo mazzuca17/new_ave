@@ -29,7 +29,7 @@
         <a href="nueva_materia.php">Agregar materias</a>
     </li>
     <li class="nav-item">
-        <a href="crearcurso.php">Crear curso</a>
+        <a href="{{ route('school.courses.new') }}">Crear curso</a>
     </li>
 
     </li>
@@ -44,7 +44,7 @@
 
 
     <li class="nav-item">
-        <a href="verprofesores.php">Profesores</a>
+        <a href="{{ route('school.docentes.index') }}">Profesores</a>
     </li>
     <li class="nav-item">
         <a href="{{ route('school.events.view') }}">Eventos</a>

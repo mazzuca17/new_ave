@@ -8,6 +8,7 @@ use App\Helpers\Helper;
 use App\Models\Schools;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 
@@ -15,6 +16,15 @@ class SchoolsController extends Controller
 {
     public function create()
     {
+        $user = Auth::user();
+        // Obtener los roles del usuario
+        $roles = $user->roles;
+
+        // $roles es una colección de roles
+        foreach ($roles as $role) {
+            Log::debug($role->name);
+        }
+
         return view('superadmin.create');
     }
 

@@ -44,9 +44,7 @@ class HomeController extends Controller
      */
     public function adminView()
     {
-        if (auth()->user()->role->role_id != self::ADMIN_ROL) {
-            $this->showErrorPermission();
-        }
+
         $schools = Schools::with('user')->get();
         return view('superadmin.dashboard', compact('schools'));
     }

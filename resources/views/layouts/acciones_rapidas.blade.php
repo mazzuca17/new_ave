@@ -5,7 +5,7 @@
      <div class="quick-actions-scroll scrollbar-outer">
          <div class="quick-actions-items">
              <div class="row m-0">
-                 @if (Auth::user()->role->role_id == 1)
+                 @if (Auth::user()->hasRole('Superadmin') == 1)
                      @include('layouts.actions.admin_actions')
                  @else
                      <a class="col-6 col-md-4 p-0" href="eventos.php">

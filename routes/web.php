@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\SchoolsController as AdminSchoolsController;
+use App\Http\Controllers\Schools\HomeController as SchoolsHomeController;
+use App\Http\Controllers\Schools\EventsController;
 use App\Http\Controllers\Schools\CoursesController;
+use App\Http\Controllers\Schools\ProfesoresController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,38 +14,53 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// Rutas con autenticación
-Route::group(['middleware' => ['auth']], function () {
+// Rutas con autenticación y roles
+Route::middleware(['auth', 'role'])->group(function () {
 
-    // School or Admin
-    Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
-        Route::group(['prefix' => 'schools', 'as' => 'schools.'], function () {
-            Route::get('create', 'SchoolsController@create')->name('create');
-            Route::post('store', 'SchoolsController@store')->name('store');
-            Route::post('destroy', 'SchoolsController@destroy')->name('destroy');
-            Route::get('edit/{id}', 'SchoolsController@edit')->name('edit');
-            Route::post('update', 'SchoolsController@update')->name('update');
+    // Rutas para Superadmin
+    Route::middleware('role:Superadmin')->group(function () {
+        Route::namespace('Admin')->prefix('admin')->as('admin.')->group(function () {
+            Route::prefix('schools')->as('schools.')->group(function () {
+                Route::get('create', [AdminSchoolsController::class, 'create'])->name('create');
+                Route::post('store', [AdminSchoolsController::class, 'store'])->name('store');
+                Route::post('destroy', [AdminSchoolsController::class, 'destroy'])->name('destroy');
+                Route::get('edit/{id}', [AdminSchoolsController::class, 'edit'])->name('edit');
+                Route::post('update', [AdminSchoolsController::class, 'update'])->name('update');
+            });
+
+            Route::get('dashboard', 'HomeController@adminView')->name('dashboard');
         });
-        Route::get('dashboard', 'HomeController@adminView')->name('dashboard');
     });
 
-    Route::group(['namespace' => 'Schools', 'prefix' => 'school', 'as' => 'school.'], function () {
+    // Rutas para Colegio
+    Route::middleware('role:Colegio')->namespace('Schools')->prefix('school')->as('school.')->group(function () {
+        Route::get('dashboard', [SchoolsHomeController::class, 'index'])->name('dashboard');
 
-        Route::get('dashboard', 'HomeController@index')->name('dashboard');
-
-        // * Eventos
-        Route::group(['prefix' => 'eventos', 'as' => 'events.'], function () {
-            Route::get('create', 'EventsController@create')->name('create');
-            Route::post('store', 'EventsController@store')->name('store');
-            Route::get('edit/{event_id}', 'EventsController@edit')->name('edit');
-            Route::post('update', 'EventsController@update')->name('update');
-            Route::get('list', 'EventsController@viewAll')->name('view');
+        // Eventos
+        Route::prefix('eventos')->as('events.')->group(function () {
+            Route::get('create', [EventsController::class, 'create'])->name('create');
+            Route::post('store', [EventsController::class, 'store'])->name('store');
+            Route::get('edit/{event_id}', [EventsController::class, 'edit'])->name('edit');
+            Route::post('update', [EventsController::class, 'update'])->name('update');
+            Route::get('list', [EventsController::class, 'viewAll'])->name('view');
         });
 
-        Route::group(['prefix' => 'courses', 'as' => 'courses.'], function () {
+        // Cursos
+        Route::prefix('courses')->as('courses.')->group(function () {
             Route::get('', [CoursesController::class, 'index'])->name('index');
             Route::get('new', [CoursesController::class, 'showFormNew'])->name('new');
             Route::post('create', [CoursesController::class, 'saveNewCourse'])->name('create');
+            Route::get('edit/{id_curso}', [CoursesController::class, 'showFormEdit'])->name('edit');
+            Route::post('save_edit', [CoursesController::class, 'saveEdit'])->name('save_edit');
+        });
+
+        // DOCENTES
+        Route::group(['prefix' => 'docentes', 'as' => 'docentes.'], function () {
+            Route::get('', [ProfesoresController::class, 'index'])->name('index');
+            Route::get('new', [ProfesoresController::class, 'showFormNew'])->name('new');
+            Route::post('create', [ProfesoresController::class, 'saveNewDocente'])->name('create');
+            Route::get('edit/{id_profesor', [ProfesoresController::class, 'editById'])->name('edit');
+            Route::post('save_edit', [ProfesoresController::class, 'saveEdit'])->name('save_edit');
         });
     });
 });
