@@ -50,7 +50,7 @@
             <!-- FIN informar eventos-->
 
             <!-- Sección de cursos-->
-            @include('school.courses.index')
+            @include('school.courses.list_course')
 
             <!-- FIN Sección de cursos-->
 

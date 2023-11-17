@@ -5,10 +5,10 @@
         <h4 class="text-section">Cursos</h4>
     </li>
     <li class="nav-item">
-        <a href="#">Ver cursos</a>
+        <a href="{{ route('school.courses.index') }}">Ver cursos</a>
     </li>
     <li class="nav-item">
-        <a href="#">Agregar cursos</a>
+        <a href="{{ route('school.courses.new') }}">Agregar cursos</a>
     </li>
 
 
@@ -47,6 +47,6 @@
         <a href="verprofesores.php">Profesores</a>
     </li>
     <li class="nav-item">
-        <a href="eventos.php">Eventos</a>
+        <a href="{{ route('school.events.view') }}">Eventos</a>
     </li>
     </li>
