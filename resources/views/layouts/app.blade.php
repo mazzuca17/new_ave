@@ -29,17 +29,20 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark-theme bg-theme-dark shadow-sm">
             <div class="container">
-                @if (Auth::user()->role->role_id == 1)
-                    <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
-                        {{ 'AVE' }}
-                    </a>
+                @if (Auth::user())
+                    @if (Auth::user()->role->role_id == 1)
+                        <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
+                            {{ 'AVE' }}
+                        </a>
+                    @endif
+
+                    @if (Auth::user()->role->role_id == 2)
+                        <a class="navbar-brand" href="{{ route('school.dashboard') }}">
+                            {{ 'AVE' }}
+                        </a>
+                    @endif
                 @endif
 
-                @if (Auth::user()->role->role_id == 2)
-                    <a class="navbar-brand" href="{{ route('school.dashboard') }}">
-                        {{ 'AVE' }}
-                    </a>
-                @endif
 
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse"

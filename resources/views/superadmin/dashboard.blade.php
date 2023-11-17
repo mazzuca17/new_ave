@@ -25,7 +25,7 @@
                         @endif
                         <div class="card card-entradas-borrador">
                             <div class="card-body">
-                                <a href="{{ route('admin.schools_create') }}" class="btn btn-primary btn-create_account"
+                                <a href="{{ route('admin.schools.create') }}" class="btn btn-primary btn-create_account"
                                     style="margin-block-end:  1rem !important;">Registar nuevo establecimiento</a>
 
                                 <div class="table-responsive">
@@ -57,7 +57,7 @@
 
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <a href="{{ route('admin.schools_edit', ['id' => $item->user_id]) }}"
+                                                                <a href="{{ route('admin.schools.edit', ['id' => $item->user_id]) }}"
                                                                     class="btn btn-success">Editar cuenta</a>
                                                             </div>
                                                         </div>

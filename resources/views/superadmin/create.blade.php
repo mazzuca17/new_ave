@@ -15,7 +15,7 @@
                             <div class="card-header">
                                 <div class="card-title">Crear establecimiento.</div>
                             </div>
-                            <form action="{{ route('admin.schools_store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.schools.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
 

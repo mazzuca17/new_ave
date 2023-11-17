@@ -27,7 +27,7 @@ class SchoolsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect(route('admin.schools_create'))->with('error', 'Error al intentar generar el establecimiento. Intente más tarde.');
+            return redirect(route('admin.schools.create'))->with('error', 'Error al intentar generar el establecimiento. Intente más tarde.');
         }
 
         $input = $request->all();
@@ -48,9 +48,9 @@ class SchoolsController extends Controller
                 'created_at'  => Carbon::now(),
                 'updated_at'  => Carbon::now(),
             ]);
-            return redirect(route('admin.schools_create'))->with('status', 'Establecimiento registrado con éxito!');
+            return redirect(route('admin.schools.create'))->with('status', 'Establecimiento registrado con éxito!');
         }
-        return redirect(route('admin.schools_create'))->with('error', 'Error al intentar generar el establecimiento. Intente más tarde.');
+        return redirect(route('admin.schools.create'))->with('error', 'Error al intentar generar el establecimiento. Intente más tarde.');
     }
 
     /**
@@ -82,7 +82,7 @@ class SchoolsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect(route('admin.schools_edit', ['id' => $request->school_id]))->with('error', 'Error al intentar editar el establecimiento. Intente más tarde.');
+            return redirect(route('admin.schools.edit', ['id' => $request->school_id]))->with('error', 'Error al intentar editar el establecimiento. Intente más tarde.');
         }
 
         Log::debug($request->all());
@@ -102,9 +102,9 @@ class SchoolsController extends Controller
                     'description' => $request->description,
                     'updated_at'  => Carbon::now(),
                 ]);
-                return redirect(route('admin.schools_edit', ['id' => $request->school_id]))->with('status', 'Establecimiento editado con éxito!');
+                return redirect(route('admin.schools.edit', ['id' => $request->school_id]))->with('status', 'Establecimiento editado con éxito!');
             }
-            return redirect(route('admin.schools_edit', ['id' => $request->school_id]))->with('error', 'Error al actualizar el establecimiento ' . $user->name);
+            return redirect(route('admin.schools.edit', ['id' => $request->school_id]))->with('error', 'Error al actualizar el establecimiento ' . $user->name);
         }
     }
 

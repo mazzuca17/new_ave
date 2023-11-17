@@ -1,6 +1,6 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <form action="{{ route('admin.schools_destroy') }}" method="post">
+    <form action="{{ route('admin.schools.destroy') }}" method="post">
         @csrf
         <div class="modal-dialog" role="document">
             <input type="hidden" name="school_id" value="{{ $item->user_id }}">
