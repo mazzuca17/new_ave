@@ -8,68 +8,156 @@
                     <div class="col-md-12 ml-auto mr-auto">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">Eventos.</div>
+                                <div class="card-title">Eventos</div>
                             </div>
                             <div class="card-body">
-                                <a href="{{ route('school.events.create') }}" class="btn btn-primary btn-create_account"
-                                    style="margin-block-end:  1rem !important;">Nuevo evento</a>
+                                <button class="btn btn-primary" style="margin-bottom: 1rem;"
+                                    onclick="openCreateModal()">Nuevo evento</button>
 
-                                <div class="table-responsive">
-
-
-                                    <table id="example" class="table table-striped" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Autor</th>
-                                                <th>Materia</th>
-                                                <th>Título</th>
-                                                <th>Descripción</th>
-                                                <th>Fecha</th>
-                                                <th>Curso</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($events as $item)
-                                                <tr>
-                                                    <td>{{ $item->id }}</td>
-                                                    <td>{{ $item->author->name }}</td>
-                                                    <td>{{ $item->materia ? $item->materia->nombre : ' - ' }}</td>
-                                                    <td>{{ $item->title }}</td>
-                                                    <td>{{ $item->description }}</td>
-                                                    <td> {{ $item->fecha }} </td>
-                                                    <td> {{ $item->curso ? $item->curso->name : 'General' }} </td>
-                                                    <td>
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <a href="{{ route('school.events.edit', ['event_id' => $item->id]) }}"
-                                                                    class="btn btn-success">Editar</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <!-- Calendario -->
+                                <div id="calendar"></div>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- MODAL EDITAR EVENTO -->
+    @include('school.eventos.edit')
+
+    <!-- MODAL CREAR EVENTO -->
+    @include('school.eventos.create')
+
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/es.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#example').DataTable();
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+
+
+                events: [
+                    @foreach ($events as $item)
+                        {
+                            id: '{{ $item->id }}',
+                            title: '{{ $item->title }} - {{ $item->materia ? $item->materia->nombre : 'General' }}',
+                            start: '{{ $item->fecha }}',
+                            description: '{{ $item->description }}',
+                            url: '{{ route('school.events.edit', ['event_id' => $item->id]) }}',
+                            backgroundColor: '{{ $item->type_id ? '#3352FFFF' : '#ff5733' }}',
+                            borderColor: '{{ $item->type_id ? '#3352FFFF' : '#ff5733' }}',
+
+                        },
+                    @endforeach
+                ],
+                eventClick: function(info) {
+                    info.jsEvent.preventDefault();
+                    openEditModal(info.event);
+                },
+                dateClick: function(info) {
+                    openCreateModal(info.dateStr);
+                }
+            });
+
+            calendar.render();
+        });
+
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     var calendarEl = document.getElementById('calendar');
+
+        //     var calendar = new FullCalendar.Calendar(calendarEl, {
+        //         initialView: 'dayGridMonth',
+        //         locale: 'es',
+        //         headerToolbar: {
+        //             left: 'prev,next today',
+        //             center: 'title',
+        //             right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        //         },
+        //         events: @json($events),
+        //         eventClick: function(info) {
+        //             info.jsEvent.preventDefault();
+        //             openEditModal(info.event);
+        //         },
+        //         dateClick: function(info) {
+        //             openCreateModal(info.dateStr);
+        //         }
+        //     });
+
+        //     calendar.render();
+        // });
+
+        function openEditModal(event) {
+            $('#event_id').val(event.id);
+            $('#event_title').val(event.title.split(" - ")[0]); // Extraer título sin la materia
+            $('#event_description').val(event.extendedProps.description);
+            $('#event_date').val(event.startStr);
+            $('#eventModal').modal('show');
+        }
+
+        function openCreateModal(date = '') {
+            $('#new_event_title').val('');
+            $('#new_event_description').val('');
+            $('#new_event_date').val(date);
+            $('#createEventModal').modal('show');
+        }
+
+        // Enviar cambios de edición por AJAX
+        $('#editEventForm').on('submit', function(e) {
+            e.preventDefault();
+            var id = $('#event_id').val();
+            var data = {
+                _token: '{{ csrf_token() }}',
+                event_id: id,
+                title: $('#event_title').val(),
+                description: $('#event_description').val(),
+                fecha: $('#event_date').val()
+            };
+
+            $.ajax({
+                url: `/school/eventos/update`,
+                type: 'POST',
+                data: data,
+                success: function(response) {
+                    alert('Evento actualizado correctamente');
+                    $('#eventModal').modal('hide');
+                    location.reload();
+                }
+            });
+        });
+
+        // Enviar creación de evento por AJAX
+        $('#createEventForm').on('submit', function(e) {
+            e.preventDefault();
+            var data = {
+                _token: '{{ csrf_token() }}',
+                title: $('#new_event_title').val(),
+                description: $('#new_event_description').val(),
+                fecha: $('#new_event_date').val()
+            };
+
+            $.ajax({
+                url: `/school/eventos/store`,
+                type: 'POST',
+                data: data,
+                success: function(response) {
+                    alert('Evento creado correctamente');
+                    $('#createEventModal').modal('hide');
+                    location.reload();
+                }
+            });
         });
     </script>
 @endsection

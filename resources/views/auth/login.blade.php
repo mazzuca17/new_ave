@@ -7,7 +7,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-7">
+            <div class="col-md-6">
                 <div class="card card-adminpanel">
                     <div class="card-title title-options row justify-content-center" style="background-color: transparent;">
                         <h4> <b>Iniciar sesión</b> </h4>
@@ -51,25 +51,14 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="form-group row row-remeber-forgot">
 
-                                    <div class="col-md-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="remember" id="remember"
-                                                {{ old('remember') ? 'checked' : '' }}>
-
-                                            <label class="form-check-label" for="remember">
-                                                {{ __('Remember Me') }}
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-
+                                <div class="form-group row justify-content-center">
+                                    <div class="d-flex flex-wrap align-items-center justify-content-between">
                                         @if (Route::has('password.request'))
-                                            <a class="btn btn-link" href="{{ route('password.request') }}">
-                                                {{ __('Forgot Your Password?') }}
-                                            </a>
+                                            <span>
+                                                <a href="{{ route('password.request') }}"
+                                                    tabindex="0">{{ __('¿Olvidaste tu contraseña?') }}</a>
+                                            </span>
                                         @endif
                                     </div>
                                 </div>

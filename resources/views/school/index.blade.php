@@ -36,9 +36,7 @@
                             @endif
                         </div>
                         <div class="card-footer">
-                            <a href="{{ route('school.events.create') }}" class="btn btn-success">Cargar evento</a>
                             <a href="{{ route('school.events.view') }}" class='btn btn-success ml-auto'>Ver todos</a>
-
                         </div>
                     </div>
                 </div>
@@ -56,8 +54,6 @@
 
         </div>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-        <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
 
         <script>
             $(document).ready(function() {

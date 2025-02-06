@@ -1,62 +1,33 @@
-@extends('layouts.app_system')
+<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="eventModalLabel">Editar Evento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editEventForm">
+                    <input type="hidden" id="event_id" name="event_id">
+                    <input type="hidden" id="event_type" name="type_event" value="1">
+                    <!-- Campo oculto agregado -->
 
-@section('content')
-    <div class="content">
-        <div class="page-inner mt--20">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8 ml-auto mr-auto">
-                        @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">Crear evento.</div>
-                            </div>
-                            <form action="{{ route('school.events.update') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-3 col-lg-4">
-                                            <input type="hidden" name="event_id" value="{{ $data_event->id }}">
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label id="title" class="mb-3"><b>Título</b></label>
-                                                <input value="{{ $data_event->title }}" class="form-control" name="title"
-                                                    type="text" placeholder="Título del evento" required>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label id="description" class="mb-3"><b>Descripción</b></label>
-                                                <input value="{{ $data_event->description }}" class="form-control"
-                                                    name="description" type="text" placeholder="Descripción del evento"
-                                                    required>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label id="fecha" class="mb-3"><b>Fecha</b></label>
-                                                <input value="{{ $data_event->fecha }}" class="form-control" name="fecha"
-                                                    type="date" placeholder="Fecha del evento" required>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    <div class="card-action">
-                                        <button class="btn btn-success" name="submit">Guardar</button>
-                                        <a href="{{ route('school.dashboard') }}" class="btn btn-danger">Cancelar</a>
-                                    </div>
-                            </form>
-                        </div>
+                    <div class="form-group">
+                        <label for="event_title">Título</label>
+                        <input type="text" class="form-control" id="event_title" name="title">
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="event_date">Fecha</label>
+                        <input type="date" class="form-control" id="event_date" name="date">
+                    </div>
+                    <div class="form-group">
+                        <label for="event_description">Descripción</label>
+                        <textarea class="form-control" id="event_description" name="description"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                </form>
             </div>
         </div>
-
     </div>
-@endsection
+</div>

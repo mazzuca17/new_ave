@@ -8,11 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Eventos extends Model
 {
     use HasFactory;
+    const TYPE_GLOBAL = 1;
+    const TYPE_PARTICULAR = 2;
 
     protected $table    = 'eventos';
     protected $fillable = [
         'school_id',
         'user_id',
+        'type_id',
         'title',
         'description',
         'fecha',

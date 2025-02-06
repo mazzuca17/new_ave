@@ -1,11 +1,9 @@
-
-@media only screen and (min-width: 1024px){
-    
-    .card-predeterminadas{
+@media only screen and (min-width: 1024px) {
+    .card-predeterminadas {
         padding-left: 6rem;
     }
-    .card-entradas-publish{
-        background: #704c9F;
+    .card-entradas-publish {
+        background: #704c9f;
         color: #fff;
         font-family: unset;
         border: 0px;
@@ -16,7 +14,7 @@
         padding: 1rem;
     }
 
-    .cant-publish{
+    .cant-publish {
         font-size: 35px;
         text-align: -webkit-left;
         line-height: 2rem;
@@ -24,7 +22,7 @@
         color: white;
     }
 
-    .cant-borrador{
+    .cant-borrador {
         font-size: 35px;
         text-align: -webkit-left;
         line-height: 2rem;
@@ -32,7 +30,7 @@
         color: black !important;
     }
 
-    .card-options{
+    .card-options {
         color: #000;
         font-family: unset;
         border-style: solid;
@@ -45,8 +43,8 @@
         margin-block-end: 2rem;
     }
 
-    .card-entradas-borrador{
-        background: #ee931f;
+    .card-entradas-borrador {
+        background: #1572e8;
         color: #000;
         font-family: unset;
         border-style: solid;
@@ -59,10 +57,10 @@
         padding: 1rem;
     }
 
-    .btn-primary-ap{
-        background-color: #704c9F;
+    .btn-primary-ap {
+        background-color: #704c9f;
         color: white;
-        border-color: #704c9F;
+        border-color: #704c9f;
         border-radius: 1px;
         font-weight: 400;
         text-align: center;
@@ -72,12 +70,13 @@
         font-size: 0.9rem;
         line-height: 1.6;
         border-radius: 0.25rem;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+            border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
-    .btn-primary-predeterminada{
-        background-color: #ee931f;
+    .btn-primary-predeterminada {
+        background-color: #1572e8;
         color: black;
-        border-color: #ee931f;
+        border-color: #1572e8;
         border-radius: 1px;
         font-weight: 400;
         text-align: center;
@@ -87,15 +86,15 @@
         font-size: 0.9rem;
         line-height: 1.6;
         border-radius: 0.25rem;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+            border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         width: 6.5rem;
-
     }
-    
-    .btn-secondary-ap{
-        background-color: #ee931f;
+
+    .btn-secondary-ap {
+        background-color: #1572e8;
         color: white;
-        border-color: #ee931f;
+        border-color: #1572e8;
         border-radius: 1px;
         font-weight: 400;
         text-align: center;
@@ -105,20 +104,18 @@
         font-size: 0.9rem;
         line-height: 1.6;
         border-radius: 0.25rem;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+            border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
 }
 
-
-
-.title-publish{
+.title-publish {
     color: #fff;
     font-family: unset;
 }
 
-
-@media only screen and (min-width: 320px) and (max-width: 1023px){
-    .card-options{
+@media only screen and (min-width: 320px) and (max-width: 1023px) {
+    .card-options {
         color: #000;
         font-family: unset;
         border-style: solid;
@@ -131,8 +128,8 @@
         margin-block-end: 1.5rem;
     }
 
-    .card-entradas-publish{
-        background: #704c9F;
+    .card-entradas-publish {
+        background: #704c9f;
         color: #fff;
         font-family: unset;
         border: 0px;
@@ -144,8 +141,8 @@
         padding: 1rem;
     }
 
-    .card-entradas-borrador{
-        background: #ee931f;
+    .card-entradas-borrador {
+        background: #1572e8;
         color: #000;
         font-family: unset;
         border-style: solid;
@@ -159,11 +156,11 @@
         padding: 1rem;
     }
 
-    .btn-primary-ap{
+    .btn-primary-ap {
         /*width: 30%;*/
-        background-color: #704c9F;
+        background-color: #704c9f;
         color: white;
-        border-color: #704c9F;
+        border-color: #704c9f;
         border-radius: 1px;
         font-weight: 400;
         text-align: center;
@@ -173,17 +170,18 @@
         font-size: 18px;
         line-height: 20px;
         border-radius: 0.25rem;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+            border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
 
-    .btn-table-responsive{
+    .btn-table-responsive {
         width: auto !important;
     }
 
-    .btn-secondary-ap{
-        background-color: #ee931f;
+    .btn-secondary-ap {
+        background-color: #1572e8;
         color: white;
-        border-color: #ee931f;
+        border-color: #1572e8;
         border-radius: 1px;
         font-weight: 400;
         text-align: center;
@@ -194,13 +192,14 @@
         /*width: 30%;*/
         font-size: 18px;
         line-height: 20px;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+            border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
 
-    .btn-primary-predeterminada{
-        background-color: #ee931f;
+    .btn-primary-predeterminada {
+        background-color: #1572e8;
         color: white;
-        border-color: #ee931f;
+        border-color: #1572e8;
         border-radius: 1px;
         font-weight: 400;
         text-align: center;
@@ -210,24 +209,24 @@
         font-size: 0.9rem;
         line-height: 1.6;
         border-radius: 0.25rem;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+            border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         width: 6rem;
-
     }
 
-    .title-publish{
+    .title-publish {
         color: #fff;
         font-family: unset;
         text-align: initial;
     }
 
-    .title-borrador{
+    .title-borrador {
         color: #000;
         font-family: unset;
         text-align: initial;
     }
 
-    .cant-borrador{
+    .cant-borrador {
         font-size: 35px;
         text-align: end;
         line-height: 2rem;
@@ -235,7 +234,7 @@
         color: black !important;
         margin-top: 1%;
     }
-    .cant-publish{
+    .cant-publish {
         font-size: 35px;
         text-align: end;
         line-height: 2rem;
@@ -245,9 +244,8 @@
     }
 }
 
-
-@media only screen and (min-width: 200px) and (max-width: 319px){
-    .card-options{
+@media only screen and (min-width: 200px) and (max-width: 319px) {
+    .card-options {
         color: #000;
         font-family: unset;
         border-style: solid;
@@ -260,8 +258,8 @@
         margin-block-end: 1.5rem;
     }
 
-    .card-entradas-publish{
-        background: #704c9F;
+    .card-entradas-publish {
+        background: #704c9f;
         color: #fff;
         font-family: unset;
         border: 0px;
@@ -273,8 +271,8 @@
         padding: 1rem;
     }
 
-    .card-entradas-borrador{
-        background: #ee931f;
+    .card-entradas-borrador {
+        background: #1572e8;
         color: #000;
         font-family: unset;
         border-style: solid;
@@ -288,11 +286,11 @@
         padding: 1rem;
     }
 
-    .btn-primary-ap{
+    .btn-primary-ap {
         /*width: 30%;*/
-        background-color: #704c9F;
+        background-color: #704c9f;
         color: white;
-        border-color: #704c9F;
+        border-color: #704c9f;
         border-radius: 1px;
         font-weight: 400;
         text-align: center;
@@ -302,17 +300,18 @@
         font-size: 18px;
         line-height: 20px;
         border-radius: 0.25rem;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+            border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
 
-    .btn-table-responsive{
+    .btn-table-responsive {
         width: auto !important;
     }
 
-    .btn-secondary-ap{
-        background-color: #ee931f;
+    .btn-secondary-ap {
+        background-color: #1572e8;
         color: white;
-        border-color: #ee931f;
+        border-color: #1572e8;
         border-radius: 1px;
         font-weight: 400;
         text-align: center;
@@ -323,13 +322,14 @@
         /*width: 30%;*/
         font-size: 18px;
         line-height: 20px;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+            border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
 
-    .btn-primary-predeterminada{
-        background-color: #ee931f;
+    .btn-primary-predeterminada {
+        background-color: #1572e8;
         color: white;
-        border-color: #ee931f;
+        border-color: #1572e8;
         border-radius: 1px;
         font-weight: 400;
         text-align: center;
@@ -339,24 +339,24 @@
         font-size: 0.9rem;
         line-height: 1.6;
         border-radius: 0.25rem;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+            border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         width: 6rem;
-
     }
 
-    .title-publish{
+    .title-publish {
         color: #fff;
         font-family: unset;
         text-align: initial;
     }
 
-    .title-borrador{
+    .title-borrador {
         color: #000;
         font-family: unset;
         text-align: initial;
     }
 
-    .cant-borrador{
+    .cant-borrador {
         font-size: 35px;
         text-align: end;
         line-height: 2rem;
@@ -364,7 +364,7 @@
         color: black !important;
         margin-top: 1%;
     }
-    .cant-publish{
+    .cant-publish {
         font-size: 35px;
         text-align: end;
         line-height: 2rem;
@@ -374,42 +374,33 @@
     }
 }
 
-
-
-.title-options{
+.title-options {
     text-align: initial;
     padding: 2rem;
     margin-top: -1em;
     margin-block-end: -3rem;
 }
 
-.title-options h4{
+.title-options h4 {
     font-size: 25px;
     font-weight: normal;
-    line-height: 2rem
+    line-height: 2rem;
 }
 
-.image_icon{
+.image_icon {
     width: 75px;
     height: 75px;
     display: block;
     margin: auto;
 }
 
-.link_panel{
+.link_panel {
     color: #000 !important;
     font-family: unset;
     text-decoration: none !important;
-
 }
 
-
-
-
-
-
-
-.card-adminpanel{
+.card-adminpanel {
     color: #000;
     font-family: unset;
     border-style: solid;
@@ -420,13 +411,12 @@
     box-shadow: 2px 6px 15px 0px rgba(69 65 78 / 25%);
 }
 
-.card-adminpanel h5{
+.card-adminpanel h5 {
     font-size: 20px;
     font-weight: 500;
     line-height: 2em;
-
 }
 
-.btn-delete-ap{
+.btn-delete-ap {
     margin-top: 10px;
 }

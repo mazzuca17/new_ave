@@ -21,4 +21,19 @@ class Cursos extends Model
     {
         return $this->hasOne(Schools::class, 'school_id');
     }
+
+    public function materias()
+    {
+        return $this->hasMany(Materias::class, 'curso_id');
+    }
+
+    public function eventos()
+    {
+        return $this->hasMany(Eventos::class, 'curso_id');
+    }
+
+    public function students()
+    {
+        return $this->hasMany(Students::class, 'curso_id');
+    }
 }

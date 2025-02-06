@@ -31,6 +31,7 @@ class HomeController extends Controller
         Log::debug('Demo');
         $data_school = Schools::where('user_id', Auth::user()->id)->first();
         $cursos      = Cursos::where('school_id', $data_school->id)->take(5)->get();
+        Log::debug($cursos);
         $eventos     = $this->getLastEvents($data_school->id);
 
         return view('school.index', compact('cursos', 'eventos'));

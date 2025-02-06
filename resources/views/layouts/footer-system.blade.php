@@ -1,23 +1,8 @@
 @php
     $user = Auth::user();
-    $text = 'Default'; // Valor por defecto si el usuario no tiene roles asignados
+    // Valor por defecto si el usuario no tiene roles asignados
+    $roleText = $user->roles[0]->name;
 
-    if ($user && $user->role) {
-        switch ($user->role->role_id) {
-            case 1:
-                $text = 'Superadmin';
-                break;
-            case 2:
-                $text = 'Colegios';
-                break;
-            case 3:
-                $text = 'Docentes';
-                break;
-            case 4:
-                $text = 'Alumnos';
-                break;
-        }
-    }
 @endphp
 
 <footer class="footer">
@@ -33,10 +18,10 @@
         </nav>
         <div class="copyright ml-auto">
             <script>
-                var today = new Date;
+                var today = new Date();
                 var year = today.getFullYear();
                 document.write(year +
-                    "- AVE {{ $text }} - Un servicio de The Bildung Company - Todos los derechos reservados");
+                    "- AVE {{ $roleText }} - Un servicio de The Bildung Company - Todos los derechos reservados");
             </script>
         </div>
     </div>
