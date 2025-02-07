@@ -23,7 +23,7 @@
                         </div>
                         <div class="card-body">
                             @if (isset($course->eventos[0]))
-                                @include('school.eventos.index')
+                                @include('school.courses.list_eventos')
                             @else
                                 <div class="row">
                                     <div class="col-md-4">
@@ -35,19 +35,22 @@
                             @endif
                         </div>
                         <div class="card-footer">
-                            <a href="{{ route('school.events.view') }}" class='btn btn-success ml-auto'>Ver todos</a>
+                            <a href="{{ route('school.courses.list_eventos', ['id' => $course->id]) }}"
+                                class='btn btn-success ml-auto'>Ver
+                                todos</a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
+                <!-- Materias -->
                 <div class="col-md-4">
                     <div class="card card-primary bg-primary-gradient">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col-3 d-flex align-items-center justify-content-center">
                                     <div class="icon-big text-center">
-                                        <i class="fas fa-book"></i>
+                                        <i class="fas fa-book fa-3x"></i>
                                     </div>
                                 </div>
                                 <div class="col-9 text-right">
@@ -68,9 +71,9 @@
                     <div class="card card-primary bg-primary-gradient">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col-3 d-flex align-items-center justify-content-center">
                                     <div class="icon-big text-center">
-                                        <i class="fas fa-users"></i>
+                                        <i class="fas fa-users fa-3x"></i>
                                     </div>
                                 </div>
                                 <div class="col-9 text-right">
@@ -86,6 +89,7 @@
                     </div>
                 </div>
             </div>
+
 
         </div>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>

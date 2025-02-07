@@ -19,7 +19,7 @@ class Cursos extends Model
 
     public function school()
     {
-        return $this->hasOne(Schools::class, 'school_id');
+        return $this->belongsTo(Schools::class, 'school_id');
     }
 
     public function materias()

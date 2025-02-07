@@ -23,6 +23,7 @@ class Eventos extends Model
         'curso_id',
         'created_at',
         'updated_at',
+        'type_event'
     ];
 
     /**
@@ -55,6 +56,11 @@ class Eventos extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
+    public function TypeEvent()
+    {
+        return $this->hasOne(TypeEvent::class, 'id', 'type_event');
+    }
+
     /**
      * curso
      *
@@ -64,4 +70,6 @@ class Eventos extends Model
     {
         return $this->hasOne(Cursos::class, 'id', 'curso_id');
     }
+
+    public static function getType($type) {}
 }

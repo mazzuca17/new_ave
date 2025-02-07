@@ -25,6 +25,14 @@
                         <label for="event_description">Descripción</label>
                         <textarea class="form-control" id="event_description" name="description"></textarea>
                     </div>
+                    <div class="form-group">
+                        <label for="event_type">Tipo de evento</label>
+                        <textarea class="form-control" id="event_type" name="description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="event_course">Curso</label>
+                        <textarea class="form-control" id="event_course" name="description"></textarea>
+                    </div>
                     <button type="submit" class="btn btn-success">Guardar Cambios</button>
                 </form>
             </div>

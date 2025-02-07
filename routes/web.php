@@ -57,7 +57,13 @@ Route::middleware(['auth'])->group(function () {
             Route::get('{id}/dashboard', [CoursesController::class, 'viewDashboard'])->name('dashboard');
             Route::get('{id}/materias', [CoursesController::class, 'viewMaterias'])->name('list_materias');
             Route::get('{id}/alumnos', [CoursesController::class, 'viewStudents'])->name('list_students');
+            Route::get('{id}/eventos', [CoursesController::class, 'viewEventosById'])->name('list_eventos');
         });
+
+        Route::get('api/cursos', [EventsController::class, 'getCursos']);
+        Route::get('api/materias', [EventsController::class, 'getMaterias']);
+        Route::get('api/eventos/{id_event}', [EventsController::class, 'getEventByID']);
+
 
         // DOCENTES
         Route::group(['prefix' => 'docentes', 'as' => 'docentes.'], function () {

@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Inicio | AVE Alumnos | The Bildung Company</title>
+    <title>Inicio | AVE {{ Auth::user()->roles[0]->name }} | The Bildung Company</title>
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
     <link rel="icon" href="{{ asset('img/logo-1.png') }}" type="image/x-icon" />
 
@@ -42,7 +42,11 @@
 
                 @php
                     $user = Auth::user();
-                    $route = $user->hasRole('Superadmin') ? 'admin.dashboard' : ($user->hasRole('Colegio') ? 'school.dashboard' : 'default_route');
+                    $route = $user->hasRole('Superadmin')
+                        ? 'admin.dashboard'
+                        : ($user->hasRole('Colegio')
+                            ? 'school.dashboard'
+                            : 'default_route');
                 @endphp
 
                 <a href="{{ route($route) }}">
@@ -154,9 +158,9 @@
     </div>
 
     <!--   Core JS Files   -->
-    <script src="{{ asset('js/core/jquery.3.2.1.min.js') }}"></script>
+    <script src="{{ asset('js/core/jquery.3.2.1.min.js') }}"></script> <!-- jQuery primero -->
     <script src="{{ asset('js/core/popper.min.js') }}"></script>
-    <script src="{{ asset('js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/core/bootstrap.min.js') }}"></script> <!-- Bootstrap después de jQuery -->
 
     <!-- jQuery UI -->
     <script src="{{ asset('js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js') }}"></script>
@@ -164,7 +168,6 @@
 
     <!-- jQuery Scrollbar -->
     <script src="{{ asset('js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
-
 
     <!-- Chart JS -->
     <script src="{{ asset('js/plugin/chart.js/chart.min.js') }}"></script>
@@ -177,6 +180,7 @@
 
     <!-- Datatables -->
     <script src="{{ asset('js/plugin/datatables/datatables.min.js') }}"></script>
+
     <!-- jQuery Vector Maps -->
     <script src="{{ asset('js/plugin/jqvmap/jquery.vmap.min.js') }}"></script>
     <script src="{{ asset('js/plugin/jqvmap/maps/jquery.vmap.world.js') }}"></script>
@@ -190,6 +194,7 @@
     <!-- Atlantis DEMO methods, don't include it in your project! -->
     <script src="{{ asset('js/setting-demo.js') }}"></script>
     <script src="{{ asset('js/demo.js') }}"></script>
+
 
 
 </body>
