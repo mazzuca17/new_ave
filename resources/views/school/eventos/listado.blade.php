@@ -56,8 +56,11 @@
                             title: '{{ $item->title }} - {{ $item->materia ? $item->materia->nombre : 'General' }}',
                             start: '{{ $item->fecha }}',
                             description: '{{ $item->description }}',
-                            type: '{{ $item->TypeEvent->name }}',
+                            typeEvent: '{{ $item->TypeEvent->name }}',
                             curso: '{{ $item->curso ? $item->curso->name : '' }}',
+                            cursoID: '{{ $item->curso ? $item->curso->id : '' }}',
+                            materia_id: '{{ $item->materia ? $item->materia->id : '' }}',
+
                             url: '{{ route('school.events.edit', ['event_id' => $item->id]) }}',
                             backgroundColor: '{{ $item->TypeEvent->code_color }}',
                             borderColor: '{{ $item->TypeEvent->code_color }}',
@@ -84,10 +87,13 @@
             $('#event_title').val(event.title.split(" - ")[0]); // Extraer título sin la materia
             $('#event_description').val(event.extendedProps.description);
             $('#event_date').val(event.startStr);
-            $('#event_type').val(event.type_event);
-            $('#event_course').val(event.curso);
-
+            $('#event_type').val(event.extendedProps.typeEvent);
+            $('#event_curso').val(event.extendedProps.cursoID);
+            $('#event_materia').val(event.extendedProps.materia_id);
+            $('#preselected_curso').val(event.extendedProps.cursoID);
             $('#eventModal').modal('show');
+            editCargarMaterias(event.extendedProps.cursoID, event.extendedProps.materia_id);
+
         }
 
         function openCreateModal(date = '') {
@@ -174,5 +180,107 @@
                 }
             });
         });
+
+        const selectTipo = document.getElementById("event_type");
+        const selectCurso = document.getElementById("event_curso");
+        const selectMateria = document.getElementById("event_materia");
+        const cursoGroup = document.getElementById("edit_curso_group");
+        const materiaGroup = document.getElementById("edit_materia_group");
+        const userRole = document.getElementById("user_role").value;
+        const preselectedCurso = document.getElementById("preselected_curso").value;
+
+        function editCargarCursos(preselectedCursoId = null, preselectedMateriaId = null) {
+            console.log(preselectedCursoId);
+            fetch('/school/api/cursos')
+                .then(response => response.json())
+                .then(data => {
+                    selectCurso.innerHTML = '<option value="">Seleccione un curso</option>';
+                    data.forEach(curso => {
+                        let option = document.createElement("option");
+                        option.value = curso.id;
+                        option.textContent = curso.name;
+                        selectCurso.appendChild(option);
+                    });
+
+                    // Si hay un curso preseleccionado, seleccionarlo
+                    if (preselectedCursoId) {
+                        selectCurso.value = preselectedCursoId;
+                        selectCurso.dispatchEvent(new Event("change"));
+
+                        // Cargar materias del curso seleccionado
+                        editCargarMaterias(preselectedCursoId, preselectedMateriaId);
+                    }
+                })
+                .catch(error => console.error("Error al cargar cursos:", error));
+        }
+
+
+        function editCargarMaterias(cursoId, preselectedMateriaId = null) {
+            selectMateria.innerHTML = '<option value="">Seleccione una materia</option>';
+            if (cursoId) {
+                fetch(`/school/api/materias?curso_id=${cursoId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(materia => {
+                            let option = document.createElement("option");
+                            option.value = materia.id;
+                            option.textContent = materia.nombre;
+                            selectMateria.appendChild(option);
+                        });
+
+                        // Preseleccionar la materia si existe
+                        if (preselectedMateriaId) {
+                            selectMateria.value = preselectedMateriaId;
+                        }
+                    })
+                    .catch(error => console.error("Error al cargar materias:", error));
+            }
+        }
+
+        function actualizarVisibilidad() {
+            let tipo = selectTipo.value;
+            cursoGroup.style.display = "none";
+            materiaGroup.style.display = "none";
+
+            if (userRole === "Colegio" || userRole === "Docente") {
+                if (tipo === "evaluacion" || tipo === "entrega_tp") {
+                    cursoGroup.style.display = "block";
+                    materiaGroup.style.display = "block";
+                    selectCurso.setAttribute("required", "true");
+                    selectMateria.setAttribute("required", "true");
+                } else if (tipo === "administrativo" && userRole === "Colegio") {
+                    cursoGroup.style.display = "block";
+                    materiaGroup.style.display = "none";
+                    selectCurso.setAttribute("required", "true");
+                    selectMateria.removeAttribute("required");
+                } else {
+                    selectCurso.removeAttribute("required");
+                    selectMateria.removeAttribute("required");
+                }
+            }
+        }
+
+        selectCurso.addEventListener("change", function() {
+            editCargarMaterias(this.value);
+        });
+
+        selectTipo.addEventListener("change", actualizarVisibilidad);
+
+        function cargarDatosEvento(evento) {
+            document.getElementById("event_id").value = evento.id;
+            document.getElementById("event_title").value = evento.title;
+            document.getElementById("event_date").value = evento.date;
+            document.getElementById("event_description").value = evento.description;
+            document.getElementById("event_type").value = evento.type;
+            actualizarVisibilidad();
+            console.log(evento.course_id);
+            editCargarCursos(evento.course_id, evento.subject_id);
+        }
+
+        window.abrirModalEdicion = function(evento) {
+            cargarDatosEvento(evento);
+            $("#eventModal").modal("show");
+        };
+        editCargarCursos(preselectedCurso);
     </script>
 @endsection

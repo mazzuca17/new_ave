@@ -106,7 +106,7 @@ class CoursesController extends Controller
      */
     public function viewEventosById(int $course_id)
     {
-        $eventos = Eventos::with('TypeEvent')->where('curso_id', $course_id)->get();
+        $eventos = Eventos::with('TypeEvent', 'curso', 'materia')->where('curso_id', $course_id)->get();
         $curso = Cursos::find($course_id);
         Log::debug($eventos);
 

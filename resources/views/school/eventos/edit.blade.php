@@ -10,32 +10,57 @@
             <div class="modal-body">
                 <form id="editEventForm">
                     <input type="hidden" id="event_id" name="event_id">
-                    <input type="hidden" id="event_type" name="type_event" value="1">
-                    <!-- Campo oculto agregado -->
+                    <input type="hidden" id="user_role" value="{{ Auth::user()->roles[0]->name }}">
+                    <!-- Valor dinámico del backend -->
+                    <input type="hidden" id="preselected_curso" name="preselected_curso">
+                    <!-- Valor dinámico del backend -->
 
                     <div class="form-group">
                         <label for="event_title">Título</label>
-                        <input type="text" class="form-control" id="event_title" name="title">
+                        <input type="text" class="form-control" id="event_title" required>
                     </div>
+
+                    <div class="form-group">
+                        <label for="event_type">Tipo de Evento</label>
+                        <select class="form-control" id="event_type" required>
+                            <option value="">Seleccione un tipo</option>
+                            <option value="administrativo">Administrativo</option>
+                            <option value="global">Global</option>
+                            <option value="evaluacion">Evaluación</option>
+                            <option value="entrega_tp">Entrega TP</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="edit_curso_group">
+                        <label for="event_curso">Curso</label>
+                        <select class="form-control" id="event_curso">
+                            <option value="preselect_curso"></option>
+
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="edit_materia_group">
+                        <label for="event_materia">Materia</label>
+                        <select class="form-control" id="event_materia">
+                            <option value="">Seleccione una materia</option>
+                        </select>
+                    </div>
+
                     <div class="form-group">
                         <label for="event_date">Fecha</label>
-                        <input type="date" class="form-control" id="event_date" name="date">
+                        <input type="date" class="form-control" id="event_date" required>
                     </div>
+
                     <div class="form-group">
                         <label for="event_description">Descripción</label>
-                        <textarea class="form-control" id="event_description" name="description"></textarea>
+                        <textarea class="form-control" id="event_description" required></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="event_type">Tipo de evento</label>
-                        <textarea class="form-control" id="event_type" name="description"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="event_course">Curso</label>
-                        <textarea class="form-control" id="event_course" name="description"></textarea>
-                    </div>
+
                     <button type="submit" class="btn btn-success">Guardar Cambios</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+
