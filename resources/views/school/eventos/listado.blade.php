@@ -9,8 +9,11 @@
                 <div class="row">
                     <div class="col-md-12 ml-auto mr-auto">
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header d-flex justify-content-between align-items-center">
                                 <div class="card-title">Eventos</div>
+                                <button class="btn btn-secondary" onclick="history.back();">
+                                    ← Volver Atrás
+                                </button>
                             </div>
                             <div class="card-body">
                                 <div id="calendar"></div>
@@ -21,6 +24,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- MODAL EDITAR EVENTO -->
     @include('school.eventos.edit')
@@ -356,18 +360,23 @@
                     cancelButtonText: "Cancelar"
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content');
                         // Enviar la solicitud de eliminación mediante AJAX
-                        fetch(`/delete-event/${eventId}`, {
+                        fetch(`/school/eventos/delete-event/${eventId}`, {
                                 method: "DELETE",
                                 headers: {
-                                    "Content-Type": "application/json"
+                                    "Content-Type": "application/json",
+                                    "X-CSRF-TOKEN": csrfToken
                                 }
                             })
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
                                     Swal.fire("¡Eliminado!", "El evento ha sido eliminado.", "success");
-                                    location.reload(); // Recargar el calendario
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 2000);
                                 } else {
                                     Swal.fire("Error", "No se pudo eliminar el evento.", "error");
                                 }

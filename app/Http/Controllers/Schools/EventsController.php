@@ -213,4 +213,40 @@ class EventsController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * deleteEventByID
+     *
+     * @param Request $request
+     * @param integer $event_id
+     * @return JsonResponse
+     * @author Matías
+     */
+    public function deleteEventByID(Request $request, int $event_id): JsonResponse
+    {
+        try {
+            $event = Eventos::find($event_id);
+
+            // Verificar si el evento existe
+            if (!$event) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El evento no existe'
+                ], 404);
+            }
+
+            $event->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Evento eliminado correctamente'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error interno del servidor',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
 }
