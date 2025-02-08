@@ -71,5 +71,14 @@ class Eventos extends Model
         return $this->hasOne(Cursos::class, 'id', 'curso_id');
     }
 
-    public static function getType($type) {}
+    /**
+     * getType
+     *
+     * @param string $type
+     * @author Matías
+     */
+    public static function getType(string $type)
+    {
+        return TypeEvent::where('name', $type)->first();
+    }
 }

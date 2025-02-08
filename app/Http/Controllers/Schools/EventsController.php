@@ -9,10 +9,11 @@ use App\Models\Materias;
 use App\Models\Schools;
 use App\Models\TypeEvent as ModelsTypeEvent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use TypeEvent;
+use Illuminate\Http\JsonResponse;
 
 class EventsController extends Controller
 {
@@ -146,8 +147,70 @@ class EventsController extends Controller
 
     public function getEventByID(int $id_event)
     {
-        $evento = Eventos::with('materia', 'curso', 'TypeEvent')->find($id_event);
-        Log::debug($evento);
-        return response()->json($evento);
+        $event = Eventos::with('materia', 'curso', 'TypeEvent')->find($id_event);
+        Log::debug($event);
+        return response()->json($event);
+    }
+
+
+    /**
+     * updateEventByID
+     *
+     * @param Request $request
+     * @param integer $event_id
+     * @return JsonResponse
+     * @author Matías
+     */
+    public function updateEventByID(Request $request, int $event_id): JsonResponse
+    {
+        try {
+            // Validación de los datos
+            $validatedData = $request->validate([
+                'title'       => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'date'        => 'required|date',
+                'id_materia'  => 'required|integer|exists:materias,id',
+                'id_curso'    => 'required|integer|exists:cursos,id',
+            ]);
+
+            // Buscar el evento antes de actualizar
+            $event = Eventos::find($event_id);
+
+            if (!$event) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Evento no encontrado'
+                ], 404);
+            }
+            $type_event = Eventos::getType($request->get('type'));
+            // Actualizar el evento
+            $event->update([
+                'title'       => $validatedData['title'],
+                'description' => $validatedData['description'] ?? null,
+                'fecha'       => $validatedData['date'],
+                'materia_id'  => $validatedData['id_materia'],
+                'curso_id'    => $validatedData['id_curso'],
+                'type_event'     => $type_event->id,
+                'updated_at'  => Carbon::now()
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Evento actualizado correctamente',
+                'data'    => $event
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error de validación',
+                'errors'  => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error interno del servidor',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
     }
 }

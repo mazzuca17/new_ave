@@ -45,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('edit/{event_id}', [EventsController::class, 'edit'])->name('edit');
             Route::post('update', [EventsController::class, 'update'])->name('update');
             Route::get('list', [EventsController::class, 'viewAll'])->name('view');
+            Route::put('update-event/{event_id}', [EventsController::class, 'updateEventByID'])->name('update_by_id');
         });
 
         // Cursos

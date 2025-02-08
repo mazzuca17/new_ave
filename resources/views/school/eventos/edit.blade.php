@@ -56,11 +56,11 @@
                         <textarea class="form-control" id="event_description" required></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Editar evento</button>
+                    <button type="submit" class="btn btn-danger">Eliminar evento</button>
+
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-

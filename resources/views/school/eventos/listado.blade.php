@@ -1,6 +1,8 @@
 @extends('layouts.app_system')
 
 @section('content')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <div class="content">
         <div class="page-inner mt--20">
             <div class="container">
@@ -11,10 +13,6 @@
                                 <div class="card-title">Eventos</div>
                             </div>
                             <div class="card-body">
-                                <button class="btn btn-primary" style="margin-bottom: 1rem;"
-                                    onclick="openCreateModal()">Nuevo evento</button>
-
-                                <!-- Calendario -->
                                 <div id="calendar"></div>
                             </div>
                         </div>
@@ -45,7 +43,7 @@
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    right: ''
                 },
 
 
@@ -282,5 +280,126 @@
             $("#eventModal").modal("show");
         };
         editCargarCursos(preselectedCurso);
+    </script>
+    <!-- Agregar SweetAlert2 desde CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const editEventForm = document.getElementById("editEventForm");
+            const editButton = document.querySelector(".btn-success");
+            const deleteButton = document.querySelector(".btn-danger");
+
+            // Función para mostrar el modal de edición con SweetAlert
+            function showEditModal(evento) {
+                console.log(evento);
+                Swal.fire({
+                    title: "Editar Evento",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Guardar cambios",
+                    cancelButtonText: "Cancelar",
+                    focusConfirm: false,
+
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const updatedEvent = {
+                            title: evento.title,
+                            description: evento.description,
+                            date: evento.date,
+                            type: evento.type,
+                            id_curso: evento.id_curso,
+                            id_materia: evento.id_materia,
+                        };
+                        // Enviar los datos mediante AJAX
+                        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content');
+
+                        fetch(`/school/eventos/update-event/${evento.id}`, {
+                                method: "PUT",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRF-TOKEN": csrfToken
+                                },
+                                body: JSON.stringify(updatedEvent)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire("¡Actualizado!", "El evento ha sido actualizado.",
+                                        "success");
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 2000);
+                                } else {
+                                    Swal.fire("Error", "No se pudo actualizar el evento.", "error");
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error al actualizar el evento:", error);
+                                Swal.fire("Error", "No se pudo actualizar el evento.", "error");
+                            });
+                    }
+                });
+            }
+
+            // Función para mostrar el modal de confirmación de eliminación
+            function showDeleteModal(eventId) {
+                Swal.fire({
+                    title: "¿Estás seguro?",
+                    text: "Esta acción no se puede deshacer.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Sí, eliminar",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Enviar la solicitud de eliminación mediante AJAX
+                        fetch(`/delete-event/${eventId}`, {
+                                method: "DELETE",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire("¡Eliminado!", "El evento ha sido eliminado.", "success");
+                                    location.reload(); // Recargar el calendario
+                                } else {
+                                    Swal.fire("Error", "No se pudo eliminar el evento.", "error");
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error al eliminar el evento:", error);
+                                Swal.fire("Error", "No se pudo eliminar el evento.", "error");
+                            });
+                    }
+                });
+            }
+
+            // Asignar eventos a los botones
+            editButton.addEventListener("click", function(e) {
+                e.preventDefault();
+                const evento = {
+                    id: document.getElementById("event_id").value,
+                    title: document.getElementById("event_title").value,
+                    type: document.getElementById("event_type").value,
+                    id_curso: document.getElementById("event_curso").value,
+                    id_materia: document.getElementById("event_materia").value,
+                    date: document.getElementById("event_date").value,
+                    description: document.getElementById("event_description").value,
+                };
+                showEditModal(evento);
+            });
+
+            deleteButton.addEventListener("click", function(e) {
+                e.preventDefault();
+                const eventId = document.getElementById("event_id").value;
+                showDeleteModal(eventId);
+            });
+        });
     </script>
 @endsection
