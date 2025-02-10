@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMaterias extends Migration
+class CreateSubjectSchedules extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,24 @@ class CreateMaterias extends Migration
      */
     public function up()
     {
-        Schema::create('materias', function (Blueprint $table) {
+        Schema::create('subject_schedules', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('school_id');
+            $table->unsignedBigInteger('materia_id');
             $table->unsignedBigInteger('curso_id');
-            $table->string('code_materia');
-            $table->string('nombre');
+            $table->enum('day', ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']);
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->timestamps();
+
+            $table->foreign('materia_id')
+                ->references('id') // permission id
+                ->on('materias')
+                ->onDelete('cascade');
+
             $table->foreign('curso_id')
                 ->references('id') // permission id
                 ->on('cursos')
                 ->onDelete('cascade');
-
-            $table->foreign('school_id')
-                ->references('id') // permission id
-                ->on('schools')
-                ->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
@@ -39,7 +41,6 @@ class CreateMaterias extends Migration
      */
     public function down()
     {
-
-        Schema::dropIfExists('materias');
+        Schema::dropIfExists('subject_schedules');
     }
 }

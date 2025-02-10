@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Session;
+use Yajra\DataTables\Facades\DataTables;
 
 class CoursesController extends Controller
 {
@@ -26,12 +28,51 @@ class CoursesController extends Controller
     public function index()
     {
         //Log::debug(Auth::user()->school);
-        $courses = Cursos::where('school_id', Auth::user()->school->id)->get();
-
-        return view('school.courses.index')->with([
-            'courses' => $courses,
-        ]);
+        return view('school.courses.index');
     }
+
+    public function getData(Request $request)
+    {
+        $courses = Cursos::withCount('students', 'materias')
+            ->where('school_id', Auth::user()->school->id)
+            ->select(['id', 'name', 'modalidad']);
+
+        return DataTables::of($courses)
+            ->editColumn('modalidad', function ($course) {
+                return $course->modalidad;
+            })
+            ->addColumn('students_count', function ($course) {
+                return count($course->students);
+            })
+            ->addColumn('materias_count', function ($course) {
+                return count($course->materias);
+            })
+            ->addColumn('actions', function ($course) {
+                return '
+                <a href="' . route('school.courses.dashboard', $course->id) . '" class="btn btn-info btn-sm">
+                    <i class="fas fa-eye"></i> Ver Perfil
+                </a>
+                <a href="' . route('school.courses.edit', $course->id) . '" class="btn btn-warning btn-sm">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+                <button class="btn btn-danger btn-sm delete-course" data-id="' . $course->id . '">
+                    <i class="fas fa-trash-alt"></i> Eliminar
+                </button>
+            ';
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
+    }
+
+    public function destroy($id)
+    {
+        $course = Cursos::findOrFail($id);
+        $course->delete();
+
+        return response()->json(['message' => 'Curso eliminado correctamente']);
+    }
+
+
 
     /**
      * showFormNew
@@ -52,8 +93,9 @@ class CoursesController extends Controller
     public function saveNewCourse(Request $request)
     {
         $data = Cursos::create([
-            'school_id' => Auth::user()->school->id,
-            'name'      => $request->get('curso') . ' ' . $request->get('modalidad'),
+            'school_id'  => Auth::user()->school->id,
+            'name'       => $request->get('curso'),
+            'modalidad'  => $request->get('modalidad'),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
@@ -63,8 +105,41 @@ class CoursesController extends Controller
         } else {
             Session::flash('danger', 'Hubo un problema al crear el curso.');
         }
-        return redirect()->back(); // Redirige de nuevo a la página anterior
+        return redirect()->route('school.courses.index'); // Redirige de nuevo a la página anterior
     }
+
+    /**
+     * showFormEdit
+     *
+     * @param integer $course_id
+     * @return void
+     */
+    public function showFormEdit(int $course_id)
+    {
+        $data = Cursos::find($course_id);
+        return view('school.courses.edit', compact('data'));
+    }
+
+    public function saveEdit(Request $request)
+    {
+        try {
+            $course = Cursos::find($request->get('course_id'));
+
+            // Verificar si el evento existe
+            if (!$course) {
+                Session::flash('success', 'El curso no existe.');
+            }
+
+            $course->delete();
+
+            Session::flash('success', 'Curso editado con éxito.');
+        } catch (\Exception $e) {
+            Session::flash('danger', 'Hubo un problema al crear el curso.');
+        }
+        return redirect()->route('school.courses.index'); // Redirige de nuevo a la página anterior
+
+    }
+
 
     /**
      * viewDashboard

@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <div class="card-title">Cursos</div>
+        <div class="card-title">Comunicados</div>
     </div>
     <div class="table-responsive">
         @if (isset($cursos) && count($cursos) > 0)
@@ -35,6 +35,6 @@
     </div>
     <div class="card-footer">
         <a href="{{ route('school.courses.new') }}" class="btn btn-success">Nuevo curso</a>
-        <a href="{{ route('school.courses.index') }}" class="btn btn-info ml-auto">Ver todos</a>
+        <a href="{{ route('school.courses.index') }}" class="btn btn-success ml-auto">Ver todos</a>
     </div>
 </div>

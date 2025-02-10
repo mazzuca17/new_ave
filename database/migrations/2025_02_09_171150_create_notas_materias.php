@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMaterias extends Migration
+class CreateNotasMaterias extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,23 @@ class CreateMaterias extends Migration
      */
     public function up()
     {
-        Schema::create('materias', function (Blueprint $table) {
+        Schema::create('notas_materias', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('school_id');
-            $table->unsignedBigInteger('curso_id');
-            $table->string('code_materia');
-            $table->string('nombre');
-            $table->foreign('curso_id')
+            $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('materia_id');
+            $table->decimal('score');
+            $table->enum('trimestre', ['1', '2', '3']);
+            $table->timestamps();
+
+            $table->foreign('student_id')
                 ->references('id') // permission id
-                ->on('cursos')
+                ->on('users')
                 ->onDelete('cascade');
 
-            $table->foreign('school_id')
+            $table->foreign('materia_id')
                 ->references('id') // permission id
-                ->on('schools')
+                ->on('materias')
                 ->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
@@ -39,7 +40,6 @@ class CreateMaterias extends Migration
      */
     public function down()
     {
-
-        Schema::dropIfExists('materias');
+        Schema::dropIfExists('notas_materias');
     }
 }

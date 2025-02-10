@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Schools;
 
 use App\Http\Controllers\Controller;
+use App\Models\Announcements;
 use App\Models\Cursos;
 use App\Models\Eventos;
 use App\Models\Materias;
 use App\Models\Schools;
+use App\Models\Students;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -28,13 +30,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        Log::debug('Demo');
-        $data_school = Schools::where('user_id', Auth::user()->id)->first();
-        $cursos      = Cursos::where('school_id', $data_school->id)->take(5)->get();
-        Log::debug($cursos);
-        $eventos     = $this->getLastEvents($data_school->id);
+        $data_school   = Schools::where('user_id', Auth::user()->id)->first();
+        $cursos        = Cursos::where('school_id', $data_school->id)->take(5)->get();
+        $eventos       = $this->getLastEvents($data_school->id);
+        $totalEventos  = Eventos::where('school_id', $data_school->id)->count();
+        $totalAlumnos  = Students::where('school_id', $data_school->id)->count();
+        $totalCursos = Cursos::where('school_id', $data_school->id)->count();
+        $totalComunicados = Announcements::where('school_id', $data_school->id)->count();
 
-        return view('school.index', compact('cursos', 'eventos'));
+        return view('school.index', compact('cursos', 'eventos', 'totalEventos', 'totalAlumnos', 'totalCursos', 'totalComunicados'));
     }
 
     /**

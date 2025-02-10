@@ -52,10 +52,13 @@ Route::middleware(['auth'])->group(function () {
         // Cursos
         Route::prefix('courses')->as('courses.')->group(function () {
             Route::get('', [CoursesController::class, 'index'])->name('index');
+            Route::get('data', [CoursesController::class, 'getData'])->name('data');
             Route::get('new', [CoursesController::class, 'showFormNew'])->name('new');
             Route::post('create', [CoursesController::class, 'saveNewCourse'])->name('create');
             Route::get('edit/{id_curso}', [CoursesController::class, 'showFormEdit'])->name('edit');
             Route::post('save_edit', [CoursesController::class, 'saveEdit'])->name('save_edit');
+            Route::delete('delete/{id}', [CoursesController::class, 'destroy'])->name('school.courses.destroy');
+
             Route::get('{id}/dashboard', [CoursesController::class, 'viewDashboard'])->name('dashboard');
             Route::get('{id}/materias', [CoursesController::class, 'viewMaterias'])->name('list_materias');
             Route::get('{id}/alumnos', [CoursesController::class, 'viewStudents'])->name('list_students');

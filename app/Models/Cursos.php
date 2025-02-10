@@ -13,6 +13,7 @@ class Cursos extends Model
     protected $fillable = [
         'school_id',
         'name',
+        'modalidad',
         'created_at',
         'updated_at'
     ];

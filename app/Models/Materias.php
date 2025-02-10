@@ -15,7 +15,6 @@ class Materias extends Model
         'curso_id',
         'code_materia',
         'nombre',
-        'horarios',
         'created_at',
         'updated_at'
     ];
@@ -28,5 +27,15 @@ class Materias extends Model
     public function cursos()
     {
         return $this->hasMany(Cursos::class, 'curso_id');
+    }
+
+    public function profesores()
+    {
+        return $this->belongsToMany(MateriasProf::class, 'id');
+    }
+
+    public function horarios()
+    {
+        return $this->hasMany(MateriasHorarios::class, 'id');
     }
 }

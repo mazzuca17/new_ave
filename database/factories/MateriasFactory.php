@@ -21,7 +21,6 @@ class MateriasFactory extends Factory
             'curso_id'     => $curso,
             'code_materia' => '1' . $curso,
             'nombre'       => $this->faker->randomElement($this->createNameMateria(intval($curso))),
-            'horarios'     => 'Lunes 12:00 - 13:00',
             'created_at'   => Carbon::now(),
             'updated_at'   => Carbon::now(),
         ];

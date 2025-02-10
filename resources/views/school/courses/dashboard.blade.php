@@ -6,7 +6,9 @@
             <div class="page-inner py-5">
                 <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                     <div>
-                        <h2 class="text-white op-7 mb-2">Estás viendo el curso {{ $course->name }}</h2>
+                        <h2 class="text-white op-7 mb-2">Estás viendo el curso:
+                            {{ $course->name . ' ' . $course->modalidad }}
+                        </h2>
                     </div>
                 </div>
             </div>
@@ -61,7 +63,7 @@
                         </div>
                         <div class="card-footer">
                             <a href="{{ route('school.courses.list_materias', ['id' => $course->id]) }}"
-                                class="btn btn-info btn-sm">Ver más</a>
+                                class="btn btn-info btn-sm">Más info.</a>
                         </div>
                     </div>
                 </div>
@@ -84,7 +86,7 @@
                         </div>
                         <div class="card-footer">
                             <a href="{{ route('school.courses.list_students', ['id' => $course->id]) }}"
-                                class="btn btn-success btn-sm">Ver más</a>
+                                class="btn btn-success btn-sm">Más info.</a>
                         </div>
                     </div>
                 </div>

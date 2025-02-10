@@ -20,8 +20,7 @@ class CreateStudents extends Migration
             $table->unsignedBigInteger('school_id');
 
             $table->string('image_profile')->nullable();
-            $table->enum('condition', ['aprobado', 'finales']);
-            $table->double('promedio_general');
+            $table->enum('condition', ['aprobado', 'finales', 'regular']);
             $table->timestamps();
 
             $table->foreign('user_id')

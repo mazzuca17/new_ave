@@ -86,7 +86,7 @@ class SchoolsController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name_school' => 'required|max:255',
-            'school_id'  => 'required',
+            'school_id'   => 'required',
             'email'       => 'required',
             'description' => 'required',
         ]);

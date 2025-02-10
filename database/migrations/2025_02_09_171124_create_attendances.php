@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCursos extends Migration
+class CreateAttendances extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,17 @@ class CreateCursos extends Migration
      */
     public function up()
     {
-        Schema::create('cursos', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('school_id');
-            $table->string('name')->unique();
-            $table->string('modalidad');
+            $table->unsignedBigInteger('student_id');
+            $table->date('date');
+            $table->enum('status', ['Presente', 'Ausente', 'Tarde', 'Retiro']);
 
-            $table->foreign('school_id')
+            $table->foreign('student_id')
                 ->references('id') // permission id
-                ->on('schools')
+                ->on('users')
                 ->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -34,6 +35,6 @@ class CreateCursos extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cursos');
+        Schema::dropIfExists('attendances');
     }
 }

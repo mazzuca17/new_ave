@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCursos extends Migration
+class CreateTableAnnouncementsFiles extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,17 @@ class CreateCursos extends Migration
      */
     public function up()
     {
-        Schema::create('cursos', function (Blueprint $table) {
+        Schema::create('announcements_files', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('school_id');
-            $table->string('name')->unique();
-            $table->string('modalidad');
-
-            $table->foreign('school_id')
-                ->references('id') // permission id
-                ->on('schools')
-                ->onDelete('cascade');
+            $table->unsignedBigInteger('announcement_id');
+            $table->string('file_path');
+            $table->enum('file_type', ['image', 'pdf']);
             $table->timestamps();
+
+            $table->foreign('announcement_id')
+                ->references('id') // permission id
+                ->on('announcements')
+                ->onDelete('cascade');
         });
     }
 
@@ -34,6 +34,6 @@ class CreateCursos extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cursos');
+        Schema::dropIfExists('announcements_files');
     }
 }
