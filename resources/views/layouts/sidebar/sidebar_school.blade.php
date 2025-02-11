@@ -29,15 +29,11 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('school.courses.create') }}">
+                <a href="{{ route('school.courses.new') }}">
                     <span class="sub-item">Crear curso</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <span class="sub-item">Carga masiva</span>
-                </a>
-            </li>
+
         </ul>
     </div>
 </li>
@@ -78,12 +74,12 @@
     <div class="collapse" id="alumnos">
         <ul class="nav nav-collapse">
             <li>
-                <a href="#">
+                <a href="{{ route('school.alumnos.index') }}">
                     <span class="sub-item">Ver alumnos</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('school.alumnos.new') }}">
                     <span class="sub-item">Crear alumnos</span>
                 </a>
             </li>

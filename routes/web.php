@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\SchoolsController as AdminSchoolsController;
+use App\Http\Controllers\AlumnosController;
 use App\Http\Controllers\Schools\HomeController as SchoolsHomeController;
 use App\Http\Controllers\Schools\EventsController;
 use App\Http\Controllers\Schools\CoursesController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\Schools\ProfesoresController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController as Home;
+use App\Http\Controllers\Schools\AlumnosController as SchoolsAlumnosController;
 
 Route::get('/', [Home::class, 'index'])->name('home');
 
@@ -64,6 +66,18 @@ Route::middleware(['auth'])->group(function () {
             Route::get('{id}/alumnos', [CoursesController::class, 'viewStudents'])->name('list_students');
             Route::get('{id}/eventos', [CoursesController::class, 'viewEventosById'])->name('list_eventos');
         });
+
+        Route::group(['prefix' => 'alumnos', 'as' => 'alumnos.'], function () {
+            Route::get('', [SchoolsAlumnosController::class, 'index'])->name('index');
+            Route::get('data', [SchoolsAlumnosController::class, 'getData'])->name('data');
+            Route::get('new', [SchoolsAlumnosController::class, 'showFormNew'])->name('new');
+            Route::post('create', [SchoolsAlumnosController::class, 'store'])->name('create');
+            Route::get('edit/{id_alumno}', [SchoolsAlumnosController::class, 'showFormEdit'])->name('edit');
+            Route::post('save_edit', [SchoolsAlumnosController::class, 'saveEdit'])->name('save_edit');
+            Route::delete('delete/{id}', [SchoolsAlumnosController::class, 'destroy'])->name('destroy');
+            Route::get('{id_alumno}', [SchoolsAlumnosController::class, 'showProfile'])->name('profile');
+        });
+
 
         Route::get('api/cursos', [EventsController::class, 'getCursos']);
         Route::get('api/materias', [EventsController::class, 'getMaterias']);

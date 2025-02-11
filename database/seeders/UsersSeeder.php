@@ -2,9 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Students;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;
 
 class UsersSeeder extends Seeder
@@ -56,13 +59,7 @@ class UsersSeeder extends Seeder
                 'is_admin' => null,
                 'roles'    => ['colegio'], // Asignar el rol 'Colegio'
             ],
-            [
-                'name'     => 'Alumno',
-                'email'    => 'alumno@gmail.com',
-                'password' => '123456',
-                'is_admin' => null,
-                'roles'    => ['alumno'], // Asignar el rol 'Alumno'
-            ],
+
             [
                 'name'     => 'Docente',
                 'email'    => 'docente@gmail.com',

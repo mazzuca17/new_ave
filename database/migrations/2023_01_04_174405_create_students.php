@@ -19,24 +19,39 @@ class CreateStudents extends Migration
             $table->unsignedBigInteger('curso_id');
             $table->unsignedBigInteger('school_id');
 
+            // Datos personales
+            $table->string('dni')->unique();
+            $table->date('fecha_nacimiento')->nullable();
+            $table->enum('genero', ['masculino', 'femenino', 'otro'])->nullable();
+            $table->string('direccion')->nullable();
+            $table->string('telefono')->nullable();
+            $table->string('nacionalidad')->nullable();
             $table->string('image_profile')->nullable();
+
+            // Datos académicos
+            $table->year('anio_ingreso')->nullable();
+            $table->decimal('promedio', 5, 2)->nullable();
             $table->enum('condition', ['aprobado', 'finales', 'regular']);
+
+            // Datos administrativos
+            $table->enum('estado_matricula', ['inscrito', 'preinscrito', 'baja', 'egresado'])->default('inscrito');
+            $table->boolean('beca')->default(false);
+
+            // Datos familiares
+            $table->string('nombre_tutor')->nullable();
+            $table->string('telefono_tutor')->nullable();
+
+            // Datos médicos
+            $table->text('alergias')->nullable();
+            $table->string('seguro_medico')->nullable();
+            $table->string('contacto_emergencia')->nullable();
+
             $table->timestamps();
 
-            $table->foreign('user_id')
-                ->references('id') // permission id
-                ->on('users')
-                ->onDelete('cascade');
-
-            $table->foreign('curso_id')
-                ->references('id') // permission id
-                ->on('cursos')
-                ->onDelete('cascade');
-
-            $table->foreign('school_id')
-                ->references('id') // permission id
-                ->on('schools')
-                ->onDelete('cascade');
+            // Claves foráneas
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('curso_id')->references('id')->on('cursos')->onDelete('cascade');
+            $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
         });
     }
 

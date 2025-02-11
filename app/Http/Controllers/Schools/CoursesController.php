@@ -38,6 +38,7 @@ class CoursesController extends Controller
             ->select(['id', 'name', 'modalidad']);
 
         return DataTables::of($courses)
+
             ->editColumn('modalidad', function ($course) {
                 return $course->modalidad;
             })
@@ -120,24 +121,37 @@ class CoursesController extends Controller
         return view('school.courses.edit', compact('data'));
     }
 
+    /**
+     * saveEdit
+     *
+     * @param Request $request
+     * @author Matías
+     */
     public function saveEdit(Request $request)
     {
         try {
+            // Buscar el curso
             $course = Cursos::find($request->get('course_id'));
 
-            // Verificar si el evento existe
+            // Verificar si el curso existe
             if (!$course) {
-                Session::flash('success', 'El curso no existe.');
+                Session::flash('danger', 'El curso no existe.');
+                return redirect()->route('school.courses.index');
             }
 
-            $course->delete();
+            // Actualizar el curso
+            $course->update([
+                'name'       => $request->get('curso'),
+                'modalidad'  => $request->get('modalidad'),
+                'updated_at' => now()
+            ]);
 
             Session::flash('success', 'Curso editado con éxito.');
         } catch (\Exception $e) {
-            Session::flash('danger', 'Hubo un problema al crear el curso.');
+            Session::flash('danger', 'Hubo un problema al editar el curso: ' . $e->getMessage());
         }
-        return redirect()->route('school.courses.index'); // Redirige de nuevo a la página anterior
 
+        return redirect()->route('school.courses.index');
     }
 
 
