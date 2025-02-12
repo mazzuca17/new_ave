@@ -121,9 +121,42 @@
                                             </select>
                                         </div>
 
+
                                         <div class="form-group form-group-default">
-                                            <label>Foto de Perfil</label>
-                                            <input type="file" class="form-control-file" name="image_profile">
+                                            <label>Foto de perfil</label>
+                                            <div class="card-body pt-0">
+                                                <div class="setting-card">
+                                                    <div class="logo-content mt-4">
+                                                        <a href="{{ isset($alumno->image_profile) && !empty($alumno->image_profile) ? asset('storage/' . $alumno->image_profile) : 'https://via.placeholder.com/150' }}"
+                                                            target="_blank">
+                                                            <img id="preview-image"
+                                                                src="{{ isset($alumno->image_profile) && !empty($alumno->image_profile) ? asset('storage/' . $alumno->image_profile) : 'https://via.placeholder.com/150' }}"
+                                                                alt="{{ __('Tu imagen') }}" width="150px"
+                                                                class="big-logo">
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="choose-files mt-5">
+                                                        <label for="image_profile">
+                                                            <div class="btn btn-sm btn-info">
+                                                                <i class="ti ti-upload px-1"></i>
+                                                                {{ __('Elige un foto aquí') }}
+                                                            </div>
+                                                            <input type="file" class="form-control file d-none"
+                                                                name="image_profile" id="image_profile"
+                                                                data-filename="image_profile" accept=".jpeg,.jpg,.png">
+                                                        </label>
+                                                    </div>
+
+                                                    @error('profile_photo')
+                                                        <div class="row">
+                                                            <span class="invalid-logo" role="alert">
+                                                                <strong class="text-danger">{{ $message }}</strong>
+                                                            </span>
+                                                        </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -177,4 +210,18 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('profile_photo').addEventListener('change', function(event) {
+            let reader = new FileReader();
+
+            reader.onload = function(e) {
+                document.getElementById('preview-image').src = e.target.result;
+            }
+
+            if (event.target.files.length > 0) {
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        });
+    </script>
 @endsection

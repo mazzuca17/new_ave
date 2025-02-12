@@ -22,6 +22,9 @@
                             <h5 class="card-title">{{ $alumno->user->last_name }}</h5>
                             <p class="text-muted">{{ $alumno->curso->name }}</p>
                         </div>
+                        <div class="card-footer text-center">
+                            <a href="{{ route('school.alumnos.index') }}" class="btn btn-primary">Volver a la lista</a>
+                        </div>
                     </div>
                 </div>
 
@@ -52,7 +55,7 @@
                                     aria-labelledby="datos-tab">
                                     <div class="row mt-3">
                                         <div class="col-md-6">
-                                            <p><strong>Email:</strong> {{ $alumno->email }}</p>
+                                            <p><strong>Email:</strong> {{ $alumno->user->email }}</p>
                                             <p><strong>DNI:</strong> {{ $alumno->dni }}</p>
                                             <p><strong>Fecha de Nacimiento:</strong> {{ $alumno->fecha_nacimiento }}</p>
                                             <p><strong>Género:</strong> {{ ucfirst($alumno->genero) }}</p>
@@ -91,10 +94,8 @@
                             </div>
                         </div>
 
-                        <!-- Botón de Volver -->
-                        <div class="card-footer text-end">
-                            <a href="{{ route('school.alumnos.index') }}" class="btn btn-primary">Volver a la lista</a>
-                        </div>
+                        <!-- Botones de navegación -->
+
                     </div>
                 </div>
             </div>

@@ -29,9 +29,9 @@
                                     <div class="col-md-12">
                                         <h5 class="mt-3">Datos personales </h5>
                                     </div>
+
                                     {{-- Columna izquierda --}}
                                     <div class="col-md-6">
-
                                         <div class="form-group form-group-default">
                                             <label>Apellido</label>
                                             <input type="text" class="form-control" name="last_name" required>
@@ -94,16 +94,46 @@
                                             </select>
                                         </div>
 
-
-
                                         <div class="form-group form-group-default">
-                                            <label>Foto de Perfil</label>
-                                            <input type="file" class="form-control-file" name="image_profile">
+                                            <label>Foto de perfil</label>
+                                            <div class="card-body pt-0">
+                                                <div class="setting-card">
+                                                    <div class="logo-content mt-4">
+                                                        <a href="{{ isset($profile_photo) && !empty($profile_photo) ? asset('uploads/profile/' . $profile_photo) : 'https://via.placeholder.com/150' }}"
+                                                            target="_blank">
+                                                            <img id="preview-image"
+                                                                src="{{ isset($profile_photo) && !empty($profile_photo) ? asset('uploads/profile/' . $profile_photo) : 'https://via.placeholder.com/150' }}"
+                                                                alt="{{ __('Tu imagen') }}" width="150px" class="big-logo">
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="choose-files mt-5">
+                                                        <label for="profile_photo">
+                                                            <div class="btn btn-sm btn-info">
+                                                                <i class="ti ti-upload px-1"></i>
+                                                                {{ __('Elige un foto aquí') }}
+                                                            </div>
+                                                            <input type="file" class="form-control file d-none"
+                                                                name="profile_photo" id="profile_photo"
+                                                                data-filename="profile_photo" accept=".jpeg,.jpg,.png">
+                                                        </label>
+                                                    </div>
+
+                                                    @error('profile_photo')
+                                                        <div class="row">
+                                                            <span class="invalid-logo" role="alert">
+                                                                <strong class="text-danger">{{ $message }}</strong>
+                                                            </span>
+                                                        </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row">
+                                    {{-- Datos académicos --}}
                                     <div class="col-md-6">
                                         <h5 class="mt-3">Datos académicos</h5>
                                         <div class="form-group form-group-default">
@@ -127,12 +157,11 @@
                                                 <option value="preinscrito">Preinscrito</option>
                                                 <option value="baja">Baja</option>
                                                 <option value="egresado">Egresado</option>
-
                                             </select>
                                         </div>
                                     </div>
 
-                                    {{-- Datos adicionales --}}
+                                    {{-- Datos del Tutor --}}
                                     <div class="col-md-6">
                                         <h5 class="mt-3">Datos del Tutor</h5>
                                         <div class="form-group form-group-default">
@@ -146,6 +175,7 @@
                                         </div>
                                     </div>
 
+                                    {{-- Información Médica --}}
                                     <div class="col-md-6">
                                         <h5 class="mt-3">Información Médica</h5>
                                         <div class="form-group form-group-default">
@@ -168,7 +198,7 @@
 
                             <div class="card-footer text-right">
                                 <button class="btn btn-success">Crear Alumno</button>
-                                <a href="{{ route('school.courses.index') }}" class="btn btn-danger">Cancelar</a>
+                                <a href="{{ route('school.alumnos.index') }}" class="btn btn-danger">Cancelar</a>
                             </div>
                         </form>
                     </div>
@@ -176,4 +206,18 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('profile_photo').addEventListener('change', function(event) {
+            let reader = new FileReader();
+
+            reader.onload = function(e) {
+                document.getElementById('preview-image').src = e.target.result;
+            }
+
+            if (event.target.files.length > 0) {
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        });
+    </script>
 @endsection
