@@ -4573,6 +4573,9 @@ body {
     -o-object-fit: cover;
     object-fit: cover;
 }
+.avatar-alumno {
+    background-color: #007bff !important;
+}
 
 .avatar-title {
     width: 100%;

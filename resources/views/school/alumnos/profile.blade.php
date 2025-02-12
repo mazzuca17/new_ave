@@ -14,9 +14,19 @@
                 <div class="col-md-3">
                     <div class="card shadow-sm">
                         <div class="card-body text-center">
-                            <!-- Imagen de perfil -->
-                            <img src="{{ asset('storage/' . $alumno->image_profile) }}" alt="Foto de Perfil"
-                                class="rounded-circle mb-3" width="150">
+                            @if ($alumno->image_profile)
+                                <img src="{{ asset('storage/' . $alumno->image_profile) }}" alt="Foto de Perfil"
+                                    class="rounded-circle mb-3" width="150">
+                            @else
+                                <div class="avatar avatar-xxl">
+                                    <span class="avatar-title avatar-alumno rounded-circle border border-white"
+                                        width="150">
+                                        {{ strtoupper(substr($alumno->user->name, 0, 1)) . strtoupper(substr($alumno->user->last_name, 0, 1)) }}
+
+                                    </span>
+
+                                </div>
+                            @endif
 
                             <h5 class="card-title">{{ $alumno->user->name }} </h5>
                             <h5 class="card-title">{{ $alumno->user->last_name }}</h5>
