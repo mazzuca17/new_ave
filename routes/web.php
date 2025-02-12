@@ -87,10 +87,14 @@ Route::middleware(['auth'])->group(function () {
         // DOCENTES
         Route::group(['prefix' => 'docentes', 'as' => 'docentes.'], function () {
             Route::get('', [ProfesoresController::class, 'index'])->name('index');
+            Route::get('data', [ProfesoresController::class, 'getData'])->name('data');
+            Route::delete('delete/{id}', [ProfesoresController::class, 'destroy'])->name('destroy');
+
             Route::get('new', [ProfesoresController::class, 'showFormNew'])->name('new');
             Route::post('create', [ProfesoresController::class, 'saveNewDocente'])->name('create');
-            Route::get('edit/{id_profesor}', [ProfesoresController::class, 'editById'])->name('edit');
+            Route::get('edit/{id_profesor}', [ProfesoresController::class, 'showFormEdit'])->name('edit');
             Route::post('save_edit', [ProfesoresController::class, 'saveEdit'])->name('save_edit');
+            Route::get('{id_alumno}', [ProfesoresController::class, 'showProfile'])->name('profile');
         });
     });
 });

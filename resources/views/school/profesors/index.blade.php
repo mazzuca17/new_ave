@@ -20,22 +20,21 @@
 
                         <div class="card">
                             <div class='card-header d-flex justify-content-between align-items-center'>
-                                <div class='card-title'>Alumnos</div>
+                                <div class='card-title'>Profesores</div>
                                 <div>
                                     <button id="reloadTable" class="btn btn-secondary">Actualizar</button>
-                                    <a href="{{ route('school.alumnos.new') }}" class="btn btn-primary">Nuevo alumno</a>
+                                    <a href="{{ route('school.docentes.new') }}" class="btn btn-primary">Nuevo profesor</a>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table id="alumnosTable" class="table table-striped" style="width:100%">
+                                    <table id="docentesTable" class="table table-striped" style="width:100%">
                                         <thead>
                                             <tr>
                                                 <th>Apellido</th>
                                                 <th>Nombre</th>
-                                                <th>Curso</th>
-                                                <th>Modalidad</th>
-                                                <th>Condición</th>
+                                                <th>Email</th>
+                                                <th>Cantidad de materias</th>
                                                 <th>Acciones</th>
                                             </tr>
                                         </thead>
@@ -55,10 +54,10 @@
 
     <script>
         $(document).ready(function() {
-            let table = $('#alumnosTable').DataTable({
+            let table = $('#docentesTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('school.alumnos.data') }}",
+                ajax: "{{ route('school.docentes.data') }}",
                 columns: [{
                         data: 'last_name',
                         name: 'last_name'
@@ -67,17 +66,12 @@
                         name: 'name'
                     },
                     {
-                        data: 'curso_name',
-                        name: 'curso_name'
+                        data: 'email',
+                        name: 'email'
                     },
                     {
-                        data: 'modalidad',
-                        name: 'modalidad'
-                    },
-
-                    {
-                        data: 'condition',
-                        name: 'condition',
+                        data: 'count_materias',
+                        name: 'count_materias'
                     },
 
                     {
@@ -107,7 +101,7 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        $(document).on('click', '.delete-alumno', function() {
+        $(document).on('click', '.delete-docente', function() {
             let studentId = $(this).data('id');
 
             Swal.fire({
@@ -122,7 +116,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '/school/alumnos/delete/' + studentId,
+                        url: '/school/docentes/delete/' + studentId,
                         type: 'DELETE',
                         data: {
                             _token: '{{ csrf_token() }}'
@@ -130,18 +124,18 @@
                         success: function(response) {
                             Swal.fire({
                                 title: 'Eliminado',
-                                text: 'El alumno ha sido eliminado correctamente.',
+                                text: 'El docente ha sido eliminado correctamente.',
                                 icon: 'success',
                                 timer: 2000,
                                 showConfirmButton: false
                             });
 
-                            $('#alumnosTable').DataTable().ajax.reload();
+                            $('#docentesTable').DataTable().ajax.reload();
                         },
                         error: function() {
                             Swal.fire({
                                 title: 'Error',
-                                text: 'No se pudo eliminar el alumno.',
+                                text: 'No se pudo eliminar el docente.',
                                 icon: 'error'
                             });
                         }

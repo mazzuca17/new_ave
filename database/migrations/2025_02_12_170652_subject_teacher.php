@@ -16,11 +16,11 @@ class SubjectTeacher extends Migration
         Schema::create('subject_teacher', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('materia_id');
-            $table->unsignedBigInteger('user_id');
-            
-            $table->foreign('user_id')
+            $table->unsignedBigInteger('teacher_id');
+
+            $table->foreign('teacher_id')
                 ->references('id') // permission id
-                ->on('users')
+                ->on('profesors')
                 ->onDelete('cascade');
             $table->foreign('materia_id')
                 ->references('id') // permission id

@@ -101,20 +101,16 @@
     <div class="collapse" id="profesores">
         <ul class="nav nav-collapse">
             <li>
-                <a href="#">
+                <a href=" {{ route('school.docentes.index') }} ">
                     <span class="sub-item">Ver profesores</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href=" {{ route('school.docentes.create') }} ">
                     <span class="sub-item">Crear profesores</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <span class="sub-item">Carga masiva</span>
-                </a>
-            </li>
+
         </ul>
     </div>
 </li>
