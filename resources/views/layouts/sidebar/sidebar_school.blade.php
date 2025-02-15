@@ -124,12 +124,12 @@
     <div class="collapse" id="comunicados">
         <ul class="nav nav-collapse">
             <li>
-                <a href="#">
+                <a href="{{ route('school.mensajes.index') }}">
                     <span class="sub-item">Ver comunicados</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('school.mensajes.create') }}">
                     <span class="sub-item">Crear comunicados</span>
                 </a>
             </li>

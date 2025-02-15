@@ -4,14 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Announcements extends Model
+class Announcement extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
     protected $table = 'announcements';
     protected $fillable = [
         'school_id',
-        'title',
+        'to_user_id',
+        'subject',
         'content',
         'created_at',
         'updated_at'

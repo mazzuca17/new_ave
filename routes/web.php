@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController as Home;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Schools\AlumnosController as SchoolsAlumnosController;
+use App\Http\Controllers\Teachers\HomeController;
 
 Route::get('/', [Home::class, 'index'])->name('home');
 
@@ -21,6 +23,9 @@ Auth::routes();
 
 // Rutas con autenticación y roles
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+
 
     // Rutas para Superadmin
     Route::middleware('role:Superadmin')->group(function () {
@@ -106,5 +111,9 @@ Route::middleware(['auth'])->group(function () {
             Route::get('{id_mensaje}', [MessageController::class, 'show'])->name('show'); // Ver mensaje
             Route::delete('{id_mensaje}', [MessageController::class, 'destroy'])->name('destroy'); // Eliminar mensaje
         });
+    });
+
+    Route::middleware('role:Docente')->namespace('Docente')->prefix('docente')->as('docente.')->group(function () {
+        Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
     });
 });

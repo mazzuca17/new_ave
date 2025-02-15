@@ -1,0 +1,36 @@
+@extends('layouts.app_system')
+
+@section('content')
+    <div class="content">
+        <div class="container container-full" style="max-width: none !important">
+            <div class="page-inner page-inner-fill">
+                <div class="page-with-aside mail-wrapper bg-white">
+                    @include('announcements.options')
+                    <div class="page-content mail-content">
+                        <div class="inbox-head d-lg-flex d-block">
+                            <h3>Inbox</h3>
+                            <form action="#" class="ml-auto">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Search Email" class="form-control">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-search search-icon"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="inbox-body">
+                            @include('announcements.list_options_filters')
+                            @include('announcements.list_messages')
+
+                            
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

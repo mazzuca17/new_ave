@@ -15,6 +15,6 @@ class AnnouncementFile extends Model
 
     public function announcement()
     {
-        return $this->belongsTo(Announcements::class);
+        return $this->belongsTo(Announcement::class);
     }
 }

@@ -2,14 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Students;
+use App\Models\Profesors;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
-class StudentsSeeder extends Seeder
+class TeacherSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,28 +17,33 @@ class StudentsSeeder extends Seeder
      */
     public function run()
     {
+
         // Lista de estudiantes
         $students = [
             [
-                'name'      => 'Juan',
+                'name'      => 'Docente',
                 'last_name' => 'Doe',
-                'email'     => 'alumno@gmail.com',
+                'email'     => 'docente@gmail.com',
                 'password'  => '123456',
-                'roles'     => ['alumno'],
+                'school_id' => 1,
+                'roles'     => ['docente'], // Asignar el rol 'Docente'
             ],
             [
-                'name'      => 'Sebastian',
+                'name'      => 'Docente2',
                 'last_name' => 'Doe',
-                'email'     => 'alumno2@gmail.com',
+                'email'     => 'docente2@gmail.com',
                 'password'  => '123456',
-                'roles'     => ['alumno'],
+                'school_id' => 1,
+                'roles'     => ['docente'], // Asignar el rol 'Docente'
             ],
+
             [
-                'name'      => 'Marcelo',
+                'name'      => 'Docente3',
                 'last_name' => 'Doe',
-                'email'     => 'alumno3@gmail.com',
+                'email'     => 'docente3@gmail.com',
                 'password'  => '123456',
-                'roles'     => ['alumno'],
+                'school_id' => 1,
+                'roles'     => ['docente'], // Asignar el rol 'Docente'
             ],
         ];
 
@@ -59,9 +63,8 @@ class StudentsSeeder extends Seeder
             }
 
             // Crear estudiante con los nuevos campos
-            Students::create([
+            Profesors::create([
                 'user_id'           => $user->id,
-                'curso_id'          => 1,
                 'school_id'         => 1,
                 'dni'               => mt_rand(10000000, 99999999), // Genera un DNI aleatorio de 8 dígitos
                 'fecha_nacimiento'  => Carbon::createFromFormat('Y-m-d', '2000-' . mt_rand(1, 12) . '-' . mt_rand(1, 28)),
@@ -70,16 +73,6 @@ class StudentsSeeder extends Seeder
                 'telefono'          => '+54 9 11 ' . mt_rand(1000, 9999) . '-' . mt_rand(1000, 9999),
                 'nacionalidad'      => 'Argentina',
                 'image_profile'     => null,
-                'anio_ingreso'      => 2022,
-                'promedio'          => mt_rand(60, 100) / 10,
-                'condition'         => 'regular',
-                'estado_matricula'  => 'inscrito',
-                'beca'              => false,
-                'nombre_tutor'      => 'Tutor ' . $studentData['last_name'],
-                'telefono_tutor'    => '+54 9 11 ' . mt_rand(1000, 9999) . '-' . mt_rand(1000, 9999),
-                'alergias'          => null,
-                'seguro_medico'     => 'OSDE',
-                'contacto_emergencia' => '+54 9 11 ' . mt_rand(1000, 9999) . '-' . mt_rand(1000, 9999),
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),
             ]);

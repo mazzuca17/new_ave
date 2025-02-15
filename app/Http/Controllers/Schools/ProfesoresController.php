@@ -87,9 +87,17 @@ class ProfesoresController extends Controller
             'last_name'  => $validated['last_name'],
             'email'      => $validated['email'],
             'password'   => bcrypt('Soporte2011'),
+            'school_id'  => Auth::user()->school->id,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
+
+        // Subir foto de perfil si existe
+        if ($request->hasFile('image_profile')) {
+            $imagePath = $request->file('image_profile')->store('profile_images', 'public');
+            $user->image_profile = $imagePath;
+            $user->save(); // Guardar la foto de perfil en users
+        }
 
         // Creación del nuevo docente
         $prof = new Profesors();
@@ -102,11 +110,7 @@ class ProfesoresController extends Controller
         $prof->telefono         = $validated['telefono'];
         $prof->nacionalidad     = $validated['nacionalidad'];
 
-        // Subir foto de perfil si existe
-        if ($request->hasFile('image_profile')) {
-            $imagePath = $request->file('image_profile')->store('profile_images', 'public');
-            $prof->image_profile = $imagePath;
-        }
+
 
         // Guardar el docente en la base de datos
         $prof->save();

@@ -49,31 +49,26 @@ class UsersSeeder extends Seeder
                 'name'     => 'Superadmin',
                 'email'    => 'superadmin@gmail.com',
                 'password' => '123456',
-                'is_admin' => '1',
+                'school_id' => '1',
                 'roles'    => ['superadmin'], // Asignar el rol 'Superadmin'
             ],
             [
                 'name'     => 'Colegio',
                 'email'    => 'colegio_admin@gmail.com',
                 'password' => '123456',
-                'is_admin' => null,
+                'school_id' => 1,
                 'roles'    => ['colegio'], // Asignar el rol 'Colegio'
             ],
 
-            [
-                'name'     => 'Docente',
-                'email'    => 'docente@gmail.com',
-                'password' => '123456',
-                'is_admin' => null,
-                'roles'    => ['docente'], // Asignar el rol 'Docente'
-            ]
+          
         ];
 
         foreach ($users as $userData) {
             $user = User::create([
-                'name'     => $userData['name'],
-                'email'    => $userData['email'],
-                'password' => Hash::make($userData['password'])
+                'name'      => $userData['name'],
+                'email'     => $userData['email'],
+                'password'  => Hash::make($userData['password']),
+                'school_id' => 1
             ]);
 
             // Asignar roles al usuario

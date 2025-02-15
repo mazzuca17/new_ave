@@ -15,7 +15,6 @@
         </div>
 
         <div class="page-inner mt--5">
-            @include('school.dashboard.cards')
 
             <!-- Sección de Eventos Recientes -->
             <div class="row">
@@ -25,11 +24,7 @@
                             <h3 class="card-title text-white"><b>Últimos 10 Eventos</b></h3>
                         </div>
                         <div class="card-body">
-                            @if (!empty($eventos) && count($eventos) > 0)
-                                @include('school.eventos.index')
-                            @else
-                                <div class="text-center text-white">No hay eventos disponibles.</div>
-                            @endif
+
                         </div>
                         <div class="card-footer text-right">
                             <a href="{{ route('school.events.view') }}" class="btn btn-light">Ver todos</a>
@@ -41,7 +36,6 @@
             <!-- Sección de Cursos y Comunicados -->
             <div class="row">
                 <div class="col-md-6">
-                    @include('school.courses.list_course')
                 </div>
                 <div class="col-md-6">
                 </div>

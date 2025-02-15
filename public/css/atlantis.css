@@ -973,7 +973,7 @@ body {
     .page-with-aside .page-aside .aside-compose {
       padding: 25px 22px; }
   .page-with-aside .page-content {
-    width: calc(100% - 280px); }
+    width: 100%; }
 
 .footer {
   border-top: 1px solid #eee;

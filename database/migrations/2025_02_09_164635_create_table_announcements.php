@@ -16,13 +16,24 @@ class CreateTableAnnouncements extends Migration
         Schema::create('announcements', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('school_id');
-            $table->string('title');
+            $table->unsignedBigInteger('sender_user_id');
+            $table->unsignedBigInteger('to_user_id')->nullable();
+            $table->string('subject');
             $table->text('content');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('school_id')
                 ->references('id') // permission id
                 ->on('schools')
+                ->onDelete('cascade');
+            $table->foreign('sender_user_id')
+                ->references('id') // permission id
+                ->on('users')
+                ->onDelete('cascade');
+            $table->foreign('to_user_id')
+                ->references('id') // permission id
+                ->on('users')
                 ->onDelete('cascade');
         });
     }

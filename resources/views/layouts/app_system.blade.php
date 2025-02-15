@@ -42,12 +42,23 @@
 
                 @php
                     $user = Auth::user();
-                    $route = $user->hasRole('Superadmin')
-                        ? 'admin.dashboard'
-                        : ($user->hasRole('Colegio')
-                            ? 'school.dashboard'
-                            : 'default_route');
+                    $routes = [
+                        'Superadmin' => 'admin.dashboard',
+                        'Colegio' => 'school.dashboard',
+                        'Docente' => 'docente.dashboard',
+                        'Estudiante' => 'student.dashboard',
+                    ];
+                    //print_r($user);
+                    // Encontrar la primera ruta disponible según el rol del usuario
+                    $route = 'default_route'; // Ruta por defecto en caso de que no haya coincidencia
+                    foreach ($routes as $role => $routeName) {
+                        if ($user->hasRole($role)) {
+                            $route = $routeName;
+                            break;
+                        }
+                    }
                 @endphp
+
 
                 <a href="{{ route($route) }}">
                     <img src="{{ asset('img/logo-1.png') }}" alt="navbar brand" class="navbar-brand" width="50%"
@@ -70,74 +81,7 @@
             </div>
             <!-- End Logo Header -->
 
-            <!-- Navbar Header -->
-            <nav class="navbar navbar-header navbar-expand-lg" data-background-color="dark2">
-
-                <div class="container-fluid">
-                    <div class="collapse" id="search-nav">
-
-                        <h2 class="text-white">
-                            <?php
-                            //Se define el timezone que sea necesario
-                            date_default_timezone_set('America/Argentina/Buenos_Aires');
-                            
-                            //Dia-Mes-Año Hora:Minutos:Segundos
-                            $fecha = date('d-m-Y');
-                            echo $fecha;
-                            
-                            ?>
-
-                        </h2>
-                    </div>
-                    <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
-                        <li class="nav-item dropdown hidden-caret">
-                            <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
-                                <i class="fas fa-layer-group"></i>
-                            </a>
-                            @include('layouts.acciones_rapidas')
-
-                        </li>
-
-                        <li class="nav-item toggle-nav-search hidden-caret">
-                            <a class="nav-link" data-toggle="collapse" href="#search-nav" role="button"
-                                aria-expanded="false" aria-controls="search-nav">
-                                <i class="fa fa-search"></i>
-                            </a>
-                        </li>
-
-
-                        <!-- Sección perfil-->
-                        <li class="nav-item dropdown hidden-caret">
-                            <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"
-                                aria-expanded="false">
-                                <div class='avatar-sm float-left mr-2'><img src='{{ asset('img/profile.jpg') }}'
-                                        class='avatar-img'></div>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                <div class="dropdown-user-scroll scrollbar-outer">
-                                    <li>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="../ayuda.html">Ayuda</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            {{ __('Cerrar sesión') }}
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                            class="d-none">
-                                            @csrf
-                                        </form>
-                                    </li>
-                                </div>
-                            </ul>
-                        </li>
-                        <!-- FIN Sección perfil-->
-                    </ul>
-                </div>
-            </nav>
-            <!-- End Navbar -->
+            @include('layouts.navbar')
         </div>
 
         @include('layouts.left-sidebar')

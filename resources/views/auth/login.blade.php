@@ -50,7 +50,7 @@
 
 
                 <div class="form-group form-action-d-flex mb-3">
-                    <button type="submit" class="btn btn-dark btn-round col-md-12 float-right mt-3 mt-sm-0 fw-bold">
+                    <button type="submit" class="btn btn-dark col-md-12 float-right mt-3 mt-sm-0 fw-bold">
                         Iniciar sesión
                     </button>
                 </div>

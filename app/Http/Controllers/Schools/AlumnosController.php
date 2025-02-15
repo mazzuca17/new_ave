@@ -102,9 +102,17 @@ class AlumnosController extends Controller
             'last_name'  => $validated['last_name'],
             'email'      => $validated['email'],
             'password'   => bcrypt('Soporte2011'),
+            'school_id'  => Auth::user()->school->id,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
+
+        // Subir foto de perfil si existe
+        if ($request->hasFile('image_profile')) {
+            $imagePath = $request->file('image_profile')->store('profile_images', 'public');
+            $user->image_profile = $imagePath;
+            $user->save(); // Guardar la foto de perfil en users
+        }
 
         // Creación del nuevo alumno
         $student = new Students();
@@ -118,18 +126,10 @@ class AlumnosController extends Controller
         $student->nacionalidad     = $validated['nacionalidad'];
         $student->curso_id         = $validated['curso_id'];
         $student->condition        = $validated['condition'];
-
-        // Subir foto de perfil si existe
-        if ($request->hasFile('image_profile')) {
-            $imagePath = $request->file('image_profile')->store('profile_images', 'public');
-            $student->image_profile = $imagePath;
-        }
-
-        $student->anio_ingreso = $request->get('anio_ingreso');
+        $student->anio_ingreso     = $request->get('anio_ingreso');
         $student->estado_matricula = $request->get('estado_matricula');
-
         // Datos del tutor
-        $student->nombre_tutor = $validated['nombre_tutor'];
+        $student->nombre_tutor   = $validated['nombre_tutor'];
         $student->telefono_tutor = $validated['telefono_tutor'];
 
         // Información médica

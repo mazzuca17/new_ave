@@ -17,7 +17,7 @@ class CreateTableAnnouncementsFiles extends Migration
             $table->id();
             $table->unsignedBigInteger('announcement_id');
             $table->string('file_path');
-            $table->enum('file_type', ['image', 'pdf']);
+            $table->string('file_type');
             $table->timestamps();
 
             $table->foreign('announcement_id')
