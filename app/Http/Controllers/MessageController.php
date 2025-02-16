@@ -19,16 +19,25 @@ class MessageController extends Controller
     public function index()
     {
         // Obtener los mensajes del usuario autenticado
-        $user = Auth::user();
+        $users         = $this->getListUser();
+        $messages      = Announcement::where('to_user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+        $count_no_read = Announcement::where('to_user_id', Auth::user()->id)->where('is_read', false)->count();
 
-
-        return view('announcements.index');
+        return view('announcements.index', compact('users', 'messages', 'count_no_read'));
     }
 
     // Muestra el formulario para crear un nuevo mensaje
     public function create()
     {
-        $users = DB::table('users')
+        $users = $this->getListUser();
+        $count_no_read = Announcement::where('to_user_id', Auth::user()->id)->where('is_read', false)->count();
+
+        return view('announcements.create', compact('users', 'count_no_read'));
+    }
+
+    protected function getListUser()
+    {
+        return DB::table('users')
             ->leftJoin('profesors', function ($join) {
                 $join->on('profesors.user_id', '=', 'users.id')
                     ->where('profesors.school_id', '=', Auth::user()->school->id);
@@ -49,9 +58,6 @@ class MessageController extends Controller
                 'roles.name as role_name' // Para obtener el nombre del rol
             )
             ->get();
-        Log::debug($users);
-
-        return view('announcements.create', compact('users'));
     }
 
     // Enviar un nuevo mensaje
@@ -166,5 +172,13 @@ class MessageController extends Controller
         $announcement->restore(); // Restaurar
 
         return redirect()->route('school.mensajes.index')->with('success', 'Mensaje restaurado correctamente.');
+    }
+
+    public function viewTrash()
+    {
+        $messages = Announcement::onlyTrashed()->orderBy('deleted_at', 'desc')->get();
+        $count_no_read = Announcement::where('to_user_id', Auth::user()->id)->where('is_read', false)->count();
+
+        return view('announcements.trash', compact('messages', 'count_no_read'));
     }
 }

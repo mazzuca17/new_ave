@@ -18,6 +18,7 @@ class CreateTableAnnouncements extends Migration
             $table->unsignedBigInteger('school_id');
             $table->unsignedBigInteger('sender_user_id');
             $table->unsignedBigInteger('to_user_id')->nullable();
+            $table->boolean('is_read')->default(false);
             $table->string('subject');
             $table->text('content');
             $table->timestamps();

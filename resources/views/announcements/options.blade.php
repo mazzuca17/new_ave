@@ -1,39 +1,35 @@
 <div class="page-aside">
     <div class="aside-header">
-        <div class="title">Mail Service</div>
-        <div class="description">Service Description</div>
-        <a class="btn btn-primary toggle-email-nav" data-toggle="collapse" href="#email-app-nav" role="button"
-            aria-expanded="false" aria-controls="email-nav">
-            <span class="btn-label">
-                <i class="icon-menu"></i>
-            </span>
-            Menu
-        </a>
+        <div class="title">Mensajería</div>
+        <div class="aside-compose"><a href="{{ route('school.mensajes.create') }}"
+                class="btn btn-primary btn-block fw-mediumbold">Redactar</a>
+        </div>
     </div>
+
     <div class="aside-nav collapse" id="email-app-nav">
         <ul class="nav">
-            <li>
+            <li class="{{ request()->routeIs('school.mensajes.index') ? 'active' : '' }}">
                 <a href="{{ route('school.mensajes.index') }}">
                     <i class="flaticon-inbox"></i> Recibidos
-                    <span class="badge badge-primary float-right">8</span>
+                    @if ($count_no_read > 0)
+                        <span class="badge badge-primary float-right">{{ $count_no_read }}</span>
+                    @endif
                 </a>
             </li>
-            <li class="active">
+            <li class="{{ request()->routeIs('school.mensajes.create') ? 'active' : '' }}">
                 <a href="{{ route('school.mensajes.create') }}">
                     <i class="fa fa-envelope"></i> Enviar mensaje
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <i class="flaticon-interface-5"></i> Trash
+            <li class="">
+                <a href="{{ route('school.mensajes.demo') }}">
+                    <i class="flaticon-interface-5"></i> Papelera
                 </a>
             </li>
-
         </ul>
 
 
-        <div class="aside-compose"><a href="{{ route('school.mensajes.create') }}"
-                class="btn btn-primary btn-block fw-mediumbold">Compose Email</a>
-        </div>
+
+
     </div>
 </div>

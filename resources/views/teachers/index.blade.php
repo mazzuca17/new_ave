@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <!-- Sección de Cursos y Comunicados -->
+            <!-- Sección de Cursos y Mensajería -->
             <div class="row">
                 <div class="col-md-6">
                 </div>

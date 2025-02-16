@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <!-- Tarjeta: Comunicados -->
+    <!-- Tarjeta: Mensajería -->
     <div class="col-md-3">
         <div class="card shadow-lg border-0 rounded-lg card-info text-white">
             <div class="card-body d-flex align-items-center">
@@ -67,7 +67,7 @@
                         <i class="fas fa-bell fa-2x"></i>
                     </div>
                     <div class="col-9 text-end">
-                        <h5 class="fw-bold mb-1">Comunicados</h5>
+                        <h5 class="fw-bold mb-1">Mensajería</h5>
                         <h3 class="fw-bold">{{ $totalComunicados }}</h3>
                     </div>
                 </div>

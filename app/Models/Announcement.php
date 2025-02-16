@@ -14,7 +14,9 @@ class Announcement extends Model
     protected $table = 'announcements';
     protected $fillable = [
         'school_id',
+        'sender_user_id',
         'to_user_id',
+        'is_read',
         'subject',
         'content',
         'created_at',
@@ -25,6 +27,24 @@ class Announcement extends Model
     {
         return $this->hasOne(Schools::class, 'school_id');
     }
+
+
+    /**
+     * Relación con el usuario remitente.
+     */
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'sender_user_id');
+    }
+
+    /**
+     * Relación con el usuario destinatario (si aplica).
+     */
+    public function recipient()
+    {
+        return $this->belongsTo(User::class, 'to_user_id');
+    }
+
 
     public function files()
     {

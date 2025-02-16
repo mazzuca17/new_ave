@@ -22,9 +22,17 @@
                         </div>
                         <div class="inbox-body">
                             @include('announcements.list_options_filters')
-                            @include('announcements.list_messages')
 
-                            
+                            @forelse ($messages as $item)
+                                @include('announcements.list_messages')
+
+                            @empty
+                                <div class="email-list-detail">
+                                    <p class="msg text-center">No tienes mensajes.</p>
+                                </div>
+                            @endforelse
+
+
                         </div>
                     </div>
 

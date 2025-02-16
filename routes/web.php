@@ -104,12 +104,15 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // Rutas de mensajería
-        Route::prefix('mensajes')->as('mensajes.')->group(function () {
+        Route::group(['prefix' => 'mensajes', 'as' => 'mensajes.'], function () {
             Route::get('', [MessageController::class, 'index'])->name('index'); // Lista de mensajes
             Route::get('crear', [MessageController::class, 'create'])->name('create'); // Crear mensaje
+            Route::get('demo', [MessageController::class, 'viewTrash'])->name('demo'); // Papelera
+
             Route::post('enviar', [MessageController::class, 'send'])->name('send'); // Enviar mensaje
             Route::get('{id_mensaje}', [MessageController::class, 'show'])->name('show'); // Ver mensaje
             Route::delete('{id_mensaje}', [MessageController::class, 'destroy'])->name('destroy'); // Eliminar mensaje
+
         });
     });
 

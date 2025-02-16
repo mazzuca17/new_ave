@@ -118,7 +118,7 @@
 <li class="nav-item">
     <a data-toggle="collapse" href="#comunicados" class="collapsed" aria-expanded="false">
         <i class="fas fa-bullhorn"></i>
-        <p>Comunicados</p>
+        <p>Mensajería</p>
         <span class="caret"></span>
     </a>
     <div class="collapse" id="comunicados">
