@@ -8,11 +8,11 @@
                     @include('messages.options')
                     <div class="page-content mail-content">
                         <div class="inbox-head d-lg-flex d-block">
-                            <h3>Inbox</h3>
+                            <h3>Recibidos</h3>
                             <form action="{{ route('mensajes.index') }}" method="GET" class="ml-auto">
                                 <div class="input-group">
                                     <input type="text" name="q" value="{{ request('q') }}"
-                                        placeholder="Search Email" class="form-control">
+                                        placeholder="Buscar mensajes..." class="form-control">
                                     <div class="input-group-append">
                                         <span class="input-group-text">
                                             <i class="fa fa-search search-icon"></i>

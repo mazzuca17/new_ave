@@ -61,8 +61,6 @@ class EmailController extends Controller
 
 
         $count_no_read = EmailsRecipient::where('is_read', false)->where('recipient_id', Auth::user()->id)->count();
-
-        Log::debug($users);
         return view('messages.create', compact('users', 'count_no_read'));
     }
 
@@ -81,6 +79,10 @@ class EmailController extends Controller
 
             $message = $this->saveSenderEmailData($request);
 
+            if ($request->hasFile('attachments')) {
+                $this->saveAttachments($request->file('attachments'), $message->id);
+            }
+
             foreach ($recipients as $recipient) {
                 EmailsRecipient::create([
                     'email_id'     => $message->id,
@@ -89,10 +91,6 @@ class EmailController extends Controller
                     'created_at'   => now(),
                     'updated_at'   => now()
                 ]);
-
-                if ($request->hasFile('attachments')) {
-                    $this->saveAttachments($request->file('attachments'), $message->id, $recipient->id);
-                }
             }
 
             // Envío de notificaciones
@@ -145,18 +143,28 @@ class EmailController extends Controller
         ]);
     }
 
-    private function saveAttachments(array $files, int $emailId, int $recipientId)
+    private function saveAttachments(array $files, int $emailId)
     {
         foreach ($files as $file) {
             $path = $file->store('attachments', 'public');
 
             EmailsAttachments::create([
                 'email_id'     => $emailId,
-                'recipient_id' => $recipientId,
                 'file_path'    => $path,
                 'file_name'    => '', // Puedes capturar el nombre original si deseas
                 'mime_type'    => $file->getClientMimeType(),
             ]);
         }
+    }
+
+    public function show(int $message_id)
+    {
+        $data_message = EmailsRecipient::with('email.sender', 'email.attachments')
+            ->where('recipient_id', Auth::id())
+            ->where('id', $message_id)
+            ->firstOrFail();
+        Log::debug($data_message);
+        $count_no_read = EmailsRecipient::where('is_read', false)->where('recipient_id', Auth::user()->id)->count();
+        return view('messages.detail_message', compact('data_message', 'count_no_read'));
     }
 }
