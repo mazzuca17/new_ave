@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Schools;
 
 use App\Http\Controllers\Controller;
-use App\Models\Announcement;
+use App\Models\Messages;
 use App\Models\Cursos;
 use App\Models\Eventos;
 use App\Models\Materias;
@@ -36,9 +36,8 @@ class HomeController extends Controller
         $totalEventos  = Eventos::where('school_id', $data_school->id)->count();
         $totalAlumnos  = Students::where('school_id', $data_school->id)->count();
         $totalCursos = Cursos::where('school_id', $data_school->id)->count();
-        $totalComunicados = Announcement::where('school_id', $data_school->id)->count();
 
-        return view('school.index', compact('cursos', 'eventos', 'totalEventos', 'totalAlumnos', 'totalCursos', 'totalComunicados'));
+        return view('school.index', compact('cursos', 'eventos', 'totalEventos', 'totalAlumnos', 'totalCursos'));
     }
 
     /**

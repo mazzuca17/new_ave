@@ -56,22 +56,5 @@
         </div>
     </div>
 
-    <!-- Tarjeta: Mensajería -->
-    <div class="col-md-3">
-        <div class="card shadow-lg border-0 rounded-lg card-info text-white">
-            <div class="card-body d-flex align-items-center">
-                <div class="row">
 
-
-                    <div class="col-3">
-                        <i class="fas fa-bell fa-2x"></i>
-                    </div>
-                    <div class="col-9 text-end">
-                        <h5 class="fw-bold mb-1">Mensajería</h5>
-                        <h3 class="fw-bold">{{ $totalComunicados }}</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>

@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\DatabaseMessage;
-use App\Models\Announcement;
+use App\Models\Emails;
 
 class AnnouncementNotification extends Notification implements ShouldQueue
 {
@@ -15,7 +15,7 @@ class AnnouncementNotification extends Notification implements ShouldQueue
 
     protected $announcement;
 
-    public function __construct(Announcement $announcement)
+    public function __construct(Emails $announcement)
     {
         $this->announcement = $announcement;
     }

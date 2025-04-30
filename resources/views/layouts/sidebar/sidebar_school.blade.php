@@ -106,7 +106,7 @@
                 </a>
             </li>
             <li>
-                <a href=" {{ route('school.docentes.create') }} ">
+                <a href=" {{ route('school.docentes.new') }} ">
                     <span class="sub-item">Crear profesores</span>
                 </a>
             </li>
@@ -124,12 +124,12 @@
     <div class="collapse" id="comunicados">
         <ul class="nav nav-collapse">
             <li>
-                <a href="{{ route('school.mensajes.index') }}">
+                <a href="{{ route('mensajes.index') }}">
                     <span class="sub-item">Ver comunicados</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('school.mensajes.create') }}">
+                <a href="{{ route('mensajes.create') }}">
                     <span class="sub-item">Crear comunicados</span>
                 </a>
             </li>

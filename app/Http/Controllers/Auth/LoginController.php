@@ -115,7 +115,11 @@ class LoginController extends Controller
                     return redirect()->route('student.dashboard');
                     break;
 
-                    // Agrega más casos según sea necesario
+                case 'Padre':
+                    return redirect()->route('student.dashboard');
+                    break;
+
+                // Agrega más casos según sea necesario
 
                 default:
                     // Manejar un caso por defecto si el rol no coincide con ninguno de los casos anteriores

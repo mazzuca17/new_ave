@@ -5,7 +5,7 @@
         <div class="container container-full" style="max-width: none !important">
             <div class="page-inner page-inner-fill">
                 <div class="page-with-aside mail-wrapper bg-white">
-                    @include('announcements.options')
+                    @include('messages.options')
                     <div class="page-content mail-content">
                         <div class="inbox-head d-lg-flex d-block">
                             <h3>Papelera</h3>
@@ -21,7 +21,7 @@
                             </form>
                         </div>
                         <div class="inbox-body">
-                            @include('announcements.list_options_filters')
+                            @include('messages.list_options_filters')
 
                             @forelse ($messages as $item)
                                 <div class="email-list">

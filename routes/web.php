@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\SchoolsController as AdminSchoolsController;
 use App\Http\Controllers\AlumnosController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\Schools\HomeController as SchoolsHomeController;
 use App\Http\Controllers\Schools\EventsController;
 use App\Http\Controllers\Schools\CoursesController;
@@ -25,7 +26,14 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::group(['prefix' => 'mensajes', 'as' => 'mensajes.'], function () {
+        Route::get('', [EmailController::class, 'index'])->name('index'); // Lista de mensajes
+        Route::get('crear', [EmailController::class, 'create'])->name('create'); // Crear mensaje
+        Route::post('enviar', [EmailController::class, 'send'])->name('send'); // Enviar mensaje
+        Route::get('{id_mensaje}', [EmailController::class, 'show'])->name('show'); // Ver mensaje
+        Route::delete('{id_mensaje}', [EmailController::class, 'destroy'])->name('destroy'); // Eliminar mensaje
 
+    });
 
     // Rutas para Superadmin
     Route::middleware('role:Superadmin')->group(function () {
@@ -100,23 +108,19 @@ Route::middleware(['auth'])->group(function () {
             Route::post('create', [ProfesoresController::class, 'saveNewDocente'])->name('create');
             Route::get('edit/{id_profesor}', [ProfesoresController::class, 'showFormEdit'])->name('edit');
             Route::post('save_edit', [ProfesoresController::class, 'saveEdit'])->name('save_edit');
-            Route::get('{id_alumno}', [ProfesoresController::class, 'showProfile'])->name('profile');
+            Route::get('{id_profesor}', [ProfesoresController::class, 'showProfile'])->name('profile');
         });
 
         // Rutas de mensajería
-        Route::group(['prefix' => 'mensajes', 'as' => 'mensajes.'], function () {
-            Route::get('', [MessageController::class, 'index'])->name('index'); // Lista de mensajes
-            Route::get('crear', [MessageController::class, 'create'])->name('create'); // Crear mensaje
-            Route::get('demo', [MessageController::class, 'viewTrash'])->name('demo'); // Papelera
 
-            Route::post('enviar', [MessageController::class, 'send'])->name('send'); // Enviar mensaje
-            Route::get('{id_mensaje}', [MessageController::class, 'show'])->name('show'); // Ver mensaje
-            Route::delete('{id_mensaje}', [MessageController::class, 'destroy'])->name('destroy'); // Eliminar mensaje
-
-        });
     });
 
     Route::middleware('role:Docente')->namespace('Docente')->prefix('docente')->as('docente.')->group(function () {
+        Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
+    });
+
+
+    Route::middleware('role:Padres')->namespace('Padres')->prefix('padres')->as('padres.')->group(function () {
         Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
     });
 });

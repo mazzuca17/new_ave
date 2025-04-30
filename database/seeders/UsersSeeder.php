@@ -37,6 +37,10 @@ class UsersSeeder extends Seeder
                 'name'         => 'Alumno',
                 'display_name' => 'alumno'
             ],
+            [
+                'name'         => 'Padre',
+                'display_name' => 'padre'
+            ],
         ];
 
         foreach ($rolesData as $roleData) {
@@ -60,7 +64,7 @@ class UsersSeeder extends Seeder
                 'roles'    => ['colegio'], // Asignar el rol 'Colegio'
             ],
 
-          
+
         ];
 
         foreach ($users as $userData) {

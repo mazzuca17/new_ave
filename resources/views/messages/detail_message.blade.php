@@ -6,7 +6,7 @@
             <div class="page-inner page-inner-fill">
                 <div class="page-with-aside mail-wrapper bg-white">
 
-                    @include('announcements.options')
+                    @include('messages.options')
 
                     <div class="page-content mail-content">
                         <div class="email-head d-lg-flex d-block align-items-center justify-content-between">
@@ -35,8 +35,7 @@
                                     <div class="action ml-1">
                                         <a data-toggle="dropdown" class="dropdown-toggle"></a>
                                         <div role="menu" class="dropdown-menu">
-                                            <form action="{{ route('school.mensajes.markRead', $message->id) }}"
-                                                method="POST">
+                                            <form action="{{ route('mensajes.markRead', $message->id) }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="action"
                                                     value="{{ $message->is_read ? 'unread' : 'read' }}">

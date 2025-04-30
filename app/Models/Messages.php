@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Announcement extends Model
+class Messages extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    protected $table = 'announcements';
+    protected $table = 'messages';
     protected $fillable = [
         'school_id',
         'sender_user_id',
@@ -43,11 +43,5 @@ class Announcement extends Model
     public function recipient()
     {
         return $this->belongsTo(User::class, 'to_user_id');
-    }
-
-
-    public function files()
-    {
-        return $this->hasMany(AnnouncementFile::class);
     }
 }
