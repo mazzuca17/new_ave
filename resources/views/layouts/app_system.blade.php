@@ -29,6 +29,7 @@
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/atlantis.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="{{ asset('css/demo.css') }}">
@@ -61,8 +62,7 @@
 
 
                 <a href="{{ route($route) }}">
-                    <img src="{{ asset('img/logo-1.png') }}" alt="navbar brand" class="navbar-brand" width="50%"
-                        height="50px">
+                    <img src="{{ asset('img/logo-1.png') }}" alt="navbar brand" class="navbar-brand logo_navbar">
                 </a>
 
 

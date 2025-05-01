@@ -4740,6 +4740,10 @@ input[type="button"].btn-block {
     justify-content: space-between;
 }
 
+.logo_navbar {
+    padding: 1rem !important;
+}
+
 .navbar-brand {
     display: inline-block;
     padding-top: 0.32rem;

@@ -1,4 +1,9 @@
 .login_img {
-    width: 50%;
-    margin-block-end: -4rem !important;
+    height: 150px;
+    margin-block-end: 3%;
+}
+
+.logo_navbar {
+    width: 150px !important;
+    padding: 2rem !important;
 }

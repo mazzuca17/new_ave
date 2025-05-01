@@ -1,6 +1,7 @@
 @extends('layouts.app_system')
 
 @section('content')
+    <link rel="stylesheet" href="{{ asset('css/messages.css') }}">
     <div class="content">
         <div class="container container-full" style="max-width: none !important">
             <div class="page-inner page-inner-fill">

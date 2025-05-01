@@ -1,8 +1,9 @@
 <div class="page-aside">
     <div class="aside-header">
         <div class="title">Mensajería</div>
-        <div class="aside-compose"><a href="{{ route('mensajes.create') }}"
-                class="btn btn-primary btn-block fw-mediumbold">Redactar</a>
+        <div class="aside-compose">
+            <a href="{{ route('mensajes.create') }}" class="text-white btn btn-primary btn-block fw-mediumbold">
+                Redactar</a>
         </div>
     </div>
 

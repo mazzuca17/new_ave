@@ -2,7 +2,9 @@
 
 
 @section('content')
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
     <div class="login-aside w-50 d-flex flex-column align-items-center justify-content-center text-center bg-dark">
+        <img src="{{ asset('img/logo-1.png') }}" class="login_img">
         <h1 class="title fw-bold text-white mb-3">Bienvenido a AVE</h1>
         <p class="subtitle text-white op-7">Un servicio de The Bildung Company</p>
     </div>

@@ -1,6 +1,8 @@
 @extends('layouts.app_system')
 
 @section('content')
+    <link rel="stylesheet" href="{{ asset('css/messages.css') }}">
+
     <div class="content">
         <div class="container container-full" style="max-width: none !important">
             <div class="page-inner page-inner-fill">
@@ -114,8 +116,8 @@
                             </div>
                         @endif
 
-                        <form action="{{ route('mensajes.reply', $data_message->email->id) }}" method="POST"
-                            enctype="multipart/form-data">
+                        <form class="border_form_response" action="{{ route('mensajes.reply', $data_message->email->id) }}"
+                            method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label>Respuesta:</label>

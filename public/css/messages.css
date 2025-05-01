@@ -1,0 +1,11 @@
+a:hover .email-list-item {
+    color: #575962;
+}
+
+a {
+    color: #575962 !important;
+}
+
+.border_form_response {
+    border-top: 1px solid #f1f1f1;
+}

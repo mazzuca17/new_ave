@@ -24,10 +24,21 @@
                                         <div class="col-md-11">
                                             <select class="form-control" name="to" id="to" required
                                                 style="width: 100%">
-                                                <option value="0">Todos los usuarios</option>
-                                                <option value="role:Padre">Todos los padres</option>
-                                                <option value="role:Alumno">Todos los alumnos</option>
-                                                <option value="role:Profesor">Todos los profesores</option>
+
+                                                @if (Auth::user()->hasRole('Colegio'))
+                                                    <option value="0">Todos los usuarios</option>
+                                                    <option value="role:Padre">Todos los padres</option>
+                                                    <option value="role:Alumno">Todos los alumnos</option>
+                                                    <option value="role:Profesor">Todos los profesores</option>
+                                                @endif
+
+                                                @if (Auth::user()->hasRole('Docente'))
+                                                    <option value="role:Alumno">Todos los alumnos</option>
+                                                @endif
+
+                                                @if (Auth::user()->hasRole('Alumno'))
+                                                    <option value="role:Profesor">Todos los profesores</option>
+                                                @endif
 
                                                 @php $currentRole = null; @endphp
 
