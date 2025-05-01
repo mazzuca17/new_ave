@@ -1,7 +1,6 @@
 <div class="email-list">
-    <a href="{{ route('mensajes.show', $item->email->id) }}"
-        class="email-list-item d-block {{ $item->is_read ? '' : 'unread' }}">
-
+    <div href="{{ route('mensajes.show', $item->email->id) }}"
+        class="email-list-item {{ $item->is_read ? '' : 'unread' }}">
         <div class="email-list-detail">
             <span class="date float-right">
                 @if ($item->email->attachments->count() > 0)
@@ -12,5 +11,6 @@
             <span class="from">{{ $item->email->sender->name }}</span>
             <p class="msg">{{ $item->email->subject }}</p>
         </div>
-    </a>
+
+    </div>
 </div>

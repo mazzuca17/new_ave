@@ -159,7 +159,14 @@
 
                 let formData = new FormData(this);
                 formData.append('message', $('#editor').summernote('code'));
-
+                Swal.fire({
+                    title: 'Enviando mensaje...',
+                    html: 'Por favor espera',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
                 $.ajax({
                     url: "{{ route('mensajes.send') }}", // Ruta del backend
                     type: "POST",
