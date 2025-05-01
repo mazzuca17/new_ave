@@ -161,10 +161,68 @@ class EmailController extends Controller
     {
         $data_message = EmailsRecipient::with('email.sender', 'email.attachments')
             ->where('recipient_id', Auth::id())
-            ->where('id', $message_id)
+            ->where('email_id', $message_id)
             ->firstOrFail();
-        Log::debug($data_message);
+        // actualizar data para marcar como leído
+        if (!$data_message->is_read) {
+            $data_message->is_read = true;
+            $data_message->read_at = Carbon::now();
+            $data_message->save();
+        }
+
         $count_no_read = EmailsRecipient::where('is_read', false)->where('recipient_id', Auth::user()->id)->count();
         return view('messages.detail_message', compact('data_message', 'count_no_read'));
+    }
+
+    public function reply(Request $request, $id)
+    {
+        Log::debug($request->all());
+        $request->validate([
+            'body'          => 'required|string',
+            'attachments.*' => 'file|max:2048', // Opcional
+        ]);
+
+        try {
+            $original = Emails::findOrFail($id);
+            $user = Auth::user();
+
+            // Crear la respuesta
+            $reply = Emails::create([
+                'school_id' => Auth::user()->school->id,
+                'sender_id' => $user->id,
+                'subject'   => 'Re: ' . $original->subject,
+                'body'      => $request->body,
+            ]);
+
+            // Relación con destinatarios
+            EmailsRecipient::create([
+                'email_id' => $reply->id,
+                'recipient_id' => $original->sender_id,
+            ]);
+
+
+            // Adjuntos (opcional)
+            if ($request->hasFile('attachments')) {
+                foreach ($request->file('attachments') as $file) {
+                    $path = $file->store('attachments', 'public');
+                    EmailsAttachments::create([
+                        'email_id' => $reply->id,
+                        'file_path' => $path,
+                    ]);
+                }
+            }
+
+            return redirect()->route('mensajes.show', $id)->with('status', 'Respuesta enviada.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::debug($e);
+            Log::error("Error al enviar mensaje: {$e->getMessage()}");
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error interno del servidor',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
     }
 }

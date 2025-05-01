@@ -1,5 +1,5 @@
 <div class="email-list">
-    <a href="{{ route('mensajes.show', $item->id) }}"
+    <a href="{{ route('mensajes.show', $item->email->id) }}"
         class="email-list-item d-block {{ $item->is_read ? '' : 'unread' }}">
 
         <div class="email-list-detail">

@@ -5,21 +5,21 @@
         <div class="container container-full" style="max-width: none !important">
             <div class="page-inner page-inner-fill">
                 <div class="page-with-aside mail-wrapper bg-white">
-
                     @include('messages.options')
-
                     <div class="page-content mail-content">
+                        @if (session('status'))
+                            <div class="alert alert-success" id="success-alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+
                         <div class="email-head d-lg-flex d-block align-items-center justify-content-between">
+
                             <h3>
                                 {{ $data_message->email->subject }}
                             </h3>
-                            <div class="controls mt-3 mt-lg-0">
-                                {{-- <a href="{{ route('messages.reply', $data_message->email->id) }}" title="Responder"><i
-                                        class="fa fa-reply"></i></a>
-                                <a href="{{ route('messages.destroy', $data_message->email->id) }}"
-                                    onclick="return confirm('¿Estás seguro de eliminar este mensaje?')" title="Eliminar">
-                                    <i class="fa fa-trash"></i>
-                                </a> --}}
+                            <div class="controls mt-12 mt-lg-0">
+
                             </div>
                         </div>
 
@@ -113,10 +113,148 @@
                                 </div>
                             </div>
                         @endif
+
+                        <form action="{{ route('mensajes.reply', $data_message->email->id) }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group">
+                                <label>Respuesta:</label>
+                                <textarea id="editor" name="body"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Adjuntar archivos:</label>
+                                <div class="custom-file-upload">
+                                    <button type="button" class="btn btn-secondary" id="uploadButton">
+                                        <i class="fas fa-paperclip"></i> Adjuntar archivos
+                                    </button>
+                                    <span id="fileList">Ningún archivo seleccionado</span>
+                                    <input type="file" id="attachments" name="attachments[]" multiple
+                                        style="display: none;">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-reply"></i> Enviar respuesta
+                            </button>
+                        </form>
+
                     </div>
 
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Bootstrap (si usas BS4) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Summernote -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Ocultar automáticamente después de 3 segundos
+            setTimeout(function() {
+                $('#success-alert').fadeOut('slow');
+            }, 3000); // 3000 milisegundos = 3 segundos
+        });
+    </script>
+
+    <script>
+        jQuery(document).ready(function($) {
+            $('#editor').summernote({
+                height: 300,
+                placeholder: 'Escribe el mensaje...',
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview']]
+                ]
+            });
+        });
+
+        jQuery(document).ready(function($) {
+            $('#uploadButton').on('click', function() {
+                $('#attachments').click();
+            });
+
+            $('#attachments').on('change', function() {
+                let files = $(this)[0].files;
+                let fileNames = [];
+                for (let i = 0; i < files.length; i++) {
+                    fileNames.push(files[i].name);
+                }
+                $('#fileList').text(fileNames.length > 0 ? fileNames.join(', ') :
+                    'Ningún archivo seleccionado');
+            });
+
+            $('#editor').summernote({
+                height: 300,
+                placeholder: 'Escribe el mensaje...',
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview']]
+                ]
+            });
+
+            $('#messageForm').on('submit', function(e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+                formData.append('message', $('#editor').summernote('code'));
+
+                $.ajax({
+                    url: "{{ route('mensajes.send') }}", // Ruta del backend
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Mensaje Enviado',
+                            text: 'El mensaje se ha enviado correctamente.',
+                            confirmButtonColor: '#3085d6'
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            let errorMessages = Object.values(errors).map(error => error.join(
+                                ', ')).join('<br>');
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error de Validación',
+                                html: errorMessages,
+                                confirmButtonColor: '#d33'
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Hubo un problema al enviar el mensaje. Intenta nuevamente.',
+                                confirmButtonColor: '#d33'
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
 @endsection

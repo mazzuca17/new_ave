@@ -20,7 +20,7 @@ class EmailsRecipient extends Model
 
     public function email()
     {
-        return $this->belongsTo(Emails::class);
+        return $this->belongsTo(Emails::class, 'email_id');
     }
 
     public function recipient()

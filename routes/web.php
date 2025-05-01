@@ -32,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('enviar', [EmailController::class, 'send'])->name('send'); // Enviar mensaje
         Route::get('{id_mensaje}', [EmailController::class, 'show'])->name('show'); // Ver mensaje
         Route::delete('{id_mensaje}', [EmailController::class, 'destroy'])->name('destroy'); // Eliminar mensaje
-
+        Route::post('{id}/reply', [EmailController::class, 'reply'])->name('reply');
     });
 
     // Rutas para Superadmin
