@@ -27,7 +27,7 @@
 
                             @forelse ($messages as $item)
                                 <div class="email-list">
-                                    <a href="{{ route('mensajes.show', $item->id) }}" class="email-list-item "
+                                    <a href="{{ route('mensajes.show_sent', $item->id) }}" class="email-list-item "
                                         aria-label="Ver mensaje de {{ $item->sender->name }}">
                                         <article class="email-list-detail">
                                             <span class="date float-right">
@@ -41,8 +41,6 @@
                                         </article>
                                     </a>
                                 </div>
-
-
                             @empty
                                 <div class="email-list-detail">
                                     <p class="msg text-center">No has enviado mensajes.</p>

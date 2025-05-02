@@ -116,21 +116,21 @@
 </li>
 
 <li class="nav-item">
-    <a data-toggle="collapse" href="#comunicados" class="collapsed" aria-expanded="false">
+    <a data-toggle="collapse" href="#mensajería" class="collapsed" aria-expanded="false">
         <i class="fas fa-bullhorn"></i>
         <p>Mensajería</p>
         <span class="caret"></span>
     </a>
-    <div class="collapse" id="comunicados">
+    <div class="collapse" id="mensajería">
         <ul class="nav nav-collapse">
             <li>
                 <a href="{{ route('mensajes.index') }}">
-                    <span class="sub-item">Ver comunicados</span>
+                    <span class="sub-item">Ver mensajes</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('mensajes.create') }}">
-                    <span class="sub-item">Crear comunicados</span>
+                    <span class="sub-item">Nuevo mensaje</span>
                 </a>
             </li>
         </ul>

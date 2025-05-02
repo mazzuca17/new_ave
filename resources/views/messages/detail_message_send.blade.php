@@ -26,14 +26,14 @@
                         <div class="email-sender d-flex align-items-center justify-content-between mt-3">
                             <div class="d-flex align-items-center">
                                 <div class="avatar mr-3">
-                                    <img src="{{ $data_message->email->sender->avatar_url ?? asset('img/profile.jpg') }}"
-                                        alt="Avatar de {{ $data_message->email->sender->name }}"
+                                    <img src="{{ $data_message->sender->avatar_url ?? asset('img/profile.jpg') }}"
+                                        alt="Avatar de {{ $data_message->sender->name }}"
                                         style="width: 40px; height: 40px; border-radius: 50%;">
                                 </div>
                                 <div class="sender">
                                     <strong>De:
                                         <b>
-                                            {{ $data_message->email->sender->name }}
+                                            {{ $data_message->sender->name }}
                                         </b>
                                     </strong> <br>
                                     Para <span class="to">mí</span>
@@ -41,25 +41,25 @@
                                 </div>
                             </div>
                             <div class="date text-muted">
-                                {{ $data_message->email->created_at->format('d/m/Y H:i') }}
+                                {{ $data_message->created_at->format('d/m/Y H:i') }}
                             </div>
                         </div>
 
                         <div class="email-body mt-4">
-                            {!! $data_message->email->body !!}
+                            {!! $data_message->body !!}
                         </div>
 
 
-                        @if ($data_message->email->attachments->count())
+                        @if ($data_message->attachments->count())
                             <div class="email-attachments mt-4">
                                 <h5 class="mb-3">
                                     <i class="fa fa-paperclip"></i> Adjuntos
-                                    <span class="text-muted">({{ $data_message->email->attachments->count() }}
-                                        archivo{{ $data_message->email->attachments->count() > 1 ? 's' : '' }})</span>
+                                    <span class="text-muted">({{ $data_message->attachments->count() }}
+                                        archivo{{ $data_message->attachments->count() > 1 ? 's' : '' }})</span>
                                 </h5>
 
                                 <div class="list-group">
-                                    @foreach ($data_message->email->attachments as $attachment)
+                                    @foreach ($data_message->attachments as $attachment)
                                         <div
                                             class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                             <div class="d-flex align-items-center">
@@ -114,48 +114,19 @@
                             </div>
                         @endif
                         <div class="email-body mt-4">
-                            <form class="border_form_response"
-                                action="{{ route('mensajes.reply', $data_message->email->id) }}" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <div class="form-group">
-                                    <label>Respuesta:</label>
-                                    <textarea id="editor" name="body"></textarea>
-                                </div>
+                            <div class="form-group d-flex justify-content-between align-items-center flex-wrap">
+                                <div class="row">
+                                    <div class="col-md-12">
 
-                                <div class="form-group">
-                                    <label>Adjuntar archivos:</label>
-                                </div>
+                                        <a href="javascript:history.back()" class="text-white btn btn-danger">
+                                            <i class="fa fa-arrow-left mr-2"></i> Volver atrás
+                                        </a>
 
-                                <div class="form-group d-flex justify-content-between align-items-center flex-wrap">
-                                    <div class="custom-file-upload">
-                                        <button type="button" class="btn btn-secondary" id="uploadButton">
-                                            <i class="fas fa-paperclip"></i> Adjuntar archivos
-                                        </button>
-                                        <input type="file" id="attachments" name="attachments[]" multiple
-                                            style="display: none;">
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <button type="submit" class="btn btn-success">
-                                                <i class="fa fa-reply"></i> Enviar respuesta
-                                            </button>
-                                            <a href="{{ route('mensajes.index') }}" class=" text-white btn btn-danger">
-                                                Descartar
-                                            </a>
-                                        </div>
-                                    </div>
-
                                 </div>
-
-                            </form>
+                            </div>
                         </div>
-
-
-
-
                     </div>
-
                 </div>
             </div>
         </div>

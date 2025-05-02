@@ -33,6 +33,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('enviados', [EmailController::class, 'sent'])->name('enviados'); // 🔄 Mover aquí
         Route::post('{id}/reply', [EmailController::class, 'reply'])->name('reply');
         Route::get('{id_mensaje}', [EmailController::class, 'show'])->name('show'); // Ver mensaje
+        Route::get('enviados/{id_mensaje}', [EmailController::class, 'show_sent'])->name('show_sent'); // Ver mensaje
+
         Route::delete('{id_mensaje}', [EmailController::class, 'destroy'])->name('destroy'); // Eliminar mensaje
     });
 

@@ -163,6 +163,7 @@ class EmailController extends Controller
             ->where('recipient_id', Auth::id())
             ->where('email_id', $message_id)
             ->firstOrFail();
+
         // actualizar data para marcar como leído
         if (!$data_message->is_read) {
             $data_message->is_read = true;
@@ -172,6 +173,18 @@ class EmailController extends Controller
 
         $count_no_read = EmailsRecipient::where('is_read', false)->where('recipient_id', Auth::user()->id)->count();
         return view('messages.detail_message', compact('data_message', 'count_no_read'));
+    }
+
+    public function show_sent(int $message_id)
+    {
+        $data_message = Emails::with('attachments')
+            ->where('sender_id', Auth::id())
+            ->where('id', $message_id)
+            ->firstOrFail();
+        Log::debug($data_message);
+
+        $count_no_read = EmailsRecipient::where('is_read', false)->where('recipient_id', Auth::user()->id)->count();
+        return view('messages.detail_message_send', compact('data_message', 'count_no_read'));
     }
 
     public function reply(Request $request, $id)
