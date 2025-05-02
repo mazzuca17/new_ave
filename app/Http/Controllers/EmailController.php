@@ -225,4 +225,26 @@ class EmailController extends Controller
             ], 500);
         }
     }
+
+    public function sent(Request $request)
+    {
+        $user = Auth::user();
+        $search = $request->get('q');
+
+        $messages = Emails::with('attachments')
+            ->where('sender_id', $user->id)
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('subject', 'like', "%$search%");
+                });
+            })
+            ->orderByDesc('created_at')
+            ->paginate(10);
+
+        Log::debug($messages);
+
+        $count_no_read = EmailsRecipient::where('is_read', false)->where('recipient_id', Auth::user()->id)->count();
+
+        return view('messages.sent', compact('messages', 'count_no_read'));
+    }
 }

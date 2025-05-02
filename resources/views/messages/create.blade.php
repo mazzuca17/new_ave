@@ -83,22 +83,28 @@
                                         <textarea id="editor" name="message"></textarea>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label>Adjuntar archivos:</label>
+                                    <div class="form-group d-flex justify-content-between align-items-center flex-wrap">
                                         <div class="custom-file-upload">
                                             <button type="button" class="btn btn-secondary" id="uploadButton">
                                                 <i class="fas fa-paperclip"></i> Adjuntar archivos
                                             </button>
-                                            <span id="fileList">Ningún archivo seleccionado</span>
                                             <input type="file" id="attachments" name="attachments[]" multiple
                                                 style="display: none;">
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button type="submit" class="btn btn-success">
+                                                    <i class="fa fa-reply"></i> Enviar
+                                                </button>
+                                                <a href="{{ route('mensajes.index') }}" class=" text-white btn btn-danger">
+                                                    Descartar
+                                                </a>
+                                            </div>
+                                        </div>
+
                                     </div>
 
-                                    <div class="email-action">
-                                        <button type="submit" class="btn btn-primary">Enviar</button>
-                                        <button type="button" class="btn btn-danger">Cancelar</button>
-                                    </div>
+
                                 </form>
 
                             </div>

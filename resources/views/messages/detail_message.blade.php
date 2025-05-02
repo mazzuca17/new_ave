@@ -115,31 +115,46 @@
                                 </div>
                             </div>
                         @endif
-
-                        <form class="border_form_response" action="{{ route('mensajes.reply', $data_message->email->id) }}"
-                            method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="form-group">
-                                <label>Respuesta:</label>
-                                <textarea id="editor" name="body"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Adjuntar archivos:</label>
-                                <div class="custom-file-upload">
-                                    <button type="button" class="btn btn-secondary" id="uploadButton">
-                                        <i class="fas fa-paperclip"></i> Adjuntar archivos
-                                    </button>
-                                    <span id="fileList">Ningún archivo seleccionado</span>
-                                    <input type="file" id="attachments" name="attachments[]" multiple
-                                        style="display: none;">
+                        <div class="email-body mt-4">
+                            <form class="border_form_response"
+                                action="{{ route('mensajes.reply', $data_message->email->id) }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-group">
+                                    <label>Respuesta:</label>
+                                    <textarea id="editor" name="body"></textarea>
                                 </div>
-                            </div>
 
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fa fa-reply"></i> Enviar respuesta
-                            </button>
-                        </form>
+                                <div class="form-group">
+                                    <label>Adjuntar archivos:</label>
+                                </div>
+
+                                <div class="form-group d-flex justify-content-between align-items-center flex-wrap">
+                                    <div class="custom-file-upload">
+                                        <button type="button" class="btn btn-secondary" id="uploadButton">
+                                            <i class="fas fa-paperclip"></i> Adjuntar archivos
+                                        </button>
+                                        <input type="file" id="attachments" name="attachments[]" multiple
+                                            style="display: none;">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="fa fa-reply"></i> Enviar respuesta
+                                            </button>
+                                            <a href="{{ route('mensajes.index') }}" class=" text-white btn btn-danger">
+                                                Descartar
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </form>
+                        </div>
+
+
+
 
                     </div>
 

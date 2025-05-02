@@ -24,7 +24,7 @@ class Emails extends Model
 
     public function recipients()
     {
-        return $this->hasMany(EmailsRecipient::class);
+        return $this->hasMany(EmailsRecipient::class, 'email_id');
     }
 
     public function attachments()
