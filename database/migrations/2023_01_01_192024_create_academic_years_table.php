@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMaterias extends Migration
+class CreateAcademicYearsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateMaterias extends Migration
      */
     public function up()
     {
-        Schema::create('materias', function (Blueprint $table) {
+        Schema::create('academic_years', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('school_id');
-            $table->string('code_materia');
-            $table->string('nombre');
-            $table->foreign('school_id')
-                ->references('id') // permission id
-                ->on('schools')
-                ->onDelete('cascade');
+            $table->string('name');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->integer('status');
             $table->timestamps();
         });
     }
@@ -33,7 +31,6 @@ class CreateMaterias extends Migration
      */
     public function down()
     {
-
-        Schema::dropIfExists('materias');
+        Schema::dropIfExists('academic_years');
     }
 }

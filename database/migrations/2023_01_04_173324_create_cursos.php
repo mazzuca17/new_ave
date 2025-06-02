@@ -17,7 +17,8 @@ class CreateCursos extends Migration
             $table->id();
             $table->unsignedBigInteger('school_id');
             $table->string('name')->unique();
-            $table->string('modalidad');
+            $table->string('level');
+            $table->string('modalidad')->nullable();
 
             $table->foreign('school_id')
                 ->references('id') // permission id

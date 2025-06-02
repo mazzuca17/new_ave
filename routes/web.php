@@ -13,6 +13,7 @@ use App\Http\Controllers\HomeController as Home;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Schools\AlumnosController as SchoolsAlumnosController;
+use App\Http\Controllers\Schools\CiclosLectivosController;
 use App\Http\Controllers\Teachers\HomeController;
 
 Route::get('/', [Home::class, 'index'])->name('home');
@@ -56,6 +57,13 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas para Colegio
     Route::middleware('role:Colegio')->namespace('Schools')->prefix('school')->as('school.')->group(function () {
+        Route::prefix('ciclos')->as('ciclos.')->group(function () {
+            Route::get('', [CiclosLectivosController::class, 'index'])->name('dashboard');
+            Route::get('create', [CiclosLectivosController::class, 'create'])->name('create');
+            Route::post('store', [CiclosLectivosController::class, 'store'])->name('store');
+            Route::get('data', [CiclosLectivosController::class, 'getData'])->name('data');
+        });
+
         Route::get('dashboard', [SchoolsHomeController::class, 'index'])->name('dashboard');
 
         // Eventos

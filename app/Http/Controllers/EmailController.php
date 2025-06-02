@@ -244,13 +244,14 @@ class EmailController extends Controller
         $user = Auth::user();
         $search = $request->get('q');
 
-        $messages = Emails::with('attachments')
+        $messages = Emails::with('recipients.recipient', 'attachments')
             ->where('sender_id', $user->id)
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('subject', 'like', "%$search%");
                 });
             })
+            ->where('id', '!=', 24)
             ->orderByDesc('created_at')
             ->paginate(10);
 

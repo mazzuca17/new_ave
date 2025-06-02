@@ -15,22 +15,13 @@ class CreateSubjectSchedules extends Migration
     {
         Schema::create('subject_schedules', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('materia_id');
-            $table->unsignedBigInteger('curso_id');
-            $table->enum('day', ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']);
+            $table->unsignedBigInteger('subject_course_id');
+            $table->integer('day_of_week');
             $table->time('start_time');
             $table->time('end_time');
             $table->timestamps();
 
-            $table->foreign('materia_id')
-                ->references('id') // permission id
-                ->on('materias')
-                ->onDelete('cascade');
-
-            $table->foreign('curso_id')
-                ->references('id') // permission id
-                ->on('cursos')
-                ->onDelete('cascade');
+            //$table->foreign('subject_course_id')->references('id')->on('subject_courses')->onDelete('cascade');
         });
     }
 

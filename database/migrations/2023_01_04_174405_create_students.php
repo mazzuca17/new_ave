@@ -16,7 +16,6 @@ class CreateStudents extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('curso_id');
             $table->unsignedBigInteger('school_id');
 
             // Datos personales
@@ -30,12 +29,7 @@ class CreateStudents extends Migration
 
             // Datos académicos
             $table->year('anio_ingreso')->nullable();
-            $table->decimal('promedio', 5, 2)->nullable();
-            $table->enum('condition', ['aprobado', 'finales', 'regular']);
-
-            // Datos administrativos
-            $table->enum('estado_matricula', ['inscrito', 'preinscrito', 'baja', 'egresado'])->default('inscrito');
-            $table->boolean('beca')->default(false);
+                    
 
             // Datos familiares
             $table->string('nombre_tutor')->nullable();
@@ -50,7 +44,6 @@ class CreateStudents extends Migration
 
             // Claves foráneas
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('curso_id')->references('id')->on('cursos')->onDelete('cascade');
             $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
         });
     }

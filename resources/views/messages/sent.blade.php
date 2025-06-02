@@ -36,7 +36,8 @@
                                                 @endif
                                                 {{ $item->created_at->format('d M') }}
                                             </span>
-                                            <span class="from">{{ $item->sender->name }} </span>
+                                            <span class="from">Para: {{ $item->recipients[0]->recipient->last_name }},
+                                                {{ $item->recipients[0]->recipient->name }} </span>
                                             <p class="msg mb-0">{{ $item->subject }}</p>
                                         </article>
                                     </a>

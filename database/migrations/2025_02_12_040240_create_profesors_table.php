@@ -17,7 +17,6 @@ class CreateProfesorsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('school_id');
-
             // Datos personales
             $table->string('dni')->unique();
             $table->date('fecha_nacimiento')->nullable();

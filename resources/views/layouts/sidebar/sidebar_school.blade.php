@@ -14,6 +14,27 @@
         </ul>
     </div>
 </li>
+<li class="nav-item">
+    <a data-toggle="collapse" href="#ciclo_lectivo" class="collapsed" aria-expanded="false">
+        <i class="fas fa-tachometer-alt"></i>
+        <p>Ciclo lectivo</p>
+        <span class="caret"></span>
+    </a>
+    <div class="collapse" id="ciclo_lectivo">
+        <ul class="nav nav-collapse">
+            <li>
+                <a href="{{ route('school.ciclos.dashboard') }}">
+                    <span class="sub-item">Ver ciclos lectivos</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('school.ciclos.dashboard') }}">
+                    <span class="sub-item">Crear ciclos lectivos</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</li>
 
 <li class="nav-item">
     <a data-toggle="collapse" href="#cursos" class="collapsed" aria-expanded="false">

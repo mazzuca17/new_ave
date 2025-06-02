@@ -20,6 +20,7 @@ class CursosFactory extends Factory
         return [
             'school_id'  => 1,
             'name'       => $uniqueName,
+            'level'      => 'Secundario',
             'modalidad'  => $this->faker->randomElement($this->getTypeCurse()),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
