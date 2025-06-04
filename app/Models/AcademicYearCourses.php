@@ -11,7 +11,6 @@ class AcademicYearCourses extends Model
     protected $table = 'academic_year_courses';
 
     protected $fillable = [
-        'name',
         'academic_year_id',
         'course_id',
         'created_at',
@@ -26,5 +25,16 @@ class AcademicYearCourses extends Model
     public function Cursos()
     {
         return $this->hasMany(Cursos::class, 'course_id');
+    }
+
+    public function students()
+    {
+        return $this->hasMany(AcademicYearCourseStudent::class, 'academic_year_course_id');
+    }
+
+    // En AcademicYearCourse.php
+    public function materias()
+    {
+        return $this->hasMany(Materias::class, 'academic_year_course_id');
     }
 }

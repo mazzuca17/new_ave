@@ -32,8 +32,23 @@ class Profesors extends Model
         return $this->belongsTo(Schools::class, 'school_id');
     }
 
+    // Relación con las materias que imparte (many-to-many)
     public function subjects()
     {
-        return $this->belongsToMany(Materias::class, 'subject_teacher', 'teacher_id', 'materia_id');
+        return $this->belongsToMany(Materias::class, 'subject_teacher', 'teacher_id', 'id')
+            ->withTimestamps();
+    }
+
+    // Relación con los horarios asignados
+    public function horarios()
+    {
+        return $this->hasMany(MateriasHorarios::class, 'teacher_id');
+    }
+
+    // Relación con ciclos lectivos donde participó
+    public function ciclosLectivos()
+    {
+        return $this->belongsToMany(AcademicYears::class, 'subject_teacher', 'teacher_id', 'id')
+            ->distinct();
     }
 }

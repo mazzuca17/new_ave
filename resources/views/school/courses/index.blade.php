@@ -32,7 +32,8 @@
                                         <thead>
                                             <tr>
                                                 <th>Curso</th>
-                                                <th>Modalidad</th>
+                                                <th>Nivel</th>
+                                                <th>Orientación</th>
                                                 <th>Cantidad de alumnos</th>
                                                 <th>Cantidad de materias</th>
 
@@ -64,8 +65,12 @@
                         name: 'name'
                     },
                     {
-                        data: 'modalidad',
-                        name: 'modalidad'
+                        data: 'level',
+                        name: 'level'
+                    },
+                    {
+                        data: 'orientation',
+                        name: 'orientation'
                     },
 
                     {

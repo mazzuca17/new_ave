@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\Schools;
 
 use App\Http\Controllers\Controller;
+use App\Models\AcademicYearCourses;
+use App\Models\AcademicYearCourseStudent;
+use App\Models\AcademicYears;
 use App\Models\Cursos;
 use App\Models\Eventos;
+use App\Models\OrientacionCursos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Session;
@@ -33,37 +38,53 @@ class CoursesController extends Controller
 
     public function getData(Request $request)
     {
-        $courses = Cursos::withCount('students', 'materias')
-            ->where('school_id', Auth::user()->school->id)
-            ->select(['id', 'name', 'modalidad']);
+        // Obtener el año lectivo actual
+        $currentYear = AcademicYears::where('status', AcademicYears::STATUS_ACTIVE)->first();
+
+        // Obtener cursos con orientaciones y materias
+        $courses = Cursos::with(['OrientationCourses', 'academicYearCourses'])
+            ->where('school_id', Auth::user()->school_id)
+            ->get();
 
         return DataTables::of($courses)
-
-            ->editColumn('modalidad', function ($course) {
-                return $course->modalidad;
+            ->editColumn('level', function ($course) {
+                return $course->level;
             })
-            ->addColumn('students_count', function ($course) {
-                return count($course->students);
+            ->addColumn('orientation', function ($course) {
+                return $course->OrientationCourses->name;
+            })
+            ->addColumn('students_count', function ($course) use ($currentYear) {
+                if (!$currentYear) return 0;
+
+                $academicYearCourse = AcademicYearCourses::where('course_id', $course->id)
+                    ->where('academic_year_id', $currentYear->id)
+                    ->first();
+
+                if (!$academicYearCourse) return 0;
+
+                return AcademicYearCourseStudent::where('academic_year_course_id', $academicYearCourse->id)->count();
             })
             ->addColumn('materias_count', function ($course) {
                 return count($course->materias);
             })
+
             ->addColumn('actions', function ($course) {
                 return '
-                <a href="' . route('school.courses.dashboard', $course->id) . '" class="btn btn-info btn-sm">
-                    <i class="fas fa-eye"></i> Ver Perfil
-                </a>
-                <a href="' . route('school.courses.edit', $course->id) . '" class="btn btn-warning btn-sm">
-                    <i class="fas fa-edit"></i> Editar
-                </a>
-                <button class="btn btn-danger btn-sm delete-course" data-id="' . $course->id . '">
-                    <i class="fas fa-trash-alt"></i> Eliminar
-                </button>
-            ';
+                    <a href="' . route('school.courses.dashboard', $course->id) . '" class="btn btn-info btn-sm">
+                        <i class="fas fa-eye"></i> Ver Perfil
+                    </a>
+                    <a href="' . route('school.courses.edit', $course->id) . '" class="btn btn-warning btn-sm">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <button class="btn btn-danger btn-sm delete-course" data-id="' . $course->id . '">
+                        <i class="fas fa-trash-alt"></i> Eliminar
+                    </button>
+                ';
             })
             ->rawColumns(['actions'])
             ->make(true);
     }
+
 
     public function destroy($id)
     {
@@ -82,7 +103,9 @@ class CoursesController extends Controller
      */
     public function showFormNew()
     {
-        return view('school.courses.create');
+        // se busca la data de las orientaciones cargadas
+        $orientation = OrientacionCursos::where('school_id', Auth::user()->school->id)->get();
+        return view('school.courses.create', compact('orientation'));
     }
 
     /**
@@ -93,21 +116,39 @@ class CoursesController extends Controller
      */
     public function saveNewCourse(Request $request)
     {
-        $data = Cursos::create([
-            'school_id'  => Auth::user()->school->id,
-            'name'       => $request->get('curso'),
-            'modalidad'  => $request->get('modalidad'),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
+        // Validación previa si el nivel es secundaria y no se envió orientación
+        if ($request->get('nivel') === 'Secundaria' && !$request->get('orientacion_id')) {
+            Session::flash('danger', 'Debes seleccionar una orientación para cursos de secundaria.');
+            return redirect()->back()->withInput();
+        }
+
+        // Crear el curso
+        $curso = Cursos::create([
+            'school_id'   => Auth::user()->school->id,
+            'name'        => $request->get('curso'),
+            'level'       => $request->get('nivel'),
+            'orientation' => $request->get('nivel') === 'Secundaria' ? $request->get('orientacion_id') : null,
+            'created_at'  => Carbon::now(),
+            'updated_at'  => Carbon::now()
         ]);
 
-        if ($data) {
-            Session::flash('success', 'Curso creado con éxito.');
-        } else {
-            Session::flash('danger', 'Hubo un problema al crear el curso.');
+        // Obtener año lectivo actual (esto puede variar según tu sistema)
+        $academicYear = AcademicYears::where('status', AcademicYears::STATUS_ACTIVE)->first();
+
+        // Asociar curso al año lectivo
+        if ($curso && $academicYear) {
+            AcademicYearCourses::create([
+                'academic_year_id' => $academicYear->id,
+                'course_id'        => $curso->id,
+                'created_at'       => Carbon::now(),
+                'updated_at'       => Carbon::now()
+            ]);
         }
-        return redirect()->route('school.courses.index'); // Redirige de nuevo a la página anterior
+
+        Session::flash('success', 'Curso creado con éxito.');
+        return redirect()->route('school.courses.index');
     }
+
 
     /**
      * showFormEdit

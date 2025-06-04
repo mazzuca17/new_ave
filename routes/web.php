@@ -12,8 +12,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController as Home;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\School\OrientacionCursosController;
 use App\Http\Controllers\Schools\AlumnosController as SchoolsAlumnosController;
 use App\Http\Controllers\Schools\CiclosLectivosController;
+use App\Http\Controllers\Schools\MateriasController;
 use App\Http\Controllers\Teachers\HomeController;
 
 Route::get('/', [Home::class, 'index'])->name('home');
@@ -77,6 +79,15 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('delete-event/{event_id}', [EventsController::class, 'deleteEventByID'])->name('delete_by_id');
         });
 
+        // Materias
+        Route::prefix('materias')->as('materias.')->group(function () {
+            Route::get('', [MateriasController::class, 'index'])->name('index');
+            Route::get('create', [MateriasController::class, 'create'])->name('create');
+            Route::post('store', [MateriasController::class, 'store'])->name('store');
+            Route::get('edit/{id_materia}', [MateriasController::class, 'showFormEdit'])->name('edit');
+            Route::post('save_edit', [MateriasController::class, 'saveEdit'])->name('save_edit');
+        });
+
         // Cursos
         Route::prefix('courses')->as('courses.')->group(function () {
             Route::get('', [CoursesController::class, 'index'])->name('index');
@@ -86,6 +97,19 @@ Route::middleware(['auth'])->group(function () {
             Route::get('edit/{id_curso}', [CoursesController::class, 'showFormEdit'])->name('edit');
             Route::post('save_edit', [CoursesController::class, 'saveEdit'])->name('save_edit');
             Route::delete('delete/{id}', [CoursesController::class, 'destroy'])->name('school.courses.destroy');
+
+            // ORIENTACIONES - MODALIDADES
+            Route::prefix('orientation')->as('orientation.')->group(function () {
+                Route::get('', [OrientacionCursosController::class, 'index'])->name('index');
+                Route::get('getData', [OrientacionCursosController::class, 'getData'])->name('data');
+
+                Route::get('new', [OrientacionCursosController::class, 'create'])->name('create');
+                Route::post('store', [OrientacionCursosController::class, 'store'])->name('store');
+                Route::get('edit/{id}', [OrientacionCursosController::class, 'showEditForm'])->name('edit');
+                Route::post('save_edit', [OrientacionCursosController::class, 'saveEdit'])->name('save_edit');
+            });
+
+
 
             Route::get('{id}/dashboard', [CoursesController::class, 'viewDashboard'])->name('dashboard');
             Route::get('{id}/materias', [CoursesController::class, 'viewMaterias'])->name('list_materias');

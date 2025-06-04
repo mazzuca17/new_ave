@@ -54,6 +54,17 @@
                     <span class="sub-item">Crear curso</span>
                 </a>
             </li>
+            <hr>
+            <li>
+                <a href="{{ route('school.courses.orientation.index') }}">
+                    <span class="sub-item">Ver orientaciones</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('school.courses.orientation.create') }}">
+                    <span class="sub-item">Crear orientaciones</span>
+                </a>
+            </li>
 
         </ul>
     </div>
@@ -68,20 +79,16 @@
     <div class="collapse" id="materias">
         <ul class="nav nav-collapse">
             <li>
-                <a href="#">
+                <a href="{{ route('school.materias.index') }}">
                     <span class="sub-item">Ver materias</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('school.materias.create') }}">
                     <span class="sub-item">Crear materias</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <span class="sub-item">Carga masiva</span>
-                </a>
-            </li>
+
         </ul>
     </div>
 </li>
