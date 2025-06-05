@@ -143,7 +143,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('new', [ProfesoresController::class, 'showFormNew'])->name('new');
             Route::post('create', [ProfesoresController::class, 'saveNewDocente'])->name('create');
             Route::get('edit/{id_profesor}', [ProfesoresController::class, 'showFormEdit'])->name('edit');
-            Route::post('save_edit', [ProfesoresController::class, 'saveEdit'])->name('save_edit');
+            Route::post('update', [ProfesoresController::class, 'saveEdit'])->name('update');
             Route::get('{id_profesor}', [ProfesoresController::class, 'showProfile'])->name('profile');
         });
 

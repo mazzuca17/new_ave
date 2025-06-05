@@ -22,7 +22,7 @@
                             <div class='card-header d-flex justify-content-between align-items-center'>
                                 <div class='card-title'>Materias</div>
                                 <div>
-                                    <a href="{{ route('school.ciclos.create') }}" class="btn btn-primary">
+                                    <a href="{{ route('school.materias.create') }}" class="btn btn-primary">
                                         Cargar materia</a>
                                 </div>
                             </div>

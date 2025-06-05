@@ -79,7 +79,7 @@ class ProfesoresController extends Controller
             'direccion'        => 'nullable|string|max:255',
             'telefono'         => 'nullable|string|max:20',
             'nacionalidad'     => 'nullable|string|max:50',
-            'image_profile'    => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile_photo'    => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user = User::create([
@@ -93,8 +93,9 @@ class ProfesoresController extends Controller
         ]);
 
         // Subir foto de perfil si existe
-        if ($request->hasFile('image_profile')) {
-            $imagePath = $request->file('image_profile')->store('profile_images', 'public');
+        if ($request->hasFile('profile_photo')) {
+
+            $imagePath = $request->file('profile_photo')->store('profile_images', 'public');
             $user->image_profile = $imagePath;
             $user->save(); // Guardar la foto de perfil en users
         }
@@ -129,56 +130,79 @@ class ProfesoresController extends Controller
 
     public function saveEdit(Request $request)
     {
-        // Validación de los datos
-        $request->validate([
-            'last_name'        => 'required|string|max:255',
-            'name'             => 'required|string|max:255',
-            'email'            => 'required|email|unique:users,email',
-            'dni'              => 'required|string|max:20|unique:profs,dni',
-            'fecha_nacimiento' => 'nullable|date',
-            'genero'           => 'nullable|string|in:masculino,femenino,otro',
-            'direccion'        => 'nullable|string|max:255',
-            'telefono'         => 'nullable|string|max:20',
-            'nacionalidad'     => 'nullable|string|max:50',
-            'image_profile'    => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
 
-        // Obtener el pro$prof por su ID
-        $prof = Profesors::findOrFail($request->get('student_id'));
-        $user = User::findOrFail($prof->user_id);
+        try {
+            $prof = Profesors::findOrFail($request->get('profesor_id'));
+            $user = User::findOrFail($prof->user_id);
+            // Validación
+            $validated = $request->validate([
+                'last_name'        => 'required|string|max:255',
+                'name'             => 'required|string|max:255',
+                'email'            => 'required|email|unique:users,email,' . $user->id,
+                'dni'              => 'required|string|max:20|unique:profesors,dni,' . $prof->id,
+                'fecha_nacimiento' => 'nullable|date',
+                'genero'           => 'nullable|string|in:masculino,femenino,otro',
+                'direccion'        => 'nullable|string|max:255',
+                'telefono'         => 'nullable|string|max:20',
+                'nacionalidad'     => 'nullable|string|max:50',
+                'profile_photo'    => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::debug($e->getMessage());
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Errores de validación',
+                    'errors' => $e->errors()
+                ], 422);
+            }
 
-        // Actualizar los datos del prof
-        $user->last_name           = $request->last_name;
-        $user->name                = $request->name;
-        $user->email               = $request->email;
-        $prof->dni                 = $request->dni;
-        $prof->fecha_nacimiento    = $request->fecha_nacimiento;
-        $prof->genero              = $request->genero;
-        $prof->direccion           = $request->direccion;
-        $prof->telefono            = $request->telefono;
-        $prof->nacionalidad        = $request->nacionalidad;
-        $prof->curso_id            = $request->curso_id;
-        $prof->condition           = $request->condition;
-        $prof->nombre_tutor        = $request->nombre_tutor;
-        $prof->telefono_tutor      = $request->telefono_tutor;
-        $prof->alergias            = $request->alergias;
-        $prof->seguro_medico       = $request->seguro_medico;
-        $prof->contacto_emergencia = $request->contacto_emergencia;
-
-        // Si se sube una nueva foto de perfil, la guardamos
-        if ($request->hasFile('image_profile')) {
-            $imageName = time() . '.' . $request->image_profile->extension();
-            $request->image_profile->move(public_path('images/docentes'), $imageName);
-            $prof->image_profile = $imageName;
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
         }
 
-        // Guardamos los cambios
-        $prof->save();
-        $user->save();
+        Log::debug("DFSDSD");
 
-        // Redirigir con un mensaje de éxito
-        return redirect()->route('school.docentes.index')->with('success', 'Docente actualizado correctamente.');
+        // Asignar datos al usuario
+        $user->fill([
+            'last_name' => $request->last_name,
+            'name'      => $request->name,
+            'email'     => $request->email,
+        ]);
+
+        // Asignar datos al profesor
+        $prof->fill([
+            'dni'                 => $request->dni,
+            'fecha_nacimiento'    => $request->fecha_nacimiento,
+            'genero'              => $request->genero,
+            'direccion'           => $request->direccion,
+            'telefono'            => $request->telefono,
+            'nacionalidad'        => $request->nacionalidad,
+            'curso_id'            => $request->curso_id,
+            'condition'           => $request->condition,
+            'nombre_tutor'        => $request->nombre_tutor,
+            'telefono_tutor'      => $request->telefono_tutor,
+            'alergias'            => $request->alergias,
+            'seguro_medico'       => $request->seguro_medico,
+            'contacto_emergencia' => $request->contacto_emergencia,
+        ]);
+
+        // Procesar imagen si se carga
+        if ($request->hasFile('profile_photo')) {
+            $imagePath = $request->file('profile_photo')->store('profile_images', 'public');
+            $user->image_profile = $imagePath;
+        }
+
+        // Guardar ambos modelos
+        $user->save();
+        $prof->save();
+
+        return redirect()->route('school.docentes.index')
+            ->with('success', 'Docente actualizado correctamente.');
     }
+
+
 
     /**
      * destroy
@@ -202,9 +226,9 @@ class ProfesoresController extends Controller
     public function showProfile(int $user_prof_id)
     {
         // Buscar el  por ID
-        $prof = Profesors::findOrFail($user_prof_id);
-
+        $prof = Profesors::with('user')->findOrFail($user_prof_id);
+        Log::debug($prof);
         // Devolver la vista con los datos del pro$prof
-        return view('school.profesors.profile', compact('prof'));
+        return view('school.profesors.profile.index', compact('prof'));
     }
 }
