@@ -19,12 +19,6 @@ class CreateMaterias extends Migration
             $table->unsignedBigInteger('curso_id');
             $table->string('code_materia');
             $table->string('nombre');
-            $table->text('horarios');
-            $table->foreign('curso_id')
-                ->references('id') // permission id
-                ->on('cursos')
-                ->onDelete('cascade');
-
             $table->foreign('school_id')
                 ->references('id') // permission id
                 ->on('schools')
@@ -40,6 +34,7 @@ class CreateMaterias extends Migration
      */
     public function down()
     {
+
         Schema::dropIfExists('materias');
     }
 }

@@ -8,5 +8,5 @@
     <a href="{{ route('admin.dashboard') }}">Ver establecimientos</a>
 </li>
 <li class="nav-item">
-    <a href="{{ route('admin.schools_create') }}">Crear establecimiento</a>
+    <a href="{{ route('admin.schools.create') }}">Crear establecimiento</a>
 </li>

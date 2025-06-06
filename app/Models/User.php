@@ -21,7 +21,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'last_name',
         'email',
+        'image_profile',
+        'school_id',
         'password',
     ];
 
@@ -50,14 +53,25 @@ class User extends Authenticatable
             return asset('avatar.png');
         }
     }
+  
 
-    public function role()
-    {
-        return $this->hasOne(RoleUser::class, 'user_id');
-    }
-
+    /**
+     * school
+     *
+     * @author Matías
+     */
     public function school()
     {
         return $this->hasOne(Schools::class, 'user_id');
+    }
+
+    public function docente()
+    {
+        return $this->hasOne(Profesors::class, 'user_id');
+    }
+
+    public function student()
+    {
+        return $this->hasOne(Students::class, 'user_id');
     }
 }

@@ -36,6 +36,11 @@ class RoleSeeder extends Seeder
         $role->display_name = ucwords('Alumno');
         $role->save();
 
+        $role               = new Role();
+        $role->name         = "Padre";
+        $role->display_name = ucwords('Padre');
+        $role->save();
+
 
         $users = User::all();
 

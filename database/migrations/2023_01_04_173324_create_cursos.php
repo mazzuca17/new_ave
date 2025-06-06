@@ -16,7 +16,8 @@ class CreateCursos extends Migration
         Schema::create('cursos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('school_id');
-            $table->string('name');
+            $table->string('name')->unique();
+            $table->string('level');
             $table->foreign('school_id')
                 ->references('id') // permission id
                 ->on('schools')

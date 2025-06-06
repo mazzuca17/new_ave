@@ -8,6 +8,7 @@ use App\Helpers\Helper;
 use App\Models\Schools;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 
@@ -15,6 +16,15 @@ class SchoolsController extends Controller
 {
     public function create()
     {
+        $user = Auth::user();
+        // Obtener los roles del usuario
+        $roles = $user->roles;
+
+        // $roles es una colección de roles
+        foreach ($roles as $role) {
+            Log::debug($role->name);
+        }
+
         return view('superadmin.create');
     }
 
@@ -27,7 +37,7 @@ class SchoolsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect(route('admin.schools_create'))->with('error', 'Error al intentar generar el establecimiento. Intente más tarde.');
+            return redirect(route('admin.schools.create'))->with('error', 'Error al intentar generar el establecimiento. Intente más tarde.');
         }
 
         $input = $request->all();
@@ -48,9 +58,9 @@ class SchoolsController extends Controller
                 'created_at'  => Carbon::now(),
                 'updated_at'  => Carbon::now(),
             ]);
-            return redirect(route('admin.schools_create'))->with('status', 'Establecimiento registrado con éxito!');
+            return redirect(route('admin.schools.create'))->with('status', 'Establecimiento registrado con éxito!');
         }
-        return redirect(route('admin.schools_create'))->with('error', 'Error al intentar generar el establecimiento. Intente más tarde.');
+        return redirect(route('admin.schools.create'))->with('error', 'Error al intentar generar el establecimiento. Intente más tarde.');
     }
 
     /**
@@ -76,13 +86,13 @@ class SchoolsController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name_school' => 'required|max:255',
-            'school_id'  => 'required',
+            'school_id'   => 'required',
             'email'       => 'required',
             'description' => 'required',
         ]);
 
         if ($validator->fails()) {
-            return redirect(route('admin.schools_edit', ['id' => $request->school_id]))->with('error', 'Error al intentar editar el establecimiento. Intente más tarde.');
+            return redirect(route('admin.schools.edit', ['id' => $request->school_id]))->with('error', 'Error al intentar editar el establecimiento. Intente más tarde.');
         }
 
         Log::debug($request->all());
@@ -102,9 +112,9 @@ class SchoolsController extends Controller
                     'description' => $request->description,
                     'updated_at'  => Carbon::now(),
                 ]);
-                return redirect(route('admin.schools_edit', ['id' => $request->school_id]))->with('status', 'Establecimiento editado con éxito!');
+                return redirect(route('admin.schools.edit', ['id' => $request->school_id]))->with('status', 'Establecimiento editado con éxito!');
             }
-            return redirect(route('admin.schools_edit', ['id' => $request->school_id]))->with('error', 'Error al actualizar el establecimiento ' . $user->name);
+            return redirect(route('admin.schools.edit', ['id' => $request->school_id]))->with('error', 'Error al actualizar el establecimiento ' . $user->name);
         }
     }
 

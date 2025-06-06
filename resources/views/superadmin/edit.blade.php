@@ -15,7 +15,7 @@
                             <div class="card-header">
                                 <div class="card-title">Editar establecimiento.</div>
                             </div>
-                            <form action="{{ route('admin.schools_update') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.schools.update') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
 

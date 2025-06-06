@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class RoleUser extends Model
 {
-    protected $table = 'role_user';
+    protected $table = 'model_has_roles';
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'model_id');
     }
 
     public function role()

@@ -2,66 +2,57 @@
 
 @section('content')
     <div class="content">
+        <!-- Header de Bienvenida -->
         <div class="panel-header bg-dark-gradient">
             <div class="page-inner py-5">
                 <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                     <div>
-                        <h2 class="text-white op-7 mb-2">Hola {{ Auth::user()->name }}! Bienvenido a AVE </h2>
-                        <h4 class="text-white op-7 mb-2">Un servicio de The Bildung Company.</h4>
+                        <h2 class="text-white op-7 mb-2">¡Hola {{ Auth::user()->name }}! </h2>
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="page-inner mt--5">
+            @include('school.dashboard.cards')
+
+            <!-- Sección de Eventos Recientes -->
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card card-primary bg-primary-gradient">
+                    <div class="card bg-primary-gradient">
                         <div class="card-header">
-                            <div class="d-flex align-items-center">
-                                <h3 class="card-title"><b>Eventos (últimos 10).<b></h3>
-
-                            </div>
+                            <h3 class="card-title text-white"><b>Últimos 10 Eventos</b></h3>
                         </div>
                         <div class="card-body">
-                            @if (isset($eventos[0]))
+                            @if (!empty($eventos) && count($eventos) > 0)
                                 @include('school.eventos.index')
                             @else
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <h1 class="card-title">No hay eventos.</h1>
-                                    </div>
-                                    <div class="col-md-6">
-                                    </div>
-                                </div>
+                                <div class="text-center text-white">No hay eventos disponibles.</div>
                             @endif
                         </div>
-                        <div class="card-footer">
-                            <a href="{{ route('school.events.create') }}" class="btn btn-success">Cargar evento</a>
-                            <a href="{{ route('school.events.view') }}" class='btn btn-success ml-auto'>Ver todos</a>
-
+                        <div class="card-footer text-right">
+                            <a href="{{ route('school.events.view') }}" class="btn btn-light">Ver todos</a>
                         </div>
                     </div>
                 </div>
-
-
             </div>
 
-
-            <!-- FIN informar eventos-->
-
-            <!-- Sección de cursos-->
-            @include('school.courses.index')
-
-            <!-- FIN Sección de cursos-->
-
+            <!-- Sección de Cursos y Mensajería -->
+            <div class="row">
+                <div class="col-md-6">
+                    @include('school.courses.list_course')
+                </div>
+                <div class="col-md-6">
+                </div>
+            </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-        <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+    </div>
 
-        <script>
-            $(document).ready(function() {
-                $('#example').DataTable();
-            });
-        </script>
-    @endsection
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        });
+    </script>
+@endsection

@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -64,7 +65,7 @@ class LoginController extends Controller
         $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
         if (auth()->attempt(array($fieldType => $input['email'], 'password' => $input['password']))) {
             // Se analiza el tipo de usuario y se define la ruta a donde será redireccionado
-            return $this->getRoleUser(auth()->user());
+            return $this->getRoleUser();
         } else {
             return redirect()->route('login')
                 ->with('status', self::MESSAGE_ERROR_CREDENTIALS);
@@ -83,23 +84,48 @@ class LoginController extends Controller
         return redirect()->route('login');
     }
 
-    public function getRoleUser($user)
+    /**
+     * getRoleUser
+     *
+     * @author Matías
+     */
+    protected function getRoleUser()
     {
-        switch ($user->role->role_id) {
-            case $this->type_rol_admin:
-                return redirect()->route('admin.dashboard');
-                break;
+        $user = Auth::user();
 
-            case $this->type_rol_school:
-                return redirect()->route('school.dashboard');
-                break;
+        // Obtener los roles del usuario
+        $roles = $user->roles;
 
-            case $this->type_rol_school:
-                return redirect()->route('admin.dashboard');
-                break;
-            case $this->type_rol_student:
-                return redirect()->route('admin.dashboard');
-                break;
+        // Verificar los roles
+        foreach ($roles as $role) {
+            switch ($role->name) {
+                case 'Superadmin':
+                    return redirect()->route('admin.dashboard');
+                    break;
+
+                case 'Colegio':
+                    return redirect()->route('school.dashboard');
+                    break;
+
+                case 'Docente':
+                    return redirect()->route('docente.dashboard');
+                    break;
+
+                case 'Alumno':
+                    return redirect()->route('student.dashboard');
+                    break;
+
+                case 'Padre':
+                    return redirect()->route('student.dashboard');
+                    break;
+
+                // Agrega más casos según sea necesario
+
+                default:
+                    // Manejar un caso por defecto si el rol no coincide con ninguno de los casos anteriores
+                    return redirect()->route('default.dashboard');
+                    break;
+            }
         }
     }
 }

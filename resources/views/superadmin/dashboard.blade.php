@@ -8,8 +8,7 @@
             <div class="page-inner py-5">
                 <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                     <div>
-                        <h2 class="text-white op-7 mb-2">Hola {{ Auth::user()->name }}! Bienvenido a AVE </h2>
-                        <h4 class="text-white op-7 mb-2">Un servicio de The Bildung Company.</h4>
+                        <h2 class="text-white op-7 mb-2">¡Hola {{ Auth::user()->name }}!</h2>
                     </div>
                 </div>
             </div>
@@ -25,7 +24,7 @@
                         @endif
                         <div class="card card-entradas-borrador">
                             <div class="card-body">
-                                <a href="{{ route('admin.schools_create') }}" class="btn btn-primary btn-create_account"
+                                <a href="{{ route('admin.schools.create') }}" class="btn btn-primary btn-create_account"
                                     style="margin-block-end:  1rem !important;">Registar nuevo establecimiento</a>
 
                                 <div class="table-responsive">
@@ -57,7 +56,7 @@
 
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <a href="{{ route('admin.schools_edit', ['id' => $item->user_id]) }}"
+                                                                <a href="{{ route('admin.schools.edit', ['id' => $item->user_id]) }}"
                                                                     class="btn btn-success">Editar cuenta</a>
                                                             </div>
                                                         </div>

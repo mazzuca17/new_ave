@@ -16,28 +16,35 @@ class CreateStudents extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('curso_id');
             $table->unsignedBigInteger('school_id');
 
+            // Datos personales
+            $table->string('dni')->unique();
+            $table->date('fecha_nacimiento')->nullable();
+            $table->enum('genero', ['masculino', 'femenino', 'otro'])->nullable();
+            $table->string('direccion')->nullable();
+            $table->string('telefono')->nullable();
+            $table->string('nacionalidad')->nullable();
             $table->string('image_profile')->nullable();
-            $table->enum('condition', ['aprobado', 'finales']);
-            $table->double('promedio_general');
+
+            // Datos académicos
+            $table->year('anio_ingreso')->nullable();
+                    
+
+            // Datos familiares
+            $table->string('nombre_tutor')->nullable();
+            $table->string('telefono_tutor')->nullable();
+
+            // Datos médicos
+            $table->text('alergias')->nullable();
+            $table->string('seguro_medico')->nullable();
+            $table->string('contacto_emergencia')->nullable();
+
             $table->timestamps();
 
-            $table->foreign('user_id')
-                ->references('id') // permission id
-                ->on('users')
-                ->onDelete('cascade');
-
-            $table->foreign('curso_id')
-                ->references('id') // permission id
-                ->on('cursos')
-                ->onDelete('cascade');
-
-            $table->foreign('school_id')
-                ->references('id') // permission id
-                ->on('schools')
-                ->onDelete('cascade');
+            // Claves foráneas
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
         });
     }
 

@@ -1,61 +1,168 @@
-@extends('layouts.app_system')
+<div class="modal fade" id="createEventModal" tabindex="-1" role="dialog" aria-labelledby="createEventModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createEventModalLabel">Crear Nuevo Evento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="createEventForm">
+                    <input type="hidden" id="user_role" value="Colegio"> <!-- Valor dinámico del backend -->
+                    <input type="hidden" id="preselected_curso" value="{{ $curso->id ?? '' }}">
 
-@section('content')
-    <div class="content">
-        <div class="page-inner mt--20">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8 ml-auto mr-auto">
-                        @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">Crear evento.</div>
-                            </div>
-                            <form action="{{ route('school.events.store') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-3 col-lg-4">
-
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label id="title" class="mb-3"><b>Título</b></label>
-                                                <input class="form-control" name="title" type="text"
-                                                    placeholder="Título del evento" required>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label id="description" class="mb-3"><b>Descripción</b></label>
-                                                <input class="form-control" name="description" type="text"
-                                                    placeholder="Descripción del evento" required>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label id="fecha" class="mb-3"><b>Fecha</b></label>
-                                                <input class="form-control" name="fecha" type="date"
-                                                    placeholder="Fecha del evento" required>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    <div class="card-action">
-                                        <button class="btn btn-success" name="submit">Guardar</button>
-                                        <a href="{{ route('school.dashboard') }}" class="btn btn-danger">Cancelar</a>
-                                    </div>
-                            </form>
-                        </div>
+                    <div class="form-group">
+                        <label for="new_event_title">Título</label>
+                        <input type="text" class="form-control" id="new_event_title" required>
                     </div>
-                </div>
+
+                    <div class="form-group">
+                        <label for="new_event_type">Tipo de Evento</label>
+                        <select class="form-control" id="new_event_type" required>
+                            <option value="">Seleccione un tipo</option>
+                            <option value="administrativo">Administrativo</option>
+
+                            <option value="global" {{ $curso != null ? 'hidden' : '' }}>Global</option>
+                            <option value="evaluacion">Evaluación</option>
+                            <option value="entrega_tp">Entrega TP</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="curso_group">
+                        <label for="new_event_curso">Curso</label>
+                        <select class="form-control" id="new_event_curso" {{ $curso != null ? 'readonly' : '' }}>
+                            <option value="">Seleccione un curso</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="materia_group">
+                        <label for="new_event_materia">Materia</label>
+                        <select class="form-control" id="new_event_materia">
+                            <option value="">Seleccione una materia</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new_event_date">Fecha</label>
+                        <input type="date" class="form-control" id="new_event_date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new_event_description">Descripción</label>
+                        <textarea class="form-control" id="new_event_description" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Crear Evento</button>
+                </form>
             </div>
         </div>
-
     </div>
-@endsection
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const selectTipo = document.getElementById("new_event_type");
+        const selectCurso = document.getElementById("new_event_curso");
+        const selectMateria = document.getElementById("new_event_materia");
+        const cursoGroup = document.getElementById("curso_group");
+        const materiaGroup = document.getElementById("materia_group");
+        const userRole = document.getElementById("user_role").value;
+        const preselectedCurso = document.getElementById("preselected_curso").value;
+
+        /**
+         * Carga los cursos disponibles
+         */
+        function cargarCursos() {
+            fetch('/school/api/cursos')
+                .then(response => response.json())
+                .then(data => {
+                    selectCurso.innerHTML = '<option value="">Seleccione un curso</option>';
+                    data.forEach(curso => {
+                        let option = document.createElement("option");
+                        option.value = curso.id;
+                        option.textContent = curso.name;
+                        if (curso.id == preselectedCurso) {
+                            option.selected = true;
+                        }
+                        selectCurso.appendChild(option);
+                    });
+
+                    if (preselectedCurso) {
+                        selectCurso.dispatchEvent(new Event('change'));
+                    }
+                })
+                .catch(error => console.error("Error al cargar cursos:", error));
+        }
+
+        /**
+         * Carga las materias según el curso seleccionado
+         */
+        function cargarMaterias(cursoId) {
+            selectMateria.innerHTML = '<option value="">Seleccione una materia</option>';
+            if (cursoId) {
+                fetch(`/school/api/materias?curso_id=${cursoId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(materia => {
+                            let option = document.createElement("option");
+                            option.value = materia.id;
+                            option.textContent = materia.nombre;
+                            selectMateria.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error("Error al cargar materias:", error));
+            }
+        }
+
+        /**
+         * Maneja la visibilidad de los campos Curso y Materia
+         */
+        function actualizarVisibilidad() {
+            let tipo = selectTipo.value;
+            cursoGroup.style.display = "none";
+            materiaGroup.style.display = "none";
+            if (userRole === "Colegio" || userRole === "Docente") {
+                if (tipo === "evaluacion" || tipo === "entrega_tp") {
+                    cursoGroup.style.display = "block";
+                    materiaGroup.style.display = "block";
+                    selectCurso.setAttribute("required", "true");
+                    selectMateria.setAttribute("required", "true");
+                } else if (tipo === "administrativo" && userRole === "Colegio") {
+                    alert('ACA');
+                    cursoGroup.style.display = "block";
+                    materiaGroup.style.display = "none";
+                    selectCurso.setAttribute("required", "true");
+                    selectMateria.removeAttribute("required");
+                } else {
+                    cursoGroup.style.display = "none";
+                    materiaGroup.style.display = "none";
+                    selectCurso.removeAttribute("required");
+                    selectMateria.removeAttribute("required");
+                }
+            } else {
+                cursoGroup.style.display = "none";
+                materiaGroup.style.display = "none";
+                selectCurso.removeAttribute("required");
+                selectMateria.removeAttribute("required");
+            }
+        }
+
+        // Listeners
+        selectCurso.addEventListener("change", function() {
+            cargarMaterias(this.value);
+        });
+
+        cursoGroup.style.display = "none";
+        materiaGroup.style.display = "none";
+
+        selectTipo.addEventListener("change", actualizarVisibilidad);
+
+        // Inicializar
+        cursoGroup.style.display = "none";
+        materiaGroup.style.display = "none";
+
+        cargarCursos();
+    });
+</script>

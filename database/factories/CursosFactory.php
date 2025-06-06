@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Cursos;
 
 class CursosFactory extends Factory
 {
@@ -14,17 +15,34 @@ class CursosFactory extends Factory
      */
     public function definition()
     {
+        $uniqueName = $this->generateUniqueName();
+
         return [
             'school_id'  => 1,
-            'name'       =>  rand(1, 7) . '° ' . $this->faker->randomElement($this->getStringCurses()) . ' ' . $this->faker->randomElement($this->getTypeCurse()),
+            'name'       => $uniqueName,
+            'level'      => 'Secundario',
+            'modalidad'  => $this->faker->randomElement($this->getTypeCurse()),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-
         ];
     }
 
     /**
-     * getStringCurses
+     * Genera un nombre único para el curso
+     *
+     * @return string
+     */
+    private function generateUniqueName(): string
+    {
+        do {
+            $name = rand(1, 7) . '° ' . $this->faker->randomElement($this->getStringCurses());
+        } while (Cursos::where('name', $name)->exists());
+
+        return $name;
+    }
+
+    /**
+     * Devuelve los nombres de los cursos disponibles
      *
      * @return array
      */
@@ -34,7 +52,7 @@ class CursosFactory extends Factory
     }
 
     /**
-     * getTypeCurse
+     * Devuelve los tipos de curso disponibles
      *
      * @return array 
      */

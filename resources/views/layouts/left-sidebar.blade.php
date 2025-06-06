@@ -46,18 +46,12 @@
                 </div>
             </div>
             <ul class="nav nav-primary">
-                @if (Auth::user()->role->role_id == 1)
+                @if (Auth::user()->hasRole('Superadmin') == 1)
                     @include('layouts.sidebar.sidebar_admin')
                 @endif
 
-                @if (Auth::user()->role->role_id == 2)
+                @if (Auth::user()->hasRole('Colegio'))
                     @include('layouts.sidebar.sidebar_school')
-                @endif
-
-                @if (Auth::user()->role->role_id == 3)
-                @endif
-
-                @if (Auth::user()->role->role_id == 4)
                 @endif
 
 

@@ -8,11 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Eventos extends Model
 {
     use HasFactory;
+    const TYPE_GLOBAL = 1;
+    const TYPE_PARTICULAR = 2;
 
     protected $table    = 'eventos';
     protected $fillable = [
         'school_id',
         'user_id',
+        'type_id',
         'title',
         'description',
         'fecha',
@@ -20,6 +23,7 @@ class Eventos extends Model
         'curso_id',
         'created_at',
         'updated_at',
+        'type_event'
     ];
 
     /**
@@ -52,6 +56,11 @@ class Eventos extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
+    public function TypeEvent()
+    {
+        return $this->hasOne(TypeEvent::class, 'id', 'type_event');
+    }
+
     /**
      * curso
      *
@@ -60,5 +69,16 @@ class Eventos extends Model
     public function curso()
     {
         return $this->hasOne(Cursos::class, 'id', 'curso_id');
+    }
+
+    /**
+     * getType
+     *
+     * @param string $type
+     * @author Matías
+     */
+    public static function getType(string $type)
+    {
+        return TypeEvent::where('name', $type)->first();
     }
 }
