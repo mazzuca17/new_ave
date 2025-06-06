@@ -29,6 +29,8 @@
                                 <div class="card-title">Crear materia</div>
                             </div>
 
+
+
                             <form action="{{ route('school.materias.store') }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
@@ -38,18 +40,35 @@
                                         <input type="text" class="form-control" name="name" required>
                                     </div>
 
-                                    <h5>Docentes</h5>
-                                    <div id="teachers-wrapper">
-                                        <div class="teacher-block border p-3 mb-3">
-                                            <div class="form-group">
-                                                <label>Docente</label>
-                                                <input type="text" class="form-control" name="teachers[]"
-                                                    placeholder="Nombre del docente" required>
-                                            </div>
-                                        </div>
+                                    <div class="form-group form-group-default">
+                                        <label>Curso</label>
+                                        <select class="form-control" name="curso_id" id="">
+                                            <option value="">Selecciona el curso</option>
+                                            @foreach ($cursos as $item)
+                                                <option value="{{ $item->id }}">
+                                                    {{ $item->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    <button type="button" class="btn btn-primary add-teacher mt-2">+ Agregar
-                                        docente</button>
+
+                                    <div class="form-group form-group-default">
+                                        <label>Seleccionar docente</label>
+                                        <select class="form-control" id="teacher-select">
+                                            <option value="">Selecciona un docente</option>
+                                            @foreach ($profesors as $teacher)
+                                                <option value="{{ $teacher->id }}">
+                                                    {{ strtoupper($teacher->user->last_name) }}, {{ $teacher->user->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                        <ul id="selected-teachers" class="list-group mt-3"></ul>
+
+                                    </div>
+
+
 
                                     <h5 class="mt-4">Horarios de la materia</h5>
                                     <div id="horarios-wrapper">
@@ -90,19 +109,49 @@
         let teacherCount = 1;
         let scheduleCount = 1;
 
+        function actualizarOpcionesDocentes() {
+            const seleccionados = [];
+
+            $('.teacher-select').each(function() {
+                const val = $(this).val();
+                if (val) {
+                    seleccionados.push(val);
+                }
+            });
+
+            $('.teacher-select').each(function() {
+                const currentSelect = $(this);
+                const currentVal = currentSelect.val();
+
+                currentSelect.find('option').each(function() {
+                    const optionVal = $(this).attr('value');
+                    if (!optionVal) return; // Ignorar opción vacía
+
+                    if (optionVal === currentVal || !seleccionados.includes(optionVal)) {
+                        $(this).prop('disabled', false);
+                    } else {
+                        $(this).prop('disabled', true);
+                    }
+                });
+            });
+        }
+
         $('.add-teacher').on('click', function() {
             const newTeacher = $('.teacher-block').first().clone();
-            newTeacher.find('input').val('');
+            newTeacher.find('select').val('');
             $('#teachers-wrapper').append(newTeacher);
             teacherCount++;
+            actualizarOpcionesDocentes();
+        });
+
+        $(document).on('change', '.teacher-select', function() {
+            actualizarOpcionesDocentes();
         });
 
         $('.add-schedule').on('click', function() {
             const newSchedule = $('.horario-block').first().clone();
             newSchedule.find('select, input').each(function() {
                 const name = $(this).attr('name');
-                const base = name.split('[')[0];
-                const key = name.split('[')[1].split(']')[0];
                 const field = name.split('[')[2].split(']')[0];
                 $(this).attr('name', `schedules[${scheduleCount}][${field}]`).val('');
             });
@@ -115,5 +164,47 @@
                 $(this).closest('.horario-block').remove();
             }
         });
+
+        $(document).ready(function() {
+            actualizarOpcionesDocentes();
+        });
     </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#teacher-select').on('change', function() {
+                const selectedId = $(this).val();
+                const selectedText = $(this).find('option:selected').text();
+
+                if (!selectedId) return;
+
+                // Agregar a la lista visual
+                const listItem = $(`
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            ${selectedText}
+            <input type="hidden" name="teachers[]" value="${selectedId}">
+            <button type="button" class="btn btn-sm btn-danger remove-teacher">Eliminar</button>
+        </li>
+    `);
+                $('#selected-teachers').append(listItem);
+
+                // Eliminar del select
+                $(this).find(`option[value="${selectedId}"]`).hide();
+                $(this).val('');
+            });
+
+            $(document).on('click', '.remove-teacher', function() {
+                const li = $(this).closest('li');
+                const teacherId = li.find('input').val();
+
+                // Volver a mostrar en el select
+                $(`#teacher-select option[value="${teacherId}"]`).show();
+
+                li.remove();
+            });
+
+        });
+    </script>
+
+
 @endsection

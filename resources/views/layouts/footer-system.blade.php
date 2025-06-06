@@ -21,7 +21,7 @@
                 var today = new Date();
                 var year = today.getFullYear();
                 document.write(year +
-                    "- AVE {{ $roleText }} - Un servicio de The Bildung Company - Todos los derechos reservados");
+                    "- AVE {{ $roleText }} -  - Todos los derechos reservados");
             </script>
         </div>
     </div>
