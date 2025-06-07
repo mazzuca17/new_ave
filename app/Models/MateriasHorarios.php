@@ -35,4 +35,20 @@ class MateriasHorarios extends Model
         $dia = strtolower(trim($dia));
         return $dias[$dia] ?? null; // devuelve null si no se encuentra
     }
+
+    public static function getDayWeek(int $dia): ?string
+    {
+        $dias = [
+            1 => 'lunes',
+            2 => 'martes',
+            3 => 'miércoles',
+            4 => 'jueves',
+            5 => 'viernes',
+            6 => 'sábado',
+            7 => 'domingo',
+        ];
+
+        $dia = strtolower(trim($dia));
+        return ucfirst($dias[$dia]) ?? null; // devuelve null si no se encuentra
+    }
 }

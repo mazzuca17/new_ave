@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 use SubjectTeacher;
+use Yajra\DataTables\Facades\DataTables;
 
 class MateriasController extends Controller
 {
@@ -25,7 +26,68 @@ class MateriasController extends Controller
         return view('materias.index');
     }
 
-    public function getData(Request $request) {}
+    public function getData(Request $request)
+    {
+        $data = Materias::with('cursos', 'materiasprofesores.teachers.user', 'horarios')
+            ->where('school_id', Auth::user()->school->id)
+            ->get();
+
+
+        return DataTables::of($data)
+            ->addColumn('code', function ($data) {
+                return $data->id;
+            })
+            ->addColumn('name', function ($data) {
+                return $data->nombre;
+            })
+            ->addColumn('course', function ($data) {
+                Log::debug($data);
+                return $data->cursos->name;
+            })
+            ->addColumn('orientation_course', function ($data) {
+                return $data->cursos->orientationCourses->name;
+            })
+            ->addColumn('horarios', function ($data) {
+                $items = $data->horarios->map(function ($p) {
+                    $start = Carbon::parse($p->start_time)->format('H:i');
+                    $end = Carbon::parse($p->end_time)->format('H:i');
+                    return '<li>' . MateriasHorarios::getDayWeek($p->day_of_week) . ' de ' . $start . ' a ' . $end . ' hs.</li>';
+                })->join('');
+
+                return '<ul>' . $items . '</ul>';
+            })
+
+            ->addColumn('profesores', function ($data) {
+                return collect($data->materiasprofesores)->flatMap(function ($materiaProf) {
+                    return collect($materiaProf['teachers'])->map(function ($teacher) {
+                        return optional($teacher['user'])['last_name'] . ' ' . optional($teacher['user'])['name'];
+                    });
+                })->join(', ');
+            })
+
+            ->addColumn('total_horas', function ($data) {
+                return collect($data->horarios)->reduce(function ($carry, $horario) {
+                    $start = \Carbon\Carbon::parse($horario['start_time']);
+                    $end = \Carbon\Carbon::parse($horario['end_time']);
+                    return round($carry + $end->diffInMinutes($start) / 60);
+                }, 0) . ' hs';
+            })
+            ->addColumn('actions', function ($data) {
+                return '
+            <a href="' . route('school.materias.details', $data->id) . '" class="btn btn-info btn-sm">
+                <i class="fas fa-eye"></i> Ver Perfil
+            </a>
+            <a href="' . route('school.materias.edit', $data->id) . '" class="btn btn-warning btn-sm">
+                <i class="fas fa-edit"></i> Editar
+            </a>
+            <button class="btn btn-danger btn-sm delete-materia" data-id="' . $data->id . '">
+                <i class="fas fa-trash-alt"></i> Eliminar
+            </button>
+        ';
+            })
+            ->rawColumns(['actions', 'profesores', 'horarios'])
+            ->make(true);
+    }
 
     public function create()
     {

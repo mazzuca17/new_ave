@@ -82,10 +82,13 @@ Route::middleware(['auth'])->group(function () {
         // Materias
         Route::prefix('materias')->as('materias.')->group(function () {
             Route::get('', [MateriasController::class, 'index'])->name('index');
+            Route::get('data', [MateriasController::class, 'getData'])->name('data');
             Route::get('create', [MateriasController::class, 'create'])->name('create');
             Route::post('store', [MateriasController::class, 'store'])->name('store');
             Route::get('edit/{id_materia}', [MateriasController::class, 'showFormEdit'])->name('edit');
             Route::post('save_edit', [MateriasController::class, 'saveEdit'])->name('save_edit');
+            // perfil de la materia, detalle del mismo
+            Route::get('{id_materia}', [MateriasController::class, 'showDetail'])->name('details');
         });
 
         // Cursos
