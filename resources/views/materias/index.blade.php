@@ -34,9 +34,12 @@
                                                 <th>Código</th>
                                                 <th>Nombre</th>
                                                 <th>Curso</th>
+                                                <th>Orientación</th>
                                                 <th>Docentes</th>
                                                 <th>Horario</th>
                                                 <th>Cantidad de horas</th>
+                                                <th>Acciones</th>
+
                                             </tr>
                                         </thead>
                                     </table>
@@ -58,22 +61,41 @@
             let table = $('#cicloslectivosTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('school.ciclos.data') }}",
+                ajax: "{{ route('school.materias.data') }}",
                 columns: [{
+                        data: 'code',
+                        name: 'code'
+                    },
+                    {
                         data: 'name',
                         name: 'name'
+                    },
+                    {
+                        data: 'course',
+                        name: 'course'
+                    },
+                    {
+                        data: 'orientation_course',
+                        name: 'orientation_course'
+                    },
+                    {
+                        data: 'profesores',
+                        name: 'profesores'
+                    },
+                    {
+                        data: 'horarios',
+                        name: 'horarios'
                     }, {
-                        data: 'status',
-                        name: 'status'
+                        data: 'total_horas',
+                        name: 'total_horas'
                     },
                     {
-                        data: 'start_date',
-                        name: 'start_date'
-                    },
-                    {
-                        data: 'end_date',
-                        name: 'end_date'
+                        data: 'actions',
+                        name: 'actions',
+                        orderable: false,
+                        searchable: false
                     }
+
                 ],
                 language: {
                     search: "Buscar:",

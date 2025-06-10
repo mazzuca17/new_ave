@@ -15,4 +15,14 @@ class MateriasProf extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function subject()
+    {
+        return $this->hasMany(Materias::class, 'subject_courses_id');
+    }
+
+    public function teachers()
+    {
+        return $this->hasMany(Profesors::class, 'id');
+    }
 }

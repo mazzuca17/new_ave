@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Materias extends Model
 {
@@ -21,21 +22,29 @@ class Materias extends Model
 
     public function school()
     {
-        return $this->hasOne(Schools::class, 'school_id');
+        return $this->hasOne(Schools::class, 'id');
     }
 
     public function cursos()
     {
-        return $this->hasMany(Cursos::class, 'curso_id');
+        return $this->belongsTo(Cursos::class, 'curso_id', 'id');
     }
 
-    public function profesores()
+    public function materiasprofesores()
     {
-        return $this->belongsToMany(MateriasProf::class, 'id');
+        return $this->hasMany(MateriasProf::class, 'subject_courses_id');
     }
+
 
     public function horarios()
     {
-        return $this->hasMany(MateriasHorarios::class, 'id');
+        return $this->hasMany(MateriasHorarios::class, 'subject_course_id', 'id');
+    }
+
+    public static function calculateHours($start_time, $end_time)
+    {
+        $start = Carbon::parse($start_time);
+        $end = Carbon::parse($end_time);
+        return $end->diffInMinutes($start) / 60;
     }
 }
