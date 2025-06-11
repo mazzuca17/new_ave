@@ -17,7 +17,7 @@ class EducationalLevelController extends Controller
     {
         Log::debug('demo');
         $niveles = EducationalLevels::with('EducationSchoolLevel')->get();
-
+        Log::debug($niveles);
         return view('school.educational_level.index', compact('niveles'));
     }
 
@@ -110,7 +110,7 @@ class EducationalLevelController extends Controller
 
             return redirect()
                 ->route('school.educational_level.index')
-                ->with('success', EducationalLevels::MESSAGE_EDUCATIONALLEVELS_ACTIVE_SUCCESS);
+                ->with('success', $request->get('action') == 'active' ?  EducationalLevels::MESSAGE_EDUCATIONALLEVELS_ACTIVE_SUCCESS : EducationalLevels::MESSAGE_EDUCATIONALLEVELS_DESACTIVE_SUCCESS);
         } catch (\Exception $e) {
             DB::rollBack();
             // Log del error para debugging
@@ -118,7 +118,7 @@ class EducationalLevelController extends Controller
 
             return redirect()
                 ->back()
-                ->with('danger', EducationalLevels::MESSAGE_EDUCATIONALLEVELS_ACTIVE_ERROR);
+                ->with('danger',  $request->get('action') == 'active' ? EducationalLevels::MESSAGE_EDUCATIONALLEVELS_ACTIVE_ERROR : EducationalLevels::MESSAGE_EDUCATIONALLEVELS_DESACTIVE_ERROR);
         }
     }
 }

@@ -7,13 +7,13 @@
                 <div class="row">
                     <div class="col-md-12">
                         @if (Session::has('success'))
-                            <div class="alert alert-success">
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 {{ Session::get('success') }}
                             </div>
                         @endif
 
                         @if (Session::has('danger'))
-                            <div class="alert alert-danger">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 {{ Session::get('danger') }}
                             </div>
                         @endif
@@ -23,12 +23,10 @@
                                 <h4 class="page-title">Niveles Educativos</h4>
                             </div>
                             <div>
-                                <!-- Botón para abrir modal -->
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#nuevoNivelModal">
                                     Nuevo Nivel
                                 </button>
-
                             </div>
                         </div>
 
@@ -43,6 +41,13 @@
             </div>
         </div>
     </div>
+
+    {{-- Scripts --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 5000); // 5000ms = 5s
+    </script>
 @endsection

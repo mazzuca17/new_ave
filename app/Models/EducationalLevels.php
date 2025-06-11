@@ -14,6 +14,9 @@ class EducationalLevels extends Model
     public const MESSAGE_EDUCATIONALLEVELS_ACTIVE_SUCCESS = 'Nivel educativo activado satisfactoriamente.';
     public const MESSAGE_EDUCATIONALLEVELS_ACTIVE_ERROR = 'El nivel educativo no se pudo activar satisfactoriamente, intente más tarde.';
 
+    public const MESSAGE_EDUCATIONALLEVELS_DESACTIVE_SUCCESS = 'Nivel educativo desactivado satisfactoriamente.';
+    public const MESSAGE_EDUCATIONALLEVELS_DESACTIVE_ERROR = 'El nivel educativo no se pudo desactivar satisfactoriamente, intente más tarde.';
+
     use HasFactory;
 
     protected $table = 'educational_levels';

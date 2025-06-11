@@ -6,7 +6,11 @@
                 <p class="card-text">{{ $nivel->description ?? 'Sin descripción' }}</p>
                 <p class="card-text">
                     <strong>Activo en el colegio:</strong>
-                    {{ $nivel->EducationSchoolLevel->isNotEmpty() ? 'Sí' : 'No' }}
+                    @if ($nivel->EducationSchoolLevel->isEmpty())
+                        Sí
+                    @else
+                        {{ $nivel->EducationSchoolLevel[0]->active ? 'Sí' : 'No' }}
+                    @endif
                 </p>
             </div>
             <div class="card-footer d-flex flex-wrap gap-2 justify-content-between">
@@ -15,13 +19,13 @@
                     @csrf
                     <input type="hidden" name="level_id" value="{{ $nivel->id }}">
                     <input type="hidden" name="action"
-                        value="{{ $nivel->EducationSchoolLevel->isNotEmpty() ? 'deactivate' : 'activate' }}">
+                        value="{{ $nivel->EducationSchoolLevel->isEmpty() ? 'active' : ($nivel->EducationSchoolLevel[0]->active ? 'desactive' : 'active') }}">
 
                     <button type="submit"
-                        class="btn {{ $nivel->EducationSchoolLevel->isNotEmpty() ? 'btn-outline-danger' : 'btn-outline-success' }} w-100">
+                        class="btn {{ $nivel->EducationSchoolLevel->isEmpty() ? 'btn-outline-danger' : ($nivel->EducationSchoolLevel[0]->active ? 'btn-outline-success' : 'btn-outline-danger') }} w-100">
                         <i
-                            class="fas {{ $nivel->EducationSchoolLevel->isNotEmpty() ? 'fa-toggle-off' : 'fa-toggle-on' }} me-1"></i>
-                        {{ $nivel->EducationSchoolLevel->isNotEmpty() ? 'Desactivar' : 'Activar' }}
+                            class="fas {{ $nivel->EducationSchoolLevel->isEmpty() ? 'fa-toggle-on' : ($nivel->EducationSchoolLevel[0]->active ? 'fa-toggle-off' : 'fa-toggle-on') }} me-1"></i>
+                        {{ $nivel->EducationSchoolLevel->isEmpty() ? 'Activar' : ($nivel->EducationSchoolLevel[0]->active ? 'Desactivar' : 'Activar') }}
                     </button>
                 </form>
 
