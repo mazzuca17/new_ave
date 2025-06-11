@@ -279,4 +279,45 @@ class MateriasController extends Controller
     public function showFormEdit() {}
 
     public function saveEdit() {}
+
+    /**
+     * showDetail
+     *
+     * función destinada a mostrar la información básica de la materia.
+     * @param integer $id
+     * @author Matías
+     */
+    public function showDetail($id)
+    {
+        $materia = Materias::with([
+            'cursos.orientationCourses',
+            'horarios',
+            'materiasprofesores.teachers.user'
+        ])->where('school_id', Auth::user()->school->id)
+            ->findOrFail($id);
+        Log::debug($materia);
+        // Obtener horarios en formato legible
+        $horarios = $materia->horarios->map(function ($h) {
+            $day = MateriasHorarios::getDayWeek($h->day_of_week);
+            $start = Carbon::parse($h->start_time)->format('H:i');
+            $end = Carbon::parse($h->end_time)->format('H:i');
+            return "$day de $start a $end hs.";
+        });
+
+        // Obtener profesores con nombre completo
+        $profesores = collect($materia->materiasprofesores)->flatMap(function ($materiaProf) {
+            return collect($materiaProf['teachers'])->map(function ($teacher) {
+                return optional($teacher->user)->last_name . ' ' . optional($teacher->user)->name;
+            });
+        });
+
+        // Total de horas semanales
+        $totalHoras = $materia->horarios->reduce(function ($carry, $horario) {
+            $start = Carbon::parse($horario->start_time);
+            $end = Carbon::parse($horario->end_time);
+            return round($carry + $end->diffInMinutes($start) / 60);
+        }, 0);
+
+        return view('materias.detail', compact('materia', 'horarios', 'profesores', 'totalHoras'));
+    }
 }

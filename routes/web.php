@@ -13,8 +13,11 @@ use App\Http\Controllers\HomeController as Home;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\School\OrientacionCursosController;
+use App\Http\Controllers\Schools\AcademicPeriodsController;
 use App\Http\Controllers\Schools\AlumnosController as SchoolsAlumnosController;
 use App\Http\Controllers\Schools\CiclosLectivosController;
+use App\Http\Controllers\Schools\EducationalLevelController;
+use App\Http\Controllers\Schools\GradingSchemeController;
 use App\Http\Controllers\Schools\MateriasController;
 use App\Http\Controllers\Teachers\HomeController;
 
@@ -151,7 +154,32 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // Rutas de mensajería
+        Route::group(['prefix' => 'educational-level', 'as' => 'educational_level.'], function () {
+            Route::get('', [EducationalLevelController::class, 'index'])->name('index');
+            Route::get('create', [EducationalLevelController::class, 'create'])->name('create');
+            Route::post('save', [EducationalLevelController::class, 'store'])->name('store');
+            Route::get('{educational_level}/edit', [EducationalLevelController::class, 'edit'])->name('edit');
+            Route::post('update', [EducationalLevelController::class, 'update'])->name('update');
+            Route::post('change_status', [EducationalLevelController::class, 'updateStatusLevel'])->name('update_status');
+            Route::post('destroy', [EducationalLevelController::class, 'destroy'])->name('destroy');
+        });
 
+        // Rutas de esquemas de calificación
+        Route::group(['preix' => 'grading_schemes', 'as' => 'grading_schemes.'], function () {
+            Route::get('', [GradingSchemeController::class, 'index'])->name('index');
+            Route::get('create', [GradingSchemeController::class, 'create'])->name('create');
+            Route::post('', [GradingSchemeController::class, 'store'])->name('store');
+            Route::get('{grading_scheme}', [GradingSchemeController::class, 'show'])->name('show');
+            Route::get('{grading_scheme}/edit', [GradingSchemeController::class, 'edit'])->name('edit');
+            Route::put('{grading_scheme}', [GradingSchemeController::class, 'update'])->name('update');
+            Route::delete('{grading_scheme}', [GradingSchemeController::class, 'destroy'])->name('destroy');
+        });
+
+
+        //Rutas de períodos académicos
+        Route::group(['prefix' => 'academic-periods', 'as' => 'academic_periods.'], function () {
+            Route::get('', [AcademicPeriodsController::class, 'index'])->name('index');
+        });
     });
 
     Route::middleware('role:Docente')->namespace('Docente')->prefix('docente')->as('docente.')->group(function () {

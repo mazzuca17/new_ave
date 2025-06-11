@@ -186,3 +186,30 @@
         </ul>
     </div>
 </li>
+
+<li class="nav-item">
+    <a data-toggle="collapse" href="#configuracion" class="collapsed" aria-expanded="false">
+        <i class="fas fa-cogs"></i>
+        <p>Configuración</p>
+        <span class="caret"></span>
+    </a>
+    <div class="collapse" id="configuracion">
+        <ul class="nav nav-collapse">
+            <li>
+                <a href="{{ route('school.grading_schemes.index') }}">
+                    <span class="sub-item">Esquemas de calificación</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('school.academic_periods.index') }}">
+                    <span class="sub-item">Períodos académicos</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('school.educational_level.index') }}">
+                    <span class="sub-item">Nivel académicos</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</li>
