@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController as Home;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ForumController;
 use App\Http\Controllers\School\OrientacionCursosController;
 use App\Http\Controllers\Schools\AcademicPeriodsController;
 use App\Http\Controllers\Schools\AlumnosController as SchoolsAlumnosController;
@@ -32,6 +33,22 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+
+    Route::prefix('foros')->as('forums.')->group(function () {
+        Route::get('', [ForumController::class, 'index'])->name('index');
+        Route::get('{forum}', [ForumController::class, 'show'])->name('show');
+        Route::post('{forum}/mensajes', [ForumController::class, 'storeMessage'])->name('messages.store');
+        Route::post('{forum}/mensajes/{message}/comentarios', [ForumController::class, 'storeComment'])->name('comments.store');
+
+        Route::middleware('role:Colegio|Docente')->group(function () {
+            Route::get('crear/nuevo', [ForumController::class, 'create'])->name('create');
+            Route::post('', [ForumController::class, 'store'])->name('store');
+            Route::get('{forum}/editar', [ForumController::class, 'edit'])->name('edit');
+            Route::put('{forum}', [ForumController::class, 'update'])->name('update');
+            Route::patch('{forum}/estado', [ForumController::class, 'toggleStatus'])->name('toggle_status');
+        });
+    });
+
     Route::group(['prefix' => 'mensajes', 'as' => 'mensajes.'], function () {
         Route::get('', [EmailController::class, 'index'])->name('index'); // Lista de mensajes
         Route::get('crear', [EmailController::class, 'create'])->name('create'); // Crear mensaje

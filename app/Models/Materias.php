@@ -41,6 +41,11 @@ class Materias extends Model
         return $this->hasMany(MateriasHorarios::class, 'subject_course_id', 'id');
     }
 
+    public function forums()
+    {
+        return $this->hasMany(Forum::class, 'materia_id')->orderByDesc('updated_at');
+    }
+
     public static function calculateHours($start_time, $end_time)
     {
         $start = Carbon::parse($start_time);

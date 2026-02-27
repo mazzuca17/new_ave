@@ -1,8 +1,6 @@
 @extends('layouts.app_system')
 
 @section('content')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
     <div class="content">
         <div class="page-inner">
             <div class="page-header">
@@ -15,19 +13,24 @@
                         <div class="card-body">
                             <div class="list-group">
                                 @forelse ($notifications as $notification)
-                                    <a href="{{ url('/mensajes/' . $notification->data['announcement_id']) }}"
-                                        class="list-group-item list-group-item-action">
+                                    @php
+                                        $url = $notification->data['url'] ??
+                                            (isset($notification->data['announcement_id'])
+                                                ? url('/mensajes/' . $notification->data['announcement_id'])
+                                                : '#');
+                                    @endphp
+                                    <a href="{{ $url }}" class="list-group-item list-group-item-action">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">{{ $notification->data['subject'] }}</h5>
+                                            <h5 class="mb-1">{{ $notification->data['subject'] ?? ($notification->data['title'] ?? 'Notificación') }}</h5>
                                             <small>{{ $notification->created_at->diffForHumans() }}</small>
                                         </div>
-                                        <p class="mb-1">
-                                            {{ $notification->data['message'] ?? 'Tienes una nueva notificación.' }}</p>
+                                        <p class="mb-1">{{ $notification->data['message'] ?? ($notification->data['content'] ?? 'Tienes una nueva notificación.') }}</p>
                                     </a>
                                 @empty
                                     <p class="text-muted">No tienes notificaciones.</p>
                                 @endforelse
                             </div>
+                            <div class="mt-3">{{ $notifications->links() }}</div>
                         </div>
                     </div>
                 </div>

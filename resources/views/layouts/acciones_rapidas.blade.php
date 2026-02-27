@@ -26,10 +26,10 @@
                              <span class="text">Nueva entrega</span>
                          </div>
                      </a>
-                     <a class="col-6 col-md-4 p-0" href="entregas.php">
+                     <a class="col-6 col-md-4 p-0" href="{{ route('forums.index') }}">
                          <div class="quick-actions-item">
-                             <i class="flaticon-message"></i>
-                             <span class="text">Ver entregas</span>
+                             <i class="flaticon-chat-1"></i>
+                             <span class="text">Foros</span>
                          </div>
                      </a>
                      <a class="col-6 col-md-4 p-0" href="misnotas.php">
