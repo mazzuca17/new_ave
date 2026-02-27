@@ -174,12 +174,12 @@
     <div class="collapse" id="asistencia">
         <ul class="nav nav-collapse">
             <li>
-                <a href="#">
+                <a href="{{ route('school.attendance.index') }}">
                     <span class="sub-item">Ver asistencia</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('school.attendance.create') }}">
                     <span class="sub-item">Crear registro</span>
                 </a>
             </li>
@@ -208,6 +208,11 @@
             <li>
                 <a href="{{ route('school.educational_level.index') }}">
                     <span class="sub-item">Nivel académicos</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('school.profile.show') }}">
+                    <span class="sub-item">Mi perfil de colegio</span>
                 </a>
             </li>
         </ul>

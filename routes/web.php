@@ -19,6 +19,8 @@ use App\Http\Controllers\Schools\CiclosLectivosController;
 use App\Http\Controllers\Schools\EducationalLevelController;
 use App\Http\Controllers\Schools\GradingSchemeController;
 use App\Http\Controllers\Schools\MateriasController;
+use App\Http\Controllers\Schools\AttendanceController;
+use App\Http\Controllers\Schools\ProfileController as SchoolProfileController;
 use App\Http\Controllers\Teachers\HomeController;
 
 Route::get('/', [Home::class, 'index'])->name('home');
@@ -134,6 +136,19 @@ Route::middleware(['auth'])->group(function () {
             Route::get('{id_alumno}', [SchoolsAlumnosController::class, 'showProfile'])->name('profile');
         });
 
+
+        Route::prefix('attendance')->as('attendance.')->group(function () {
+            Route::get('', [AttendanceController::class, 'index'])->name('index');
+            Route::get('create', [AttendanceController::class, 'create'])->name('create');
+            Route::post('store', [AttendanceController::class, 'store'])->name('store');
+            Route::get('{id}/edit', [AttendanceController::class, 'edit'])->name('edit');
+            Route::put('{id}', [AttendanceController::class, 'update'])->name('update');
+        });
+
+        Route::prefix('perfil')->as('profile.')->group(function () {
+            Route::get('', [SchoolProfileController::class, 'show'])->name('show');
+            Route::post('photo', [SchoolProfileController::class, 'updatePhoto'])->name('photo');
+        });
 
         Route::get('api/cursos', [EventsController::class, 'getCursos']);
         Route::get('api/materias', [EventsController::class, 'getMaterias']);
