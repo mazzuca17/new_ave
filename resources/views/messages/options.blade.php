@@ -25,6 +25,12 @@
                 </a>
             </li>
 
+            <li class="{{ request()->routeIs('mensajes.trash') ? 'active' : '' }}">
+                <a href="{{ route('mensajes.trash') }}">
+                    <i class="fas fa-trash mr-1"></i> Papelera
+                </a>
+            </li>
+
             <li class="{{ request()->routeIs('mensajes.create') ? 'active' : '' }}">
                 <a href="{{ route('mensajes.create') }}">
                     <i class="fas fa-envelope mr-1"></i> Enviar mensaje

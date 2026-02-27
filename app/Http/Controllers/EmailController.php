@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Emails;
 use App\Models\EmailsAttachments;
 use App\Models\EmailsRecipient;
-use App\Models\Messages;
 use App\Models\User;
 use App\Notifications\AnnouncementNotification;
 use Illuminate\Http\Request;
@@ -117,17 +116,20 @@ class EmailController extends Controller
 
     private function getRecipients($to)
     {
+        $query = User::query()
+            ->where('id', '!=', Auth::id())
+            ->where('school_id', Auth::user()->school->id);
+
         if (Str::startsWith($to, 'role:')) {
-            $role = Str::after($to, 'role:');
-            return User::whereHas('roles', fn($q) => $q->where('name', $role))->get();
+            $role = $this->normalizeRole(Str::after($to, 'role:'));
+            return $query->whereHas('roles', fn($q) => $q->where('name', $role))->get();
         }
 
         if ($to == '0') {
-            return User::where('id', '!=', Auth::id())->get();
+            return $query->get();
         }
 
-
-        return User::where('id', $to)->get();
+        return $query->where('id', $to)->get();
     }
 
     private function saveSenderEmailData(Request $request)
@@ -162,6 +164,7 @@ class EmailController extends Controller
         $data_message = EmailsRecipient::with('email.sender', 'email.attachments')
             ->where('recipient_id', Auth::id())
             ->where('email_id', $message_id)
+            ->whereNull('deleted_at')
             ->firstOrFail();
 
         // actualizar data para marcar como leído
@@ -251,7 +254,6 @@ class EmailController extends Controller
                     $q->where('subject', 'like', "%$search%");
                 });
             })
-            ->where('id', '!=', 24)
             ->orderByDesc('created_at')
             ->paginate(10);
 
@@ -261,4 +263,87 @@ class EmailController extends Controller
 
         return view('messages.sent', compact('messages', 'count_no_read'));
     }
+    public function trash(Request $request)
+    {
+        $user = Auth::user();
+        $search = $request->get('q');
+
+        $messages = EmailsRecipient::with('email.sender', 'email.attachments')
+            ->where('recipient_id', $user->id)
+            ->whereNotNull('deleted_at')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->whereHas('email', function ($q2) use ($search) {
+                        $q2->where('subject', 'like', "%$search%");
+                    })->orWhereHas('email.sender', function ($q2) use ($search) {
+                        $q2->where('name', 'like', "%$search%");
+                    });
+                });
+            })
+            ->orderByDesc('updated_at')
+            ->paginate(10);
+
+        $count_no_read = EmailsRecipient::where('is_read', false)
+            ->where('recipient_id', $user->id)
+            ->whereNull('deleted_at')
+            ->count();
+
+        return view('messages.trash', compact('messages', 'count_no_read'));
+    }
+
+    public function destroy(int $message_id)
+    {
+        $messageRecipient = EmailsRecipient::where('recipient_id', Auth::id())
+            ->where('email_id', $message_id)
+            ->whereNull('deleted_at')
+            ->firstOrFail();
+
+        $messageRecipient->update(['deleted_at' => now()]);
+
+        return response()->json(['success' => true]);
+    }
+
+    public function restore(int $message_id)
+    {
+        $messageRecipient = EmailsRecipient::where('recipient_id', Auth::id())
+            ->where('email_id', $message_id)
+            ->whereNotNull('deleted_at')
+            ->firstOrFail();
+
+        $messageRecipient->update(['deleted_at' => null]);
+
+        return response()->json(['success' => true]);
+    }
+
+    public function forceDelete(int $message_id)
+    {
+        $messageRecipient = EmailsRecipient::where('recipient_id', Auth::id())
+            ->where('email_id', $message_id)
+            ->whereNotNull('deleted_at')
+            ->firstOrFail();
+
+        $messageRecipient->delete();
+
+        return response()->json(['success' => true]);
+    }
+
+    private function normalizeRole(string $role): string
+    {
+        $normalized = Str::lower(trim($role));
+
+        $map = [
+            'profesor' => 'Docente',
+            'profesores' => 'Docente',
+            'docente' => 'Docente',
+            'docentes' => 'Docente',
+            'alumno' => 'Alumno',
+            'alumnos' => 'Alumno',
+            'padre' => 'Padre',
+            'padres' => 'Padre',
+            'colegio' => 'Colegio',
+        ];
+
+        return $map[$normalized] ?? ucfirst($normalized);
+    }
+
 }
