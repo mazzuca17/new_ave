@@ -7,24 +7,32 @@
                 <div class="row">
                     <div class="col-md-12">
                         @if (Session::has('success'))
-                            <div class="alert alert-success">
-                                {{ Session::get('success') }}
-                            </div>
+                            <div class="alert alert-success">{{ Session::get('success') }}</div>
                         @endif
 
                         @if (Session::has('danger'))
-                            <div class="alert alert-danger">
-                                {{ Session::get('danger') }}
-                            </div>
+                            <div class="alert alert-danger">{{ Session::get('danger') }}</div>
                         @endif
+
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h4 class="card-title mb-0">Carga masiva de materias</h4>
+                            </div>
+                            <div class="card-body">
+                                <form action="{{ route('school.materias.bulk_store') }}" method="POST" enctype="multipart/form-data"
+                                    class="d-flex gap-2 align-items-center">
+                                    @csrf
+                                    <input type="file" name="csv_file" class="form-control" accept=".csv,.txt" required>
+                                    <button class="btn btn-primary">Subir CSV</button>
+                                </form>
+                                <small class="text-muted">Formato esperado: columnas <b>nombre</b>, <b>curso_id</b>.</small>
+                            </div>
+                        </div>
 
                         <div class="card">
                             <div class='card-header d-flex justify-content-between align-items-center'>
                                 <div class='card-title'>Materias</div>
-                                <div>
-                                    <a href="{{ route('school.materias.create') }}" class="btn btn-primary">
-                                        Cargar materia</a>
-                                </div>
+                                <a href="{{ route('school.materias.create') }}" class="btn btn-primary">Cargar materia</a>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -39,7 +47,6 @@
                                                 <th>Horario</th>
                                                 <th>Cantidad de horas</th>
                                                 <th>Acciones</th>
-
                                             </tr>
                                         </thead>
                                     </table>
@@ -62,56 +69,30 @@
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('school.materias.data') }}",
-                columns: [{
-                        data: 'code',
-                        name: 'code'
-                    },
-                    {
-                        data: 'name',
-                        name: 'name'
-                    },
-                    {
-                        data: 'course',
-                        name: 'course'
-                    },
-                    {
-                        data: 'orientation_course',
-                        name: 'orientation_course'
-                    },
-                    {
-                        data: 'profesores',
-                        name: 'profesores'
-                    },
-                    {
-                        data: 'horarios',
-                        name: 'horarios'
-                    }, {
-                        data: 'total_horas',
-                        name: 'total_horas'
-                    },
-                    {
-                        data: 'actions',
-                        name: 'actions',
-                        orderable: false,
-                        searchable: false
-                    }
-
-                ],
-                language: {
-                    search: "Buscar:",
-                    lengthMenu: "Mostrar _MENU_ registros",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    paginate: {
-                        first: "Primero",
-                        last: "Último",
-                        next: "Siguiente",
-                        previous: "Anterior"
-                    }
-                }
+                columns: [{ data: 'code', name: 'code' }, { data: 'name', name: 'name' }, { data: 'course', name: 'course' },
+                    { data: 'orientation_course', name: 'orientation_course' }, { data: 'profesores', name: 'profesores' },
+                    { data: 'horarios', name: 'horarios' }, { data: 'total_horas', name: 'total_horas' },
+                    { data: 'actions', name: 'actions', orderable: false, searchable: false }
+                ]
             });
 
-            $('#reloadTable').on('click', function() {
-                table.ajax.reload();
+            $(document).on('click', '.delete-materia', function() {
+                const id = $(this).data('id');
+                if (!confirm('¿Seguro que querés eliminar esta materia?')) return;
+
+                $.ajax({
+                    url: `{{ url('/school/materias/delete') }}/${id}`,
+                    method: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function() {
+                        table.ajax.reload();
+                    },
+                    error: function() {
+                        alert('No se pudo eliminar la materia.');
+                    }
+                });
             });
         });
     </script>

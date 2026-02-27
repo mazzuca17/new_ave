@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Notas extends Model
+class SubjectActivities extends Model
 {
     use HasFactory;
 
-    protected $table = 'notas_materias';
+    protected $table = 'subject_activities';
 
     protected $fillable = [
-        'student_enrollment_id',
         'subject_course_id',
-        'grade',
-        'term',
+        'title',
+        'instructions',
+        'due_date',
     ];
 }

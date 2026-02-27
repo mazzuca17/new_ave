@@ -18,11 +18,11 @@ class MateriasProf extends Model
 
     public function subject()
     {
-        return $this->hasMany(Materias::class, 'subject_courses_id');
+        return $this->belongsTo(Materias::class, 'subject_courses_id', 'id');
     }
 
     public function teachers()
     {
-        return $this->hasMany(Profesors::class, 'id');
+        return $this->belongsTo(Profesors::class, 'teacher_id', 'id');
     }
 }
