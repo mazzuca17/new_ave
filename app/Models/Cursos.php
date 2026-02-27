@@ -39,6 +39,11 @@ class Cursos extends Model
         return $this->hasMany(Eventos::class, 'curso_id');
     }
 
+    public function students()
+    {
+        return $this->hasMany(Students::class, 'curso_id');
+    }
+
 
     public function academicYearCourses()
     {

@@ -28,6 +28,11 @@
                                 </div>
                             </div>
                             <div class="card-body">
+                        <div class="alert alert-info">
+                            <strong>Automatización de ciclo lectivo:</strong> se encuentra programado el cron
+                            <code>academic-year:process-transition</code> para actualizar alumnos, cambio de curso y
+                            adaptación de estructura académica al cierre del ciclo.
+                        </div>
                                 <div class="table-responsive">
                                     <table id="cicloslectivosTable" class="table table-striped" style="width:100%">
                                         <thead>

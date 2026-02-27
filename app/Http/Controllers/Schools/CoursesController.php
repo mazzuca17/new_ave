@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AcademicYearCourses;
 use App\Models\AcademicYearCourseStudent;
 use App\Models\AcademicYears;
+use App\Models\AttendanceRecords;
 use App\Models\Cursos;
 use App\Models\Eventos;
 use App\Models\OrientacionCursos;
@@ -222,8 +223,24 @@ class CoursesController extends Controller
         // Registrar el curso encontrado en logs para depuración
         Log::debug('Curso encontrado:', ['course' => $course]);
 
+        $averagePerformance = round((float) $course->students()->avg('promedio'), 2);
+
+        $attendanceStats = AttendanceRecords::query()
+            ->whereHas('enrollment.student', function ($query) use ($course_id) {
+                $query->where('curso_id', $course_id);
+            })
+            ->selectRaw("SUM(CASE WHEN status = 'presente' THEN 1 ELSE 0 END) as presentes")
+            ->selectRaw("SUM(CASE WHEN status = 'ausente' THEN 1 ELSE 0 END) as ausentes")
+            ->selectRaw('COUNT(*) as total')
+            ->first();
+
+        $attendancePercentage = 0;
+        if ($attendanceStats && $attendanceStats->total > 0) {
+            $attendancePercentage = round(($attendanceStats->presentes / $attendanceStats->total) * 100, 2);
+        }
+
         // Retornar la vista con el curso y los eventos filtrados
-        return view('school.courses.dashboard', compact('course'));
+        return view('school.courses.dashboard', compact('course', 'averagePerformance', 'attendancePercentage'));
     }
 
     /**

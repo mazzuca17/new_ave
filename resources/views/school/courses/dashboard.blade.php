@@ -15,6 +15,24 @@
         </div>
         <div class="page-inner mt--5">
             <div class="row">
+                <div class="col-md-6">
+                    <div class="card card-primary bg-primary-gradient">
+                        <div class="card-body text-center">
+                            <h5 class="card-category">KPI promedio de rendimiento</h5>
+                            <h2 class="card-title">{{ $averagePerformance }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-primary bg-primary-gradient">
+                        <div class="card-body text-center">
+                            <h5 class="card-category">KPI por asistencia</h5>
+                            <h2 class="card-title">{{ $attendancePercentage }}%</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-12">
                     <div class="card card-primary bg-primary-gradient">
                         <div class="card-header">
