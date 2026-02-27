@@ -107,6 +107,10 @@ Route::middleware(['auth'])->group(function () {
             Route::post('store', [MateriasController::class, 'store'])->name('store');
             Route::get('edit/{id_materia}', [MateriasController::class, 'showFormEdit'])->name('edit');
             Route::post('save_edit', [MateriasController::class, 'saveEdit'])->name('save_edit');
+            Route::delete('delete/{id}', [MateriasController::class, 'destroy'])->name('destroy');
+            Route::post('bulk-store', [MateriasController::class, 'bulkStore'])->name('bulk_store');
+            Route::post('{id_materia}/activities', [MateriasController::class, 'storeActivity'])->name('activities.store');
+            Route::post('{id_materia}/contents', [MateriasController::class, 'storeContent'])->name('contents.store');
             // perfil de la materia, detalle del mismo
             Route::get('{id_materia}', [MateriasController::class, 'showDetail'])->name('details');
         });

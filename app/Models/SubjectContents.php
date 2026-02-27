@@ -5,16 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Notas extends Model
+class SubjectContents extends Model
 {
     use HasFactory;
 
-    protected $table = 'notas_materias';
+    protected $table = 'subject_contents';
 
     protected $fillable = [
-        'student_enrollment_id',
         'subject_course_id',
-        'grade',
-        'term',
+        'title',
+        'category',
+        'description',
+        'link',
+        'file_path',
     ];
 }
