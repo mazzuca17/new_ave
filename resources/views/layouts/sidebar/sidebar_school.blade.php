@@ -93,6 +93,29 @@
     </div>
 </li>
 
+
+<li class="nav-item">
+    <a data-toggle="collapse" href="#foros" class="collapsed" aria-expanded="false">
+        <i class="fas fa-comments"></i>
+        <p>Foros</p>
+        <span class="caret"></span>
+    </a>
+    <div class="collapse" id="foros">
+        <ul class="nav nav-collapse">
+            <li>
+                <a href="{{ route('forums.index') }}">
+                    <span class="sub-item">Ver foros</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('forums.create') }}">
+                    <span class="sub-item">Crear foro</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</li>
+
 <li class="nav-item">
     <a data-toggle="collapse" href="#alumnos" class="collapsed" aria-expanded="false">
         <i class="fas fa-user-graduate"></i>

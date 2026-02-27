@@ -29,11 +29,18 @@
                          <div class="notif-scroll scrollbar-outer">
                              <div class="notif-center">
                                  @forelse ($notifications as $notification)
-                                     <a href="{{ url('/mensajes/' . $notification->data['announcement_id']) }}">
-                                         <div class="notif-icon notif-primary"> <i class="fa fa-envelope"></i> </div>
+                                     @php
+                                         $url = $notification->data['url'] ??
+                                             (isset($notification->data['announcement_id'])
+                                                 ? url('/mensajes/' . $notification->data['announcement_id'])
+                                                 : '#');
+                                         $icon = $notification->data['icon'] ?? 'fa-envelope';
+                                     @endphp
+                                     <a href="{{ $url }}">
+                                         <div class="notif-icon notif-primary"> <i class="fa {{ $icon }}"></i> </div>
                                          <div class="notif-content">
                                              <span class="block">
-                                                 {{ $notification->data['subject'] }}
+                                                 {{ $notification->data['subject'] ?? ($notification->data['title'] ?? 'Nueva notificación') }}
                                              </span>
                                              <span class="time">
                                                  {{ $notification->created_at->diffForHumans() }}
