@@ -47,6 +47,16 @@
                                     <a class="nav-link active" id="datos-tab" data-bs-toggle="tab" href="#datos"
                                         role="tab" aria-controls="datos" aria-selected="true">Datos personales</a>
                                 </li>
+                                @if (Auth::user()->hasRole('Docente') || Auth::user()->hasRole('Colegio'))
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="cursos-tab" data-bs-toggle="tab" href="#cursos"
+                                            role="tab" aria-controls="cursos" aria-selected="false">Cursos inscriptos</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="materias-tab" data-bs-toggle="tab" href="#materias"
+                                            role="tab" aria-controls="materias" aria-selected="false">Materias asignadas</a>
+                                    </li>
+                                @endif
                             </ul>
                             @include('school.profesors.profile.personal_data')
                         </div>
