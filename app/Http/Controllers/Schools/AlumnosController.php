@@ -11,6 +11,7 @@ use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -241,7 +242,80 @@ class AlumnosController extends Controller
         // Buscar el alumno por ID
         $alumno = Students::findOrFail($user_student_id);
 
+        $gradesQuery = DB::table('grades as g')
+            ->leftJoin('academic_periods as ap', 'ap.id', '=', 'g.academic_period_id')
+            ->leftJoin('subject_academic_courses as sac', 'sac.id', '=', 'g.academic_year_course_materia_id')
+            ->leftJoin('materias as m', 'm.id', '=', 'sac.materia_id')
+            ->where('g.student_id', $alumno->id);
+
+        $gradeMovements = (clone $gradesQuery)
+            ->select(
+                'g.grade_value',
+                'g.observations',
+                'g.created_at',
+                'm.nombre as materia',
+                'ap.name as periodo'
+            )
+            ->orderByDesc('g.created_at')
+            ->get();
+
+        $latestMovements = $gradeMovements->take(8);
+
+        $reportCard = (clone $gradesQuery)
+            ->select(
+                'm.nombre as materia',
+                'ap.name as periodo',
+                DB::raw('ROUND(AVG(g.grade_value), 2) as promedio'),
+                DB::raw('MIN(g.grade_value) as nota_minima'),
+                DB::raw('MAX(g.grade_value) as nota_maxima'),
+                DB::raw('COUNT(g.id) as evaluaciones')
+            )
+            ->groupBy('m.nombre', 'ap.name')
+            ->orderBy('m.nombre')
+            ->orderBy('ap.name')
+            ->get();
+
+        $averageGrade = (float) $gradeMovements->avg('grade_value');
+        $lastGrade = optional($gradeMovements->first())->grade_value;
+        $riskSubjects = $reportCard->where('promedio', '<', 6)->count();
+        $approvalRate = $gradeMovements->count() > 0
+            ? round(($gradeMovements->where('grade_value', '>=', 6)->count() / $gradeMovements->count()) * 100, 2)
+            : 0;
+
+        $performanceKpis = [
+            'promedio_general' => $gradeMovements->count() > 0 ? round($averageGrade, 2) : null,
+            'total_evaluaciones' => $gradeMovements->count(),
+            'ultima_nota' => $lastGrade,
+            'materias_en_riesgo' => $riskSubjects,
+            'porcentaje_aprobacion' => $approvalRate,
+        ];
+
+        $trendData = $gradeMovements
+            ->sortBy('created_at')
+            ->values()
+            ->map(function ($movement) {
+                return [
+                    'label' => Carbon::parse($movement->created_at)->format('d/m'),
+                    'value' => (float) $movement->grade_value,
+                ];
+            });
+
+        $subjectAverages = $reportCard
+            ->groupBy('materia')
+            ->map(function ($items) {
+                return round($items->avg(function ($item) {
+                    return (float) $item->promedio;
+                }), 2);
+            });
+
+        $kpiCharts = [
+            'trend_labels' => $trendData->pluck('label')->values(),
+            'trend_values' => $trendData->pluck('value')->values(),
+            'subject_labels' => $subjectAverages->keys()->values(),
+            'subject_values' => $subjectAverages->values(),
+        ];
+
         // Devolver la vista con los datos del alumno
-        return view('school.alumnos.profile', compact('alumno'));
+        return view('school.alumnos.profile', compact('alumno', 'latestMovements', 'reportCard', 'performanceKpis', 'kpiCharts'));
     }
 }

@@ -56,6 +56,19 @@
                                     <a class="nav-link" id="medicos-tab" data-bs-toggle="tab" href="#medicos" role="tab"
                                         aria-controls="medicos" aria-selected="false">Información Médica</a>
                                 </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="movimientos-tab" data-bs-toggle="tab" href="#movimientos"
+                                        role="tab" aria-controls="movimientos" aria-selected="false">Últimos
+                                        movimientos</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="boletin-tab" data-bs-toggle="tab" href="#boletin" role="tab"
+                                        aria-controls="boletin" aria-selected="false">Desempeño / Boletín</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="kpis-tab" data-bs-toggle="tab" href="#kpis" role="tab"
+                                        aria-controls="kpis" aria-selected="false">KPIs</a>
+                                </li>
                             </ul>
 
                             <!-- Contenido de las pestañas -->
@@ -101,6 +114,142 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="tab-pane fade" id="movimientos" role="tabpanel"
+                                    aria-labelledby="movimientos-tab">
+                                    <div class="mt-3 table-responsive">
+                                        <table class="table table-striped table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Fecha</th>
+                                                    <th>Materia</th>
+                                                    <th>Período</th>
+                                                    <th>Nota</th>
+                                                    <th>Observación</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($latestMovements as $movement)
+                                                    <tr>
+                                                        <td>{{ \Illuminate\Support\Carbon::parse($movement->created_at)->format('d/m/Y H:i') }}
+                                                        </td>
+                                                        <td>{{ $movement->materia ?? '-' }}</td>
+                                                        <td>{{ $movement->periodo ?? '-' }}</td>
+                                                        <td>{{ $movement->grade_value }}</td>
+                                                        <td>{{ $movement->observations ?: '-' }}</td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="5" class="text-center text-muted">Sin movimientos
+                                                            registrados.</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="boletin" role="tabpanel" aria-labelledby="boletin-tab">
+                                    <div class="mt-3 table-responsive">
+                                        <table class="table table-bordered table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Materia</th>
+                                                    <th>Período</th>
+                                                    <th>Promedio</th>
+                                                    <th>Nota mínima</th>
+                                                    <th>Nota máxima</th>
+                                                    <th>Evaluaciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($reportCard as $item)
+                                                    <tr>
+                                                        <td>{{ $item->materia ?? '-' }}</td>
+                                                        <td>{{ $item->periodo ?? '-' }}</td>
+                                                        <td>{{ $item->promedio }}</td>
+                                                        <td>{{ $item->nota_minima }}</td>
+                                                        <td>{{ $item->nota_maxima }}</td>
+                                                        <td>{{ $item->evaluaciones }}</td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="6" class="text-center text-muted">No hay notas para
+                                                            generar el boletín.</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="kpis" role="tabpanel" aria-labelledby="kpis-tab">
+                                    <div class="row mt-3">
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card bg-light">
+                                                <div class="card-body">
+                                                    <h6 class="text-muted">Promedio general</h6>
+                                                    <h4>{{ $performanceKpis['promedio_general'] ?? 'N/A' }}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card bg-light">
+                                                <div class="card-body">
+                                                    <h6 class="text-muted">Total evaluaciones</h6>
+                                                    <h4>{{ $performanceKpis['total_evaluaciones'] }}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card bg-light">
+                                                <div class="card-body">
+                                                    <h6 class="text-muted">Última nota</h6>
+                                                    <h4>{{ $performanceKpis['ultima_nota'] ?? 'N/A' }}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="card bg-light">
+                                                <div class="card-body">
+                                                    <h6 class="text-muted">Materias en riesgo (&lt; 6)</h6>
+                                                    <h4>{{ $performanceKpis['materias_en_riesgo'] }}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="card bg-light">
+                                                <div class="card-body">
+                                                    <h6 class="text-muted">% aprobación</h6>
+                                                    <h4>{{ $performanceKpis['porcentaje_aprobacion'] }}%</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-6 mb-4">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5 class="mb-0">Evolución de notas</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <canvas id="kpiTrendChart" height="140"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5 class="mb-0">Promedio por materia</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <canvas id="kpiSubjectChart" height="140"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -111,4 +260,71 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const trendLabels = @json($kpiCharts['trend_labels']);
+            const trendValues = @json($kpiCharts['trend_values']);
+            const subjectLabels = @json($kpiCharts['subject_labels']);
+            const subjectValues = @json($kpiCharts['subject_values']);
+
+            if (document.getElementById('kpiTrendChart') && trendValues.length > 0) {
+                new Chart(document.getElementById('kpiTrendChart'), {
+                    type: 'line',
+                    data: {
+                        labels: trendLabels,
+                        datasets: [{
+                            label: 'Nota',
+                            data: trendValues,
+                            borderColor: '#1572E8',
+                            backgroundColor: 'rgba(21, 114, 232, 0.15)',
+                            fill: true,
+                            tension: 0.25
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    suggestedMax: 10
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+
+            if (document.getElementById('kpiSubjectChart') && subjectValues.length > 0) {
+                new Chart(document.getElementById('kpiSubjectChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: subjectLabels,
+                        datasets: [{
+                            label: 'Promedio',
+                            data: subjectValues,
+                            backgroundColor: 'rgba(255, 159, 64, 0.7)',
+                            borderColor: '#ff9f40',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    suggestedMax: 10
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 @endsection
+
