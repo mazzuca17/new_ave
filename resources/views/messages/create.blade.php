@@ -29,7 +29,7 @@
                                                     <option value="0">Todos los usuarios</option>
                                                     <option value="role:Padre">Todos los padres</option>
                                                     <option value="role:Alumno">Todos los alumnos</option>
-                                                    <option value="role:Profesor">Todos los profesores</option>
+                                                    <option value="role:Docente">Todos los profesores</option>
                                                 @endif
 
                                                 @if (Auth::user()->hasRole('Docente'))
@@ -37,7 +37,7 @@
                                                 @endif
 
                                                 @if (Auth::user()->hasRole('Alumno'))
-                                                    <option value="role:Profesor">Todos los profesores</option>
+                                                    <option value="role:Docente">Todos los profesores</option>
                                                 @endif
 
                                                 @php $currentRole = null; @endphp

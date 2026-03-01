@@ -9,9 +9,9 @@
                     <div class="page-content mail-content">
                         <div class="inbox-head d-lg-flex d-block">
                             <h3>Papelera</h3>
-                            <form action="#" class="ml-auto">
+                            <form action="{{ route('mensajes.trash') }}" method="GET" class="ml-auto">
                                 <div class="input-group">
-                                    <input type="text" placeholder="Buscar mensaje" class="form-control">
+                                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Buscar mensaje" class="form-control">
                                     <div class="input-group-append">
                                         <span class="input-group-text">
                                             <i class="fa fa-search search-icon"></i>
@@ -21,9 +21,7 @@
                             </form>
                         </div>
                         <div class="inbox-body">
-                            @include('messages.list_options_filters')
-
-                            @forelse ($messages as $item)
+                                                        @forelse ($messages as $item)
                                 <div class="email-list">
                                     <div class="email-list-item {{ $item->is_read ? '' : 'unread' }}">
                                         <div class="email-list-actions">
@@ -33,8 +31,8 @@
                                                     <span class="custom-control-label"></span>
                                                 </label>
                                                 <span class="rating rating-sm mr-3">
-                                                    <input type="checkbox" id="star{{ $item->id }}" value="1">
-                                                    <label for="star{{ $item->id }}">
+                                                    <input type="checkbox" id="star{{ $item->email_id }}" value="1">
+                                                    <label for="star{{ $item->email_id }}">
                                                         <span class="fa fa-star"></span>
                                                     </label>
                                                 </span>
@@ -42,21 +40,21 @@
                                         </div>
                                         <div class="email-list-detail">
                                             <span class="date float-right">
-                                                @if ($item->files->count() > 0)
+                                                @if ($item->email->attachments->count() > 0)
                                                     <i class="fa fa-paperclip paperclip"></i>
                                                 @endif
                                                 {{ $item->created_at->format('d M') }}
                                             </span>
-                                            <span class="from">{{ $item->sender->name }}</span>
-                                            <p class="msg">{{ $item->subject }}</p>
+                                            <span class="from">{{ $item->email->sender->name }}</span>
+                                            <p class="msg">{{ $item->email->subject }}</p>
 
                                             <div class="actions mt-2">
                                                 <button class="btn btn-success btn-sm restore-message"
-                                                    data-id="{{ $item->id }}">
+                                                    data-id="{{ $item->email_id }}">
                                                     <i class="fa fa-undo"></i> Restaurar
                                                 </button>
                                                 <button class="btn btn-danger btn-sm delete-message"
-                                                    data-id="{{ $item->id }}">
+                                                    data-id="{{ $item->email_id }}">
                                                     <i class="fa fa-trash"></i> Eliminar definitivamente
                                                 </button>
                                             </div>
@@ -68,6 +66,9 @@
                                     <p class="msg text-center">No tienes mensajes en la papelera.</p>
                                 </div>
                             @endforelse
+                        </div>
+                        <div class="mt-4 d-flex justify-content-center">
+                            {{ $messages->links() }}
                         </div>
                     </div>
                 </div>

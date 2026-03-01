@@ -54,9 +54,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('crear', [EmailController::class, 'create'])->name('create'); // Crear mensaje
         Route::post('enviar', [EmailController::class, 'send'])->name('send'); // Enviar mensaje
         Route::get('enviados', [EmailController::class, 'sent'])->name('enviados'); // 🔄 Mover aquí
+        Route::get('papelera', [EmailController::class, 'trash'])->name('trash');
         Route::post('{id}/reply', [EmailController::class, 'reply'])->name('reply');
-        Route::get('{id_mensaje}', [EmailController::class, 'show'])->name('show'); // Ver mensaje
         Route::get('enviados/{id_mensaje}', [EmailController::class, 'show_sent'])->name('show_sent'); // Ver mensaje
+        Route::patch('{id_mensaje}/restore', [EmailController::class, 'restore'])->name('restore');
+        Route::delete('{id_mensaje}/force-delete', [EmailController::class, 'forceDelete'])->name('force_delete');
+        Route::get('{id_mensaje}', [EmailController::class, 'show'])->name('show'); // Ver mensaje
 
         Route::delete('{id_mensaje}', [EmailController::class, 'destroy'])->name('destroy'); // Eliminar mensaje
     });
