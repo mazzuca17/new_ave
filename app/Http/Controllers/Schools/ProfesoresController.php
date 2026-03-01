@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Schools;
 use App\Http\Controllers\Controller;
 use App\Models\Profesors;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -225,10 +226,43 @@ class ProfesoresController extends Controller
 
     public function showProfile(int $user_prof_id)
     {
-        // Buscar el  por ID
-        $prof = Profesors::with('user')->findOrFail($user_prof_id);
+        // Buscar el docente por ID
+        $prof = Profesors::with(['user', 'subjects.cursos'])->findOrFail($user_prof_id);
+
+        $assignedSubjects = collect();
+        $assignedCourses = collect();
+
+        if (Auth::user()->hasRole('Docente') || Auth::user()->hasRole('Colegio')) {
+            $assignedSubjects = DB::table('subject_teacher as st')
+                ->join('materias as m', 'm.id', '=', 'st.subject_courses_id')
+                ->join('cursos as c', 'c.id', '=', 'm.curso_id')
+                ->leftJoin('subject_academic_courses as sac', 'sac.materia_id', '=', 'm.id')
+                ->leftJoin('academic_year_courses as ayc', 'ayc.id', '=', 'sac.academic_year_course_id')
+                ->leftJoin('academic_years as ay', 'ay.id', '=', 'ayc.academic_year_id')
+                ->where('st.teacher_id', $prof->id)
+                ->select(
+                    'm.id as materia_id',
+                    'm.nombre as materia_nombre',
+                    'c.id as curso_id',
+                    'c.name as curso_nombre',
+                    'ay.name as ciclo_lectivo',
+                    'ay.status as ciclo_status',
+                    'st.created_at as asignado_en'
+                )
+                ->orderByDesc('st.created_at')
+                ->get()
+                ->map(function ($item) {
+                    $item->estado_asignacion = ((int) $item->ciclo_status === 1) ? 'Actual' : 'Histórico';
+                    return $item;
+                });
+
+            $assignedCourses = $assignedSubjects
+                ->unique('curso_id')
+                ->values();
+        }
+
         Log::debug($prof);
-        // Devolver la vista con los datos del pro$prof
-        return view('school.profesors.profile.index', compact('prof'));
+        // Devolver la vista con los datos del docente
+        return view('school.profesors.profile.index', compact('prof', 'assignedSubjects', 'assignedCourses'));
     }
 }
